@@ -480,7 +480,7 @@
 let allGames = [];
 
 async function loadGames() {
-    const url = "https://cdn.jsdelivr.net/gh/Notrexed/Nova-Games@main/gamenames.json";
+    const url = "https://cdn.jsdelivr.net/gh/Notrexed/Nova-Games@latest/gamenames.json";
     const res = await fetch(url);
     allGames = await res.json();
 
