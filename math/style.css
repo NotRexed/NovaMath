@@ -451,8 +451,8 @@ hr.rounded {
     transform: translateX(-237px);
     background-color: #1a1a1a;
     border-radius: 15px;
-    width: 250px;
-    height: 250px;
+    width: 270px;
+    height: 236px;
 }
 .gameframe .ad-box h1{
     text-transform: uppercase;
@@ -464,8 +464,8 @@ hr.rounded {
 }
 .ad-box .adsbygoogle{
     transform: translateX(6px) translateY(10px);
-    height: 250px;
-    width: 250px;
+    height: 202px;
+    width: 257px;
 }
 .game-controls .age-rating{
     color: #fff;
@@ -1456,8 +1456,8 @@ hr.rounded {
         transform: translateX(-237px);
         background-color: #1a1a1a;
         border-radius: 15px;
-        width: 250px;
-        height: 250px;
+        width: 270px;
+        height: 216px;
     }
     .gameframe .ad-box h1{
         text-transform: uppercase;
@@ -1469,8 +1469,8 @@ hr.rounded {
     }
     .ad-box .adsbygoogle{
         transform: translateX(-83px) translateY(-8px);
-        height: 250px;
-        width: 250px;
+        height: 182px;
+        width: 257px;
     }
     .game-controls .age-rating{
         color: #fff;
@@ -2148,4 +2148,3 @@ hr.rounded {
         width: 100%;
     }
 }
-
