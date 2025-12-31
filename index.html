@@ -1,555 +1,587 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nova Math | Learn Math For Free</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;500;600&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-95MX2CCB14"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-95MX2CCB14');
+</script>
     
-    <style>
-        :root {
-            --primary-charcoal: #2c2c2c;
-            --secondary-terracotta: #c65d07;
-            --accent-sage: #7a8471;
-            --neutral-cream: #f7f3e9;
-            --text-dark: #1a1a1a;
-        }
-        
-        body {
-            font-family: 'Source Sans Pro', sans-serif;
-            background: var(--neutral-cream);
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-        
-        .font-display { font-family: 'Crimson Text', serif; }
-        .font-handwritten { font-family: 'Caveat', cursive; }
-        
-        .hero-bg {
-            background: linear-gradient(rgba(44, 44, 44, 0.85), rgba(44, 44, 44, 0.85)), 
-                        url('resources/hero-math-formulas.png');
-            background-size: cover;
-            background-position: center;
-            min-height: 70vh;
-        }
-        
-        .content-card {
-            background: white;
-            border: 2px solid transparent;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-        
-        .content-card:hover {
-            border-color: var(--secondary-terracotta);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-            transform: translateY(-2px);
-        }
-        
-        .btn-primary {
-            background: var(--secondary-terracotta);
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-        
-        .btn-primary:hover {
-            background: #a54a05;
-            transform: translateY(-1px);
-        }
-        
-        .btn-secondary {
-            background: white;
-            color: var(--secondary-terracotta);
-            border: 2px solid var(--secondary-terracotta);
-            padding: 10px 22px;
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.2s ease;
-        }
-        
-        .btn-secondary:hover {
-            background: var(--secondary-terracotta);
-            color: white;
-        }
-        
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-sage), transparent);
-            margin: 4rem 0;
-        }
-        
-        .handwritten-note {
-            font-family: 'Caveat', cursive;
-            color: var(--secondary-terracotta);
-            font-size: 1.2rem;
-            transform: rotate(-2deg);
-            display: inline-block;
-        }
-        
-        .math-formula {
-            font-family: 'Crimson Text', serif;
-            font-style: italic;
-            color: var(--accent-sage);
-            background: rgba(122, 132, 113, 0.1);
-            padding: 8px 16px;
-            border-left: 3px solid var(--accent-sage);
-            margin: 16px 0;
-        }
-        
-        .nav-bar {
-            background: white;
-            border-bottom: 1px solid #e0e0e0;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-        
-        .nav-link {
-            color: var(--text-dark);
-            text-decoration: none;
-            padding: 8px 16px;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s ease;
-        }
-        
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--secondary-terracotta);
-            border-bottom-color: var(--secondary-terracotta);
-        }
-        
-        .reveal-up {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        
-        .reveal-up.revealed {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        
-        .topic-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .stats-container {
-            background: white;
-            border: 1px solid #e0e0e0;
-            text-align: center;
-        }
-        
-        .stats-number {
-            font-family: 'Crimson Text', serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--secondary-terracotta);
-        }
-        
-        .footer {
-            background: var(--primary-charcoal);
-            color: white;
-            text-align: center;
-            padding: 3rem 0;
-        }
-        
-        @media (max-width: 768px) {
-            .hero-bg {
-                min-height: 60vh;
-            }
-            
-            .topic-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <script async src="../pagead2.googlesyndication.com/pagead/js/f74a2.txt?client=ca-pub-7319072504670835"
+    crossorigin="anonymous"></script>
+
+    <script async src="https://fundingchoicesmessages.google.com/i/pub-7319072504670835?ers=1" nonce="cl51R4m9X9S0GL_CMBDHSQ"></script><script nonce="cl51R4m9X9S0GL_CMBDHSQ">(function() {function signalGooglefcPresent() {if (!window.frames['googlefcPresent']) {if (document.body) {const iframe = document.createElement('iframe'); iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; iframe.style.display = 'none'; iframe.name = 'googlefcPresent'; document.body.appendChild(iframe);} else {setTimeout(signalGooglefcPresent, 0);}}}signalGooglefcPresent();})();</script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="search.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href='../unpkg.com/boxicons%402.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <script src="../code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="canonical" href="index.html" />
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <meta name="theme-color" content="#0f0f0f">
+
+    <title>Nova Math | Learn Math For Free</title>
+    <meta name="description" content="Play all of your favourite games on ubgames - the website with over 250 high quality games to play in your browser!" />
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 </head>
+
 <body>
-    <!-- Navigation -->
-    <nav class="nav-bar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <h1 class="font-display text-2xl font-bold text-gray-900">Nova Math</h1>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#home" class="nav-link active">Home</a>
-                        <a href="lessons.html" class="nav-link">Lessons</a>
-                        <a href="practice.html" class="nav-link">Practice</a>
-                        <a href="about.html" class="nav-link">About</a>
-                    </div>
-                </div>
-                <div class="md:hidden">
-                    <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero-bg flex items-center justify-center">
-        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 text-white">
-            <h1 class="font-display text-5xl md:text-6xl font-bold mb-6 reveal-up">
-                Where Mathematics
-                <span class="text-orange-300">Comes Alive</span>
-            </h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto reveal-up">
-                Discover the beauty of mathematics through interactive visualizations, step-by-step problem solving, 
-                and engaging educational experiences that transform abstract concepts into tangible understanding.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center reveal-up">
-                <a href="#problem-solver" class="btn-primary">Start Solving</a>
-                <a href="math/index.html" class="btn-secondary">Explore Visualizations</a>
-            </div>
-        </div>
-    </section>
+<aside class="sidebar collapsed">
+  <header class="sidebar-header">
+    <!-- Logo links to home page -->
+    <a class="header-logo">
+      <img class="logo-collapsed" src="nova.png" alt="Logo" />
+      <img class="logo-expanded" src="nova-big.png" alt="Logo" />
+    </a>
+  </header>
 
-    <!-- Interactive Problem Solver -->
-    <section id="problem-solver" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal-up">
-                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
-                    Interactive Problem Solver
-                </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Experience mathematics through hands-on problem solving with step-by-step guidance, 
-                    real-time feedback, and multiple solution approaches.
-                </p>
-            </div>
+  <nav class="sidebar-nav">
+    <ul class="nav-list primary-nav">
+      <hr />
+      <br />
+      
+      <!-- Games link -->
+      <li class="nav-item">
+        <a href="games.html" class="nav-link">
+          <span class="nav-icon material-symbols-rounded">sports_esports</span>
+          <span class="nav-label">Games</span>
+        </a>
+        <span class="nav-tooltip">Games</span>
+      </li>
+
+      <!-- Movies link -->
+      <li class="nav-item">
+        <a href="movies.html" class="nav-link">
+          <span class="nav-icon material-symbols-rounded">movie</span>
+          <span class="nav-label">Movies</span>
+        </a>
+        <span class="nav-tooltip">Movies</span>
+      </li>
+
+      <!-- Apps link -->
+      <li class="nav-item">
+        <a href="apps.html" class="nav-link">
+          <span class="nav-icon material-symbols-rounded">apps</span>
+          <span class="nav-label">Apps</span>
+        </a>
+        <span class="nav-tooltip">Apps</span>
+      </li>
+      <hr />
+    </ul>
+
+    <ul class="nav-list secondary-nav">
+      <!-- Settings link -->
+      <li class="nav-item">
+        <a href="pages/settings/index.html" class="nav-link">
+          <span class="nav-icon material-symbols-rounded">settings</span>
+          <span class="nav-label">Settings</span>
+        </a>
+        <span class="nav-tooltip">Settings</span>
+      </li>
+    </ul>
+  </nav>
+</aside>
+
+
+<div class="main-content">
+
+
+    <div id="topbar">
+    </div>
+    <script>
+        $(function(){
+          $("#topbar").load("nav/topbar.html");
+        });
+    </script>
+
+    <section class="homepage">
+                <div class="carousels">
+        <br>
+<div class="featured-row">
+    <div class="hometext featured-header">
+        <h1 class="featuredtitle">Featured</h1>
+        <h2 class="featuredmonth"><b class="divider">|</b>December 2025</h2>
+    </div>
+
+    <div class="search-wrapper">
+        <input
+            id="gameSearch"
+            type="text"
+            placeholder="Search games..."
+            autocomplete="off"
+        />
+        <i class='bx bx-search search-icon'></i>
+    </div>
+</div>
+
+        <div class="slideshow-container">
             
-            <div class="grid lg:grid-cols-3 gap-8">
-                <!-- Problem Categories -->
-                <div class="content-card rounded-xl p-6 reveal-up">
-                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Problem Types</h3>
-                    <div class="space-y-3">
-                        <button onclick="selectProblemType('algebra')" class="problem-type w-full text-left p-4 border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors duration-200">
-                            <div class="flex items-center">
-                                <span class="text-2xl mr-3">📐</span>
-                                <div>
-                                    <div class="font-semibold text-gray-900">Algebra</div>
-                                    <div class="text-sm text-gray-600">Equations, inequalities, functions</div>
-                                </div>
-                            </div>
-                        </button>
-                        <button onclick="selectProblemType('geometry')" class="problem-type w-full text-left p-4 border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors duration-200">
-                            <div class="flex items-center">
-                                <span class="text-2xl mr-3">📏</span>
-                                <div>
-                                    <div class="font-semibold text-gray-900">Geometry</div>
-                                    <div class="text-sm text-gray-600">Shapes, angles, measurements</div>
-                                </div>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Problem Display -->
-                <div class="content-card rounded-xl p-6 reveal-up">
-                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Current Problem</h3>
-                    <div id="problem-display" class="min-h-64 flex items-center justify-center text-center">
-                        <div class="text-gray-500">
-                            <div class="text-4xl mb-4">🎯</div>
-                            <p>Select a problem type to get started</p>
-                        </div>
-                    </div>
-                    <div id="solution-steps" class="mt-6 hidden">
-                        <h4 class="font-semibold text-gray-900 mb-3">Solution Steps:</h4>
-                        <div id="steps-container" class="space-y-2"></div>
-                    </div>
-                </div>
-                
-                <!-- Hints & Verification -->
-                <div class="content-card rounded-xl p-6 reveal-up">
-                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Help & Verify</h3>
-                    <div class="space-y-4">
-                        <button onclick="getHint()" class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 px-4 py-3 rounded font-medium transition-colors duration-200">
-                            💡 Get Hint
-                        </button>
-                        <button onclick="showSolution()" class="w-full bg-orange-50 hover:bg-orange-100 text-orange-700 px-4 py-3 rounded font-medium transition-colors duration-200">
-                            👁️ Show Solution
-                        </button>
-                    </div>
-                    <div id="feedback-area" class="mt-4 p-4 rounded hidden">
-                        <p id="feedback-text" class="text-sm"></p>
-                    </div>
+            <div class="slidewrapper" id="slidesWrapper">
+            <div class="bannerslide">
+                <img class="bannerimage" src="images/bigupdatebanner.jpg" alt="Slide 1">
+                <div class="slide-text">
+                    <img style="height: 50px; transform: translateX(-10px);" class="logothumb" src="images/nova.png">
+                    <h1 style="transform: translateY(-10px); font-size: 37px;">THE BIG UPDATE</h1>
+                    <h2 style="font-weight: 400; font-size: 27px;"></h2>
+                    <button onclick="document.location='whats-new.html'" class="banneraction"><i class='bx bxs-zap icon'> </i> See what's new</button>
                 </div>
             </div>
-        </div>
-    </section>
+            <div onclick="document.location='all-games/super-liquid-soccer.html'" class="bannerslide">
+                <video class="slide-video" poster="images/slsfallback.png" autoplay muted loop playsinline>
+                    <source src="images/slsgameplay.mp4" type="video/mp4" />
+                </video>
+                <div class="bangradient">
+                <div class="slide-text">
+                    <img class="logothumb" src="images/slslogo.png">
+                    <h1>Game of the Month</h1>
+                    <button onclick="document.location='all-games/super-liquid-soccer.html'" class="banneraction"><i class='bx bx-play icon'> </i>Play Now</button>
+                </div>
+                </div>
+            </div>
+            <div class="bannerslide">
+                <img class="bannerimage" src="images/tanukibgbanner.jpg" alt="Slide 3">
+                <div class="slide-text">
+                    <h1>The games you love,</h1>
+                    <h2 style="font-weight: 400; font-size: 27px;">all in one place.</h2>
+                    <button onclick="document.location='trending.html'" class="banneraction"><i class='bx bxs-hot icon'> </i> View our popular games</button>
+                </div>
+            </div>
 
-    <!-- Mathematical Visualizations -->
-    <section id="visualizer" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal-up">
-                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
-                    Mathematical Visualizations
-                </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    See mathematics come to life through interactive visualizations, function plotting, and dynamic patterns.
-                </p>
+            <a class="previous">&#10094;</a>
+            <a class="nextslide">&#10095;</a>
             </div>
-            
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="reveal-up">
-                    <div class="space-y-8">
-                        <div>
-                            <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Function Plotter</h3>
-                            <p class="text-gray-600 mb-4">
-                                Explore mathematical functions in real-time. Watch as equations transform into beautiful curves.
-                            </p>
-                            <div class="flex flex-wrap gap-2">
-                                <button onclick="plotFunction('sin')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">sin(x)</button>
-                                <button onclick="plotFunction('cos')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">cos(x)</button>
-                                <button onclick="plotFunction('parabola')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">x²</button>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Geometric Patterns</h3>
-                            <p class="text-gray-600 mb-4">
-                                Discover the beauty of mathematical geometry through interactive patterns and fractals.
-                            </p>
-                            <div class="flex flex-wrap gap-2">
-                                <button onclick="generatePattern('spiral')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">Golden Spiral</button>
-                                <button onclick="generatePattern('fractal')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">Fractals</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="reveal-up">
-                    <div id="functionPlotter" class="bg-white border border-gray-200 h-96 flex items-center justify-center">
-                        <div class="text-center text-gray-500">
-                            <div class="text-4xl mb-4">📊</div>
-                            <p>Select a visualization to begin</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="dots" id="dotsContainer">
+                <span class="dot" onclick="goToSlide(0)"></span>
+                <span class="dot" onclick="goToSlide(1)"></span>
+                <span class="dot" onclick="goToSlide(2)"></span>
             </div>
-        </div>
-    </section>
+            <script src="banner.js"></script>
+</div>
 
-    <!-- Learning Topics Preview -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal-up">
-                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
-                    Explore Mathematical Topics
-                </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Dive into comprehensive mathematical subjects with interactive lessons and real-world applications.
-                </p>
-            </div>
-            
-            <div class="topic-grid reveal-up">
-                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#algebra'">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">📐</div>
-                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Algebra</h3>
-                        <p class="text-gray-600 mb-4">Master equations, functions, and mathematical modeling through interactive problem solving.</p>
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                            <span>24 lessons</span>
-                            <span>Beginner</span>
-                        </div>
-                        <div class="mt-4">
-                            <div class="bg-gray-200 h-2 rounded">
-                                <div class="bg-orange-500 h-2 rounded" style="width: 75%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#geometry'">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">📏</div>
-                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Geometry</h3>
-                        <p class="text-gray-600 mb-4">Explore shapes, angles, and spatial relationships through visual demonstrations and proofs.</p>
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                            <span>18 lessons</span>
-                            <span>Intermediate</span>
-                        </div>
-                        <div class="mt-4">
-                            <div class="bg-gray-200 h-2 rounded">
-                                <div class="bg-orange-500 h-2 rounded" style="width: 50%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#calculus'">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">∫</div>
-                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Calculus</h3>
-                        <p class="text-gray-600 mb-4">Understand derivatives, integrals, and limits through dynamic visualizations and applications.</p>
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                            <span>32 lessons</span>
-                            <span>Advanced</span>
-                        </div>
-                        <div class="mt-4">
-                            <div class="bg-gray-200 h-2 rounded">
-                                <div class="bg-orange-500 h-2 rounded" style="width: 25%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#statistics'">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">📊</div>
-                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Statistics</h3>
-                        <p class="text-gray-600 mb-4">Analyze data, probability, and statistical inference with interactive charts and simulations.</p>
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                            <span>20 lessons</span>
-                            <span>Intermediate</span>
-                        </div>
-                        <div class="mt-4">
-                            <div class="bg-gray-200 h-2 rounded">
-                                <div class="bg-orange-500 h-2 rounded" style="width: 60%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#trigonometry'">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">⚡</div>
-                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Trigonometry</h3>
-                        <p class="text-gray-600 mb-4">Master trigonometric functions, identities, and applications in science and engineering.</p>
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                            <span>16 lessons</span>
-                            <span>Intermediate</span>
-                        </div>
-                        <div class="mt-4">
-                            <div class="bg-gray-200 h-2 rounded">
-                                <div class="bg-orange-500 h-2 rounded" style="width: 40%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#discrete'">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">🔢</div>
-                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Discrete Math</h3>
-                        <p class="text-gray-600 mb-4">Explore logic, set theory, and combinatorics with practical computer science applications.</p>
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                            <span>28 lessons</span>
-                            <span>Advanced</span>
-                        </div>
-                        <div class="mt-4">
-                            <div class="bg-gray-200 h-2 rounded">
-                                <div class="bg-orange-500 h-2 rounded" style="width: 15%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center mt-12 reveal-up">
-                <a href="lessons.html" class="btn-primary">
-                    Explore All Topics
-                    <span class="ml-2">→</span>
-                </a>
-            </div>
-        </div>
-    </section>
+<!-- SEARCH RESULTS -->
+<div class="hometext" id="searchTitle" style="display:none;">
+    <h1 class="category">
+        <i class='bx bx-search'></i> Search Results
+    </h1>
+</div>
 
-    <!-- Statistics Dashboard -->
-    <section class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal-up">
-                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
-                    Track Your Progress
-                </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Monitor your mathematical journey with detailed analytics and personalized learning recommendations.
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                <div class="stats-container rounded-xl p-6 reveal-up">
-                    <div class="stats-number">127</div>
-                    <div class="text-gray-600 font-medium">Problems Solved</div>
-                </div>
-                <div class="stats-container rounded-xl p-6 reveal-up">
-                    <div class="stats-number">89%</div>
-                    <div class="text-gray-600 font-medium">Accuracy Rate</div>
-                </div>
-                <div class="stats-container rounded-xl p-6 reveal-up">
-                    <div class="stats-number">42</div>
-                    <div class="text-gray-600 font-medium">Lessons Completed</div>
-                </div>
-                <div class="stats-container rounded-xl p-6 reveal-up">
-                    <div class="stats-number">15</div>
-                    <div class="text-gray-600 font-medium">Achievements</div>
-                </div>
-            </div>
-            
-            <div class="grid lg:grid-cols-2 gap-8">
-                <div class="content-card rounded-xl p-6 reveal-up">
-                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Learning Progress</h3>
-                    <div id="progressChart" class="h-64"></div>
-                </div>
-                <div class="content-card rounded-xl p-6 reveal-up">
-                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Topic Mastery</h3>
-                    <div id="masteryChart" class="h-64"></div>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="slider-container" id="searchContainer" style="display:none;">
+    <button class="nav-btn prev hidden">
+        <i class='bx bx-left-arrow-alt'></i>
+    </button>
 
-    <!-- Call to Action -->
-    <section class="py-20 bg-white">
-        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 reveal-up">
-            <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
-                Ready to Start Your Mathematical Journey?
-            </h2>
-            <p class="text-xl text-gray-600 mb-8">
-                Join thousands of students who have discovered the joy of mathematics through our interactive platform.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="practice.html" class="btn-primary">Start Practicing</a>
-                <a href="lessons.html" class="btn-secondary">Browse Lessons</a>
-            </div>
-        </div>
-    </section>
+    <div class="slider" id="searchSlider"></div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="font-display text-3xl font-bold mb-4">Nova Math</h3>
-            <p class="text-gray-300 mb-8 max-w-2xl mx-auto">
-                Empowering students to discover the beauty and power of mathematics through 
-                interactive learning, visual demonstrations, and step-by-step guidance.
-            </p>
-            <div class="border-t border-gray-700 pt-8">
-                <p class="text-gray-400 text-sm">
-                    © 2025 Nova Math. All rights reserved. Made with care for mathematics education.
-                </p>
-            </div>
-        </div>
-    </footer>
+    <button class="nav-btn next">
+        <i class='bx bx-right-arrow-alt'></i>
+    </button>
+</div>
 
-    <script src="main.js"></script>
+<!-- TRENDING -->
+<div class="hometext">
+    <h1 class="category"><i class='bx bxs-bar-chart-alt-2'></i> Trending <b class="dateseletile">this month</b></h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="trendingSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<!-- RECENTLY ADDED -->
+<div class="hometext">
+    <h1 class="category">Recently added</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="recentlyAddedSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<div class="hometext">
+    <h1 class="category">WebPorts</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="webportsSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<div class="hometext">
+    <h1 class="category">Shooter</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="shooterSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<!-- STRATEGY -->
+<div class="hometext">
+    <h1 class="category">Strategy</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="strategySlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<div class="hometext">
+    <h1 class="category">Cars</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="carSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<div class="hometext">
+    <h1 class="category">Moto X3M</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="motox3mSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<!-- SPORTS -->
+<div class="hometext">
+    <h1 class="category">Sports</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="sportsSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<div class="hometext">
+    <h1 class="category">Survival</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="survivalSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<div class="hometext">
+    <h1 class="category">Other</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="otherSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+
+<div class="hometext">
+    <h1 class="category">Minecraft</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="minecraftSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<div class="hometext">
+    <h1 class="category">Bloons TD</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="bloonsSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<div class="hometext">
+    <h1 class="category">Run</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="runSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<div class="hometext">
+    <h1 class="category">OvO</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="ovoSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<div class="hometext">
+    <h1 class="category">Vex</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="vexSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<div class="hometext">
+    <h1 class="category">DuckLife</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="ducklifeSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<div class="hometext">
+    <h1 class="category">Five Nights At Freddy's</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="fnafSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<div class="hometext">
+    <h1 class="category">Friday Night Funkin</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="fnfSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<!-- PAPA LOUIE -->
+<div class="hometext">
+    <h1 class="category">Papa's Food Games</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="papalouieSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<!-- EMULATED -->
+<div class="hometext">
+    <h1 class="category">Emulated</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="emulatedSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+
+<!-- TWO PLAYER -->
+<div class="hometext">
+    <h1 class="category">Two-Player Sports</h1>
+</div>
+<div class="slider-container">
+    <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+    <div class="slider" id="twoplayerSlider"></div>
+    <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+</div>
+<script src="carousel.js"></script>
+
+        <div class="azadbanner">
+            <h4>ADVERTISEMENT</h4>
+            <script async src="../pagead2.googlesyndication.com/pagead/js/f74a2.txt?client=ca-pub-7319072504670835"
+                crossorigin="anonymous"></script>
+            <!-- A-Z Banner -->
+            <ins class="adsbygoogle"
+                style="display:inline-block;width:900px;height:100px"
+                data-ad-client="ca-pub-7319072504670835"
+                data-ad-slot="5439057769"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        <div id="footer">
+        </div>
+        <script>
+            $(function(){
+              $("#footer").load("nav/footer.html");
+            });
+            </script>
+                      <section class="mobiledisplay">
+
+                        <div class="mobiletitletext">
+                            <h1 class="mobhometitle">Featured</h1>
+                            <h2 class="mobhomesubtitle">November 2025</h2>
+                        </div>
+
+                        <div class="gamerowlong">
+                            <img onclick="document.location='mobile/3d-free-kick.html'" class="gameimg" src="images/freekickgotm.jpg">
+                        </div>
+                        <div class="gamerow">
+                            <img onclick="document.location='mobile/drive-mad.html'" class="gameimg" src="images/drivemad.jpg">
+                            <img onclick="document.location='mobile/block-blast.html'" class="gameimg" src="images/blockblast.jpg">
+                        </div>
+                        <div class="gamerow">
+                            <img onclick="document.location='mobile/subway-surf-bali.html'" class="gameimg" src="images/subwaysurfers.jpg">
+                            <img onclick="document.location='mobile/fruit-ninja.html'" class="gameimg" src="images/fruitninja.png">
+                        </div>
+                        <div class="gamerow">
+                            <img onclick="document.location='mobile/among-us.html'" class="gameimg" src="images/amongus.jpg">
+                            <img onclick="document.location='mobile/bitlife.html'" class="gameimg" src="images/bitlife.jpg">
+                        </div>
+                        <div class="gamerow">
+                            <img onclick="document.location='mobile/a-small-world-cup.html'" class="gameimg" src="images/asmallworldcup.jpg">
+                            <img onclick="document.location='mobile/candy-crush.html'" class="gameimg" src="images/candycrush.png">
+                        </div>
+                        <div class="gamerow">
+                            <img onclick="document.location='mobile/core-ball.html'" class="gameimg" src="images/coreball.jpg">
+                            <img onclick="document.location='mobile/basket-and-ball.html'" class="gameimg" src="images/basketandball.jpg">
+                        </div>
+                        <div class="gamerow">
+                            <img onclick="document.location='mobile/eggy-car.html'" class="gameimg" src="images/eggycar.jpg">
+                            <img onclick="document.location='mobile/cut-the-rope.html'" class="gameimg" src="images/cuttherope.jpg">
+                        </div>
+                        <div class="gamerow">
+                            <img onclick="document.location='mobile/tiny-fishing.html'" class="gameimg" src="images/tinyfishing.jpg">
+                            <img onclick="document.location='mobile/getting-over-it.html'" class="gameimg" src="images/gettingoverit.jpg">
+                        </div>
+                        <div class="gamerow">
+                            <img onclick="document.location='mobile/fireboy-and-watergirl.html'" class="gameimg" src="images/fireboyandwatergirl.jpg">
+                            <img onclick="document.location='mobile/4-colours.html'" class="gameimg" src="images/fourcolours.jpg">
+                        </div>
+                    </section>
+                 
+                     
+                           
+                 
+                     </section>
+                 
+    <script>
+        document.onkeydown = function(e){
+    e = e || window.event;
+    var key = e.which || e.keyCode;
+    if(key===13){
+            if(!document.fullscreen){
+        doSearch()};}
+            }
+    </script>
+                 
+                 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"8afadb3409e2454b8ad2d6560d562b4e","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+                 <script src="index.js"></script>
+                 <script>
+    window.onbeforeunload = function () {
+        window.scrollTo(0, 0);
+    };
+
+    window.onload = function () {
+        setTimeout(() => window.scrollTo(0, 0), 0);
+    };
+</script>
+
+<script>
+let allGames = [];
+
+async function loadGames() {
+    const url = "https://cdn.jsdelivr.net/gh/Notrexed/Nova-Games@main/gamenames.json";
+    const res = await fetch(url);
+    allGames = await res.json();
+
+    const sections = {
+        trending: document.querySelector("#trendingSlider"),
+        webports: document.querySelector("#webportsSlider"),
+        shooter: document.querySelector("#shooterSlider"),
+        strategy: document.querySelector("#strategySlider"),
+        survival: document.querySelector("#survivalSlider"),
+        car: document.querySelector("#carSlider"),
+        motox3m: document.querySelector("#motox3mSlider"),
+        other: document.querySelector("#otherSlider"),
+        sports: document.querySelector("#sportsSlider"),
+        emulated: document.querySelector("#emulatedSlider"),
+        minecraft: document.querySelector("#minecraftSlider"),
+        bloons: document.querySelector("#bloonsSlider"),
+        run: document.querySelector("#runSlider"),
+        ovo: document.querySelector("#ovoSlider"),
+        vex: document.querySelector("#vexSlider"),
+        ducklife: document.querySelector("#ducklifeSlider"),
+        fnaf: document.querySelector("#fnafSlider"),
+        fnf: document.querySelector("#fnfSlider"),
+        papalouie: document.querySelector("#papalouieSlider"),
+        twoplayer: document.querySelector("#twoplayerSlider")
+    };
+
+    Object.values(sections).forEach(s => s.innerHTML = "");
+
+    allGames.forEach(game => {
+        const section = sections[game.category];
+        if (!section) return;
+        section.appendChild(createGameCard(game));
+    });
+}
+
+function createGameCard(game) {
+    const card = document.createElement("div");
+    card.className = "slide";
+    card.onclick = () => location.href = game.url;
+
+    let tagHTML = "";
+    if (game.tag === "hot") tagHTML = `<a class="hotrank"><i class='bx bxs-hot'></i>HOT</a>`;
+    if (game.tag === "new") tagHTML = `<a class="newrank"><i class='bx bxs-zap'></i>NEW</a>`;
+
+    card.innerHTML = `
+        ${tagHTML}
+        <img src="${game.img}">
+    `;
+
+    return card;
+}
+
+loadGames();
+</script>
+
+<script>
+const searchInput = document.getElementById("gameSearch");
+const searchSlider = document.getElementById("searchSlider");
+const searchContainer = document.getElementById("searchContainer");
+const searchTitle = document.getElementById("searchTitle");
+
+searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase().trim();
+
+    // Clear previous search results
+    searchSlider.innerHTML = "";
+
+    // If the input is empty
+    if (query === "") {
+        searchContainer.style.display = "none";  // hide search results
+        searchTitle.style.display = "none";
+        return; // leave all normal sliders visible
+    }
+
+    // Otherwise, search for matches
+    const startsWithMatches = allGames.filter(game => game.title.toLowerCase().startsWith(query));
+    const containsMatches = allGames.filter(game =>
+        !game.title.toLowerCase().startsWith(query) &&
+        game.title.toLowerCase().includes(query)
+    );
+    const matches = [...startsWithMatches, ...containsMatches];
+
+    if (matches.length === 0) {
+        searchContainer.style.display = "none";
+        searchTitle.style.display = "none";
+        return;
+    }
+
+    // Show the search slider and title
+    searchContainer.style.display = "flex";
+    searchTitle.style.display = "block";
+
+    // Populate search results
+    matches.forEach((game, i) => {
+        const card = createGameCard(game);
+        card.style.animationDelay = `${i * 40}ms`;
+        searchSlider.appendChild(card);
+    });
+});
+
+</script>
+
 </body>
 </html>

@@ -1,0 +1,61 @@
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Satoshi', sans-serif;
+}
+
+body{
+    background-color: #000;
+}
+.content{
+    margin-top: 55px;
+}
+.topbar{
+    background-color: #0e0e0e;
+    height: 55px;
+    transform: translateY(-56px);
+    position: fixed;
+    width: 100%;
+}
+.gameplay{
+    position: fixed;
+    width: 100%;
+}
+.gameplay .backbutton{
+    position: fixed;
+    z-index: 99;
+    background-color: #000;
+    margin-top: 15px;
+}
+.gameplay .backicon{
+    height: 46px;
+    z-index: 9;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    position: absolute;
+    outline: solid 1px #ffffff2c;
+}
+.gameplay .game{
+    width: 100%;
+    z-index: 1;
+    height: 100vh;
+}
+.screensizemessage{
+    display: none;
+}
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    color: #3e3e3e;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(112, 112, 112, 0.441); 
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #7e7e7e; 
+  }
