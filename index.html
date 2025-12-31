@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Math | Learn Math For Free</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;500;600&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-charcoal: #2c2c2c;
+            --secondary-terracotta: #c65d07;
+            --accent-sage: #7a8471;
+            --neutral-cream: #f7f3e9;
+            --text-dark: #1a1a1a;
+        }
+        
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: var(--neutral-cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .font-display { font-family: 'Crimson Text', serif; }
+        .font-handwritten { font-family: 'Caveat', cursive; }
+        
+        .hero-bg {
+            background: linear-gradient(rgba(44, 44, 44, 0.85), rgba(44, 44, 44, 0.85)), 
+                        url('resources/hero-math-formulas.png');
+            background-size: cover;
+            background-position: center;
+            min-height: 70vh;
+        }
+        
+        .content-card {
+            background: white;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .content-card:hover {
+            border-color: var(--secondary-terracotta);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: var(--secondary-terracotta);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .btn-primary:hover {
+            background: #a54a05;
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--secondary-terracotta);
+            border: 2px solid var(--secondary-terracotta);
+            padding: 10px 22px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--secondary-terracotta);
+            color: white;
+        }
+        
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-sage), transparent);
+            margin: 4rem 0;
+        }
+        
+        .handwritten-note {
+            font-family: 'Caveat', cursive;
+            color: var(--secondary-terracotta);
+            font-size: 1.2rem;
+            transform: rotate(-2deg);
+            display: inline-block;
+        }
+        
+        .math-formula {
+            font-family: 'Crimson Text', serif;
+            font-style: italic;
+            color: var(--accent-sage);
+            background: rgba(122, 132, 113, 0.1);
+            padding: 8px 16px;
+            border-left: 3px solid var(--accent-sage);
+            margin: 16px 0;
+        }
+        
+        .nav-bar {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        
+        .nav-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--secondary-terracotta);
+            border-bottom-color: var(--secondary-terracotta);
+        }
+        
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .reveal-up.revealed {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stats-container {
+            background: white;
+            border: 1px solid #e0e0e0;
+            text-align: center;
+        }
+        
+        .stats-number {
+            font-family: 'Crimson Text', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary-terracotta);
+        }
+        
+        .footer {
+            background: var(--primary-charcoal);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-bg {
+                min-height: 60vh;
+            }
+            
+            .topic-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="font-display text-2xl font-bold text-gray-900">Nova Math</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="nav-link active">Home</a>
+                        <a href="lessons.html" class="nav-link">Lessons</a>
+                        <a href="practice.html" class="nav-link">Practice</a>
+                        <a href="about.html" class="nav-link">About</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg flex items-center justify-center">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 text-white">
+            <h1 class="font-display text-5xl md:text-6xl font-bold mb-6 reveal-up">
+                Where Mathematics
+                <span class="text-orange-300">Comes Alive</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto reveal-up">
+                Discover the beauty of mathematics through interactive visualizations, step-by-step problem solving, 
+                and engaging educational experiences that transform abstract concepts into tangible understanding.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center reveal-up">
+                <a href="#problem-solver" class="btn-primary">Start Solving</a>
+                <a href="math/index.html" class="btn-secondary">Explore Visualizations</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Problem Solver -->
+    <section id="problem-solver" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-up">
+                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
+                    Interactive Problem Solver
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Experience mathematics through hands-on problem solving with step-by-step guidance, 
+                    real-time feedback, and multiple solution approaches.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Problem Categories -->
+                <div class="content-card rounded-xl p-6 reveal-up">
+                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Problem Types</h3>
+                    <div class="space-y-3">
+                        <button onclick="selectProblemType('algebra')" class="problem-type w-full text-left p-4 border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors duration-200">
+                            <div class="flex items-center">
+                                <span class="text-2xl mr-3">📐</span>
+                                <div>
+                                    <div class="font-semibold text-gray-900">Algebra</div>
+                                    <div class="text-sm text-gray-600">Equations, inequalities, functions</div>
+                                </div>
+                            </div>
+                        </button>
+                        <button onclick="selectProblemType('geometry')" class="problem-type w-full text-left p-4 border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors duration-200">
+                            <div class="flex items-center">
+                                <span class="text-2xl mr-3">📏</span>
+                                <div>
+                                    <div class="font-semibold text-gray-900">Geometry</div>
+                                    <div class="text-sm text-gray-600">Shapes, angles, measurements</div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Problem Display -->
+                <div class="content-card rounded-xl p-6 reveal-up">
+                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Current Problem</h3>
+                    <div id="problem-display" class="min-h-64 flex items-center justify-center text-center">
+                        <div class="text-gray-500">
+                            <div class="text-4xl mb-4">🎯</div>
+                            <p>Select a problem type to get started</p>
+                        </div>
+                    </div>
+                    <div id="solution-steps" class="mt-6 hidden">
+                        <h4 class="font-semibold text-gray-900 mb-3">Solution Steps:</h4>
+                        <div id="steps-container" class="space-y-2"></div>
+                    </div>
+                </div>
+                
+                <!-- Hints & Verification -->
+                <div class="content-card rounded-xl p-6 reveal-up">
+                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Help & Verify</h3>
+                    <div class="space-y-4">
+                        <button onclick="getHint()" class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 px-4 py-3 rounded font-medium transition-colors duration-200">
+                            💡 Get Hint
+                        </button>
+                        <button onclick="showSolution()" class="w-full bg-orange-50 hover:bg-orange-100 text-orange-700 px-4 py-3 rounded font-medium transition-colors duration-200">
+                            👁️ Show Solution
+                        </button>
+                    </div>
+                    <div id="feedback-area" class="mt-4 p-4 rounded hidden">
+                        <p id="feedback-text" class="text-sm"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mathematical Visualizations -->
+    <section id="visualizer" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-up">
+                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
+                    Mathematical Visualizations
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    See mathematics come to life through interactive visualizations, function plotting, and dynamic patterns.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="reveal-up">
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Function Plotter</h3>
+                            <p class="text-gray-600 mb-4">
+                                Explore mathematical functions in real-time. Watch as equations transform into beautiful curves.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="plotFunction('sin')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">sin(x)</button>
+                                <button onclick="plotFunction('cos')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">cos(x)</button>
+                                <button onclick="plotFunction('parabola')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">x²</button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Geometric Patterns</h3>
+                            <p class="text-gray-600 mb-4">
+                                Discover the beauty of mathematical geometry through interactive patterns and fractals.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="generatePattern('spiral')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">Golden Spiral</button>
+                                <button onclick="generatePattern('fractal')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">Fractals</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reveal-up">
+                    <div id="functionPlotter" class="bg-white border border-gray-200 h-96 flex items-center justify-center">
+                        <div class="text-center text-gray-500">
+                            <div class="text-4xl mb-4">📊</div>
+                            <p>Select a visualization to begin</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Topics Preview -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-up">
+                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
+                    Explore Mathematical Topics
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Dive into comprehensive mathematical subjects with interactive lessons and real-world applications.
+                </p>
+            </div>
+            
+            <div class="topic-grid reveal-up">
+                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#algebra'">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">📐</div>
+                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Algebra</h3>
+                        <p class="text-gray-600 mb-4">Master equations, functions, and mathematical modeling through interactive problem solving.</p>
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span>24 lessons</span>
+                            <span>Beginner</span>
+                        </div>
+                        <div class="mt-4">
+                            <div class="bg-gray-200 h-2 rounded">
+                                <div class="bg-orange-500 h-2 rounded" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#geometry'">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">📏</div>
+                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Geometry</h3>
+                        <p class="text-gray-600 mb-4">Explore shapes, angles, and spatial relationships through visual demonstrations and proofs.</p>
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span>18 lessons</span>
+                            <span>Intermediate</span>
+                        </div>
+                        <div class="mt-4">
+                            <div class="bg-gray-200 h-2 rounded">
+                                <div class="bg-orange-500 h-2 rounded" style="width: 50%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#calculus'">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">∫</div>
+                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Calculus</h3>
+                        <p class="text-gray-600 mb-4">Understand derivatives, integrals, and limits through dynamic visualizations and applications.</p>
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span>32 lessons</span>
+                            <span>Advanced</span>
+                        </div>
+                        <div class="mt-4">
+                            <div class="bg-gray-200 h-2 rounded">
+                                <div class="bg-orange-500 h-2 rounded" style="width: 25%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#statistics'">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">📊</div>
+                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Statistics</h3>
+                        <p class="text-gray-600 mb-4">Analyze data, probability, and statistical inference with interactive charts and simulations.</p>
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span>20 lessons</span>
+                            <span>Intermediate</span>
+                        </div>
+                        <div class="mt-4">
+                            <div class="bg-gray-200 h-2 rounded">
+                                <div class="bg-orange-500 h-2 rounded" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#trigonometry'">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">⚡</div>
+                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Trigonometry</h3>
+                        <p class="text-gray-600 mb-4">Master trigonometric functions, identities, and applications in science and engineering.</p>
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span>16 lessons</span>
+                            <span>Intermediate</span>
+                        </div>
+                        <div class="mt-4">
+                            <div class="bg-gray-200 h-2 rounded">
+                                <div class="bg-orange-500 h-2 rounded" style="width: 40%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#discrete'">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">🔢</div>
+                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Discrete Math</h3>
+                        <p class="text-gray-600 mb-4">Explore logic, set theory, and combinatorics with practical computer science applications.</p>
+                        <div class="flex justify-between items-center text-sm text-gray-500">
+                            <span>28 lessons</span>
+                            <span>Advanced</span>
+                        </div>
+                        <div class="mt-4">
+                            <div class="bg-gray-200 h-2 rounded">
+                                <div class="bg-orange-500 h-2 rounded" style="width: 15%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 reveal-up">
+                <a href="lessons.html" class="btn-primary">
+                    Explore All Topics
+                    <span class="ml-2">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Dashboard -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal-up">
+                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
+                    Track Your Progress
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Monitor your mathematical journey with detailed analytics and personalized learning recommendations.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div class="stats-container rounded-xl p-6 reveal-up">
+                    <div class="stats-number">127</div>
+                    <div class="text-gray-600 font-medium">Problems Solved</div>
+                </div>
+                <div class="stats-container rounded-xl p-6 reveal-up">
+                    <div class="stats-number">89%</div>
+                    <div class="text-gray-600 font-medium">Accuracy Rate</div>
+                </div>
+                <div class="stats-container rounded-xl p-6 reveal-up">
+                    <div class="stats-number">42</div>
+                    <div class="text-gray-600 font-medium">Lessons Completed</div>
+                </div>
+                <div class="stats-container rounded-xl p-6 reveal-up">
+                    <div class="stats-number">15</div>
+                    <div class="text-gray-600 font-medium">Achievements</div>
+                </div>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="content-card rounded-xl p-6 reveal-up">
+                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Learning Progress</h3>
+                    <div id="progressChart" class="h-64"></div>
+                </div>
+                <div class="content-card rounded-xl p-6 reveal-up">
+                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Topic Mastery</h3>
+                    <div id="masteryChart" class="h-64"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 reveal-up">
+            <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
+                Ready to Start Your Mathematical Journey?
+            </h2>
+            <p class="text-xl text-gray-600 mb-8">
+                Join thousands of students who have discovered the joy of mathematics through our interactive platform.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="practice.html" class="btn-primary">Start Practicing</a>
+                <a href="lessons.html" class="btn-secondary">Browse Lessons</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="font-display text-3xl font-bold mb-4">Nova Math</h3>
+            <p class="text-gray-300 mb-8 max-w-2xl mx-auto">
+                Empowering students to discover the beauty and power of mathematics through 
+                interactive learning, visual demonstrations, and step-by-step guidance.
+            </p>
+            <div class="border-t border-gray-700 pt-8">
+                <p class="text-gray-400 text-sm">
+                    © 2025 Nova Math. All rights reserved. Made with care for mathematics education.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
