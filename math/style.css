@@ -2148,3 +2148,35 @@ hr.rounded {
         width: 100%;
     }
 }
+
+/* Right-side vertical ad box */
+.gameadbox-vertical {
+    position: fixed;
+    top: 120px;              /* space from top */
+    right: 280px;             /* stick to right side */
+    width: 160px;            /* typical vertical ad width */
+    height: 600px;           /* typical vertical ad height */
+    background: #111;
+    border-radius: 8px;
+    padding: 8px;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Right-side vertical ad box */
+.gameadbox-vertical2 {
+    position: fixed;
+    top: 120px;              /* space from top */
+    right: 100px;             /* stick to right side */
+    width: 160px;            /* typical vertical ad width */
+    height: 600px;           /* typical vertical ad height */
+    background: #111;
+    border-radius: 8px;
+    padding: 8px;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
