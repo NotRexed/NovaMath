@@ -1,564 +1,963 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-JJDBE9FX8G"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nova Math | Learn Math For Free</title>
+<meta name="description" content="Nova">
+<link rel="icon" type="image/x-icon" href="favicon-192.ico">
 
-  gtag('config', 'G-JJDBE9FX8G');
+<!-- Styles -->
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="overlay-style.css">
+<link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-95MX2CCB14"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-95MX2CCB14');
 </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nova Math | Learn Math For Free</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;500;600&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --primary-charcoal: #2c2c2c;
-            --secondary-terracotta: #c65d07;
-            --accent-sage: #7a8471;
-            --neutral-cream: #f7f3e9;
-            --text-dark: #1a1a1a;
+
+<!-- Google Ads / Funding Choices -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/f74a2.txt?client=ca-pub-7319072504670835" crossorigin="anonymous"></script>
+<script async src="https://fundingchoicesmessages.google.com/i/pub-7319072504670835?ers=1" nonce="cl51R4m9X9S0GL_CMBDHSQ"></script>
+<script nonce="cl51R4m9X9S0GL_CMBDHSQ">
+(function() {
+    function signalGooglefcPresent() {
+        if (!window.frames['googlefcPresent']) {
+            if (document.body) {
+                const iframe = document.createElement('iframe');
+                iframe.style = 'width:0;height:0;border:none;z-index:-1000;position:absolute;left:-1000px;top:-1000px;';
+                iframe.name = 'googlefcPresent';
+                document.body.appendChild(iframe);
+            } else { setTimeout(signalGooglefcPresent, 0); }
         }
-        
-        body {
-            font-family: 'Source Sans Pro', sans-serif;
-            background: var(--neutral-cream);
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-        
-        .font-display { font-family: 'Crimson Text', serif; }
-        .font-handwritten { font-family: 'Caveat', cursive; }
-        
-        .hero-bg {
-            background: linear-gradient(rgba(44, 44, 44, 0.85), rgba(44, 44, 44, 0.85)), 
-                        url('resources/hero-math-formulas.png');
-            background-size: cover;
-            background-position: center;
-            min-height: 70vh;
-        }
-        
-        .content-card {
-            background: white;
-            border: 2px solid transparent;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-        
-        .content-card:hover {
-            border-color: var(--secondary-terracotta);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-            transform: translateY(-2px);
-        }
-        
-        .btn-primary {
-            background: var(--secondary-terracotta);
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-        
-        .btn-primary:hover {
-            background: #a54a05;
-            transform: translateY(-1px);
-        }
-        
-        .btn-secondary {
-            background: white;
-            color: var(--secondary-terracotta);
-            border: 2px solid var(--secondary-terracotta);
-            padding: 10px 22px;
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.2s ease;
-        }
-        
-        .btn-secondary:hover {
-            background: var(--secondary-terracotta);
-            color: white;
-        }
-        
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-sage), transparent);
-            margin: 4rem 0;
-        }
-        
-        .handwritten-note {
-            font-family: 'Caveat', cursive;
-            color: var(--secondary-terracotta);
-            font-size: 1.2rem;
-            transform: rotate(-2deg);
-            display: inline-block;
-        }
-        
-        .math-formula {
-            font-family: 'Crimson Text', serif;
-            font-style: italic;
-            color: var(--accent-sage);
-            background: rgba(122, 132, 113, 0.1);
-            padding: 8px 16px;
-            border-left: 3px solid var(--accent-sage);
-            margin: 16px 0;
-        }
-        
-        .nav-bar {
-            background: white;
-            border-bottom: 1px solid #e0e0e0;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-        
-        .nav-link {
-            color: var(--text-dark);
-            text-decoration: none;
-            padding: 8px 16px;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s ease;
-        }
-        
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--secondary-terracotta);
-            border-bottom-color: var(--secondary-terracotta);
-        }
-        
-        .reveal-up {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        
-        .reveal-up.revealed {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        
-        .topic-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .stats-container {
-            background: white;
-            border: 1px solid #e0e0e0;
-            text-align: center;
-        }
-        
-        .stats-number {
-            font-family: 'Crimson Text', serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--secondary-terracotta);
-        }
-        
-        .footer {
-            background: var(--primary-charcoal);
-            color: white;
-            text-align: center;
-            padding: 3rem 0;
-        }
-        
-        @media (max-width: 768px) {
-            .hero-bg {
-                min-height: 60vh;
-            }
-            
-            .topic-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    }
+    signalGooglefcPresent();
+})();
+</script>
+
+<!-- Particles.js -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- Custom JS -->
+<script src="search.js"></script>
+<script src="banner.js"></script>
+<script src="carousel.js"></script>
+<script src="index.js"></script>
+
+<style>
+/* Particles background */
+#particles-js {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+#particles-js::before {
+  content: "";
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  background: #000;
+  z-index: -1;
+}
+#particles-js canvas {
+  background: transparent !important;
+}
+
+/* Settings Overlay */
+.settings-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.settings-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* Popup Container */
+.settings-popup {
+    background: rgba(20, 20, 20, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    width: 320px;
+    color: white;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    animation: scaleIn 0.2s ease forwards;
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Header with close button */
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.settings-header button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+}
+
+/* Settings Buttons */
+.settings-body button {
+    display: block;
+    width: 100%;
+    margin: 0.5rem 0;
+    padding: 0.7rem;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    text-align: left;
+}
+
+.settings-body button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.settings-body button i {
+    margin-right: 0.5rem;
+}
+</style>
+
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="nav-bar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <h1 class="font-display text-2xl font-bold text-gray-900">Nova Math</h1>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#home" class="nav-link active">Home</a>
-                        <a href="lessons.html" class="nav-link">Lessons</a>
-                        <a href="practice.html" class="nav-link">Practice</a>
-                        <a href="about.html" class="nav-link">About</a>
-                    </div>
-                </div>
-                <div class="md:hidden">
-                    <button class="text-gray-700 hover:text-gray-900 focus:outline-none">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
+
+<!-- Particles Background -->
+<div id="particles-js">
+  <canvas class="particles-js-canvas-el"></canvas>
+</div>
+
+<!-- Sidebar -->
+<aside class="sidebar collapsed">
+    <header class="sidebar-header">
+        <a class="header-logo">
+            <img class="logo-collapsed" src="nova.png" alt="Logo" />
+            <img class="logo-expanded" src="nova-big.png" alt="Logo" />
+        </a>
+    </header>
+    <nav class="sidebar-nav">
+        <ul class="nav-list primary-nav">
+            <hr><br>
+            <li class="nav-item">
+                <a href="index.html" class="nav-link">
+                    <span class="nav-icon material-symbols-rounded">sports_esports</span>
+                    <span class="nav-label">Games</span>
+                </a>
+                <span class="nav-tooltip">Games</span>
+            </li>
+            <li class="nav-item">
+                <a href="movies.html" class="nav-link">
+                    <span class="nav-icon material-symbols-rounded">movie</span>
+                    <span class="nav-label">Movies</span>
+                </a>
+                <span class="nav-tooltip">Movies</span>
+            </li>
+            <li class="nav-item">
+                <a href="apps.html" class="nav-link">
+                    <span class="nav-icon material-symbols-rounded">apps</span>
+                    <span class="nav-label">Apps</span>
+                </a>
+                <span class="nav-tooltip">Apps</span>
+            </li>
+            <hr>
+        </ul>
+        <ul class="nav-list secondary-nav">
+            <li class="nav-item">
+                <a href="#" id="settingsNavLink" class="nav-link">
+                    <span class="nav-icon material-symbols-rounded">settings</span>
+                    <span class="nav-label">Settings</span>
+                </a>
+                <span class="nav-tooltip">Settings</span>
+            </li>
+        </ul>
     </nav>
+</aside>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero-bg flex items-center justify-center">
-        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 text-white">
-            <h1 class="font-display text-5xl md:text-6xl font-bold mb-6 reveal-up">
-                Where Mathematics
-                <span class="text-orange-300">Comes Alive</span>
-            </h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto reveal-up">
-                Discover the beauty of mathematics through interactive visualizations, step-by-step problem solving, 
-                and engaging educational experiences that transform abstract concepts into tangible understanding.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center reveal-up">
-                <a href="#problem-solver" class="btn-primary">Start Solving</a>
-                <a href="math/index.html" class="btn-secondary">Explore Visualizations</a>
-            </div>
-        </div>
-    </section>
+<!-- Settings Overlay -->
+<div id="settingsOverlay" class="settings-overlay" aria-hidden="true">
+  <div class="settings-popup">
+    <div class="settings-header">
+      <h3>Settings</h3>
+      <button id="closeSettings" aria-label="Close settings">×</button>
+    </div>
+    <div class="settings-body">
+      <button class="settings-item" id="toggle-particles">
+      <i class="fa-solid fa-toggle-on" style="color: #63E6BE;"></i> Toggle Particles</button>
+      <button class="settings-item" id="switch-background">
+      <i class="fa-solid fa-shuffle" style="color: #4FC3F7;"></i> Switch Background</button>
+      <button class="settings-item" id="tab-cloak">
+      <i class="fa-solid fa-copy"></i> Tab Cloak</button>
+      <button class="settings-item" id="change-particles-color">
+      <i class="fa-solid fa-eye-dropper" style="color: #74C0FC;"></i> Change Particle Color</button>
+      <button class="settings-item" id="toggle-theme">
+      <i class="fa-solid fa-lightbulb" style="color: #FFD43B;"></i> Toggle Color Mode</button>
+    </div>
+  </div>
+</div>
 
-    <!-- Interactive Problem Solver -->
-    <section id="problem-solver" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal-up">
-                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
-                    Interactive Problem Solver
-                </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Experience mathematics through hands-on problem solving with step-by-step guidance, 
-                    real-time feedback, and multiple solution approaches.
-                </p>
-            </div>
-            
-            <div class="grid lg:grid-cols-3 gap-8">
-                <!-- Problem Categories -->
-                <div class="content-card rounded-xl p-6 reveal-up">
-                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Problem Types</h3>
-                    <div class="space-y-3">
-                        <button onclick="selectProblemType('algebra')" class="problem-type w-full text-left p-4 border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors duration-200">
-                            <div class="flex items-center">
-                                <span class="text-2xl mr-3">📐</span>
-                                <div>
-                                    <div class="font-semibold text-gray-900">Algebra</div>
-                                    <div class="text-sm text-gray-600">Equations, inequalities, functions</div>
-                                </div>
-                            </div>
-                        </button>
-                        <button onclick="selectProblemType('geometry')" class="problem-type w-full text-left p-4 border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors duration-200">
-                            <div class="flex items-center">
-                                <span class="text-2xl mr-3">📏</span>
-                                <div>
-                                    <div class="font-semibold text-gray-900">Geometry</div>
-                                    <div class="text-sm text-gray-600">Shapes, angles, measurements</div>
-                                </div>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Problem Display -->
-                <div class="content-card rounded-xl p-6 reveal-up">
-                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Current Problem</h3>
-                    <div id="problem-display" class="min-h-64 flex items-center justify-center text-center">
-                        <div class="text-gray-500">
-                            <div class="text-4xl mb-4">🎯</div>
-                            <p>Select a problem type to get started</p>
-                        </div>
-                    </div>
-                    <div id="solution-steps" class="mt-6 hidden">
-                        <h4 class="font-semibold text-gray-900 mb-3">Solution Steps:</h4>
-                        <div id="steps-container" class="space-y-2"></div>
-                    </div>
-                </div>
-                
-                <!-- Hints & Verification -->
-                <div class="content-card rounded-xl p-6 reveal-up">
-                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Help & Verify</h3>
-                    <div class="space-y-4">
-                        <button onclick="getHint()" class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 px-4 py-3 rounded font-medium transition-colors duration-200">
-                            💡 Get Hint
-                        </button>
-                        <button onclick="showSolution()" class="w-full bg-orange-50 hover:bg-orange-100 text-orange-700 px-4 py-3 rounded font-medium transition-colors duration-200">
-                            👁️ Show Solution
-                        </button>
-                    </div>
-                    <div id="feedback-area" class="mt-4 p-4 rounded hidden">
-                        <p id="feedback-text" class="text-sm"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- Main Content -->
+<div class="main-content">
+    <div id="topbar"></div>
+    <script>
+        $(function(){ $("#topbar").load("nav/topbar.html"); });
+    </script>
 
-    <!-- Mathematical Visualizations -->
-    <section id="visualizer" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal-up">
-                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
-                    Mathematical Visualizations
-                </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    See mathematics come to life through interactive visualizations, function plotting, and dynamic patterns.
-                </p>
-            </div>
-            
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="reveal-up">
-                    <div class="space-y-8">
-                        <div>
-                            <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Function Plotter</h3>
-                            <p class="text-gray-600 mb-4">
-                                Explore mathematical functions in real-time. Watch as equations transform into beautiful curves.
-                            </p>
-                            <div class="flex flex-wrap gap-2">
-                                <button onclick="plotFunction('sin')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">sin(x)</button>
-                                <button onclick="plotFunction('cos')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">cos(x)</button>
-                                <button onclick="plotFunction('parabola')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">x²</button>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Geometric Patterns</h3>
-                            <p class="text-gray-600 mb-4">
-                                Discover the beauty of mathematical geometry through interactive patterns and fractals.
-                            </p>
-                            <div class="flex flex-wrap gap-2">
-                                <button onclick="generatePattern('spiral')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">Golden Spiral</button>
-                                <button onclick="generatePattern('fractal')" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">Fractals</button>
-                            </div>
-                        </div>
-                    </div>
+    <!-- Featured Section -->
+    <section class="homepage">
+        <div class="carousels">
+            <div class="featured-row">
+                <div class="hometext featured-header">
+                    <h1 class="featuredtitle">Featured</h1>
+                    <h2 class="featuredmonth"><b class="divider">|</b>February 2026</h2>
                 </div>
-                
-                <div class="reveal-up">
-                    <div id="functionPlotter" class="bg-white border border-gray-200 h-96 flex items-center justify-center">
-                        <div class="text-center text-gray-500">
-                            <div class="text-4xl mb-4">📊</div>
-                            <p>Select a visualization to begin</p>
-                        </div>
-                    </div>
+                <div class="search-wrapper">
+                    <input id="gameSearch" type="text" placeholder="Search games..." autocomplete="off"/>
+                    <i class='bx bx-search search-icon'></i>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Learning Topics Preview -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal-up">
-                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
-                    Explore Mathematical Topics
-                </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Dive into comprehensive mathematical subjects with interactive lessons and real-world applications.
-                </p>
-            </div>
-            
-            <div class="topic-grid reveal-up">
-                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#algebra'">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">📐</div>
-                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Algebra</h3>
-                        <p class="text-gray-600 mb-4">Master equations, functions, and mathematical modeling through interactive problem solving.</p>
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                            <span>24 lessons</span>
-                            <span>Beginner</span>
-                        </div>
-                        <div class="mt-4">
-                            <div class="bg-gray-200 h-2 rounded">
-                                <div class="bg-orange-500 h-2 rounded" style="width: 75%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#geometry'">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">📏</div>
-                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Geometry</h3>
-                        <p class="text-gray-600 mb-4">Explore shapes, angles, and spatial relationships through visual demonstrations and proofs.</p>
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                            <span>18 lessons</span>
-                            <span>Intermediate</span>
-                        </div>
-                        <div class="mt-4">
-                            <div class="bg-gray-200 h-2 rounded">
-                                <div class="bg-orange-500 h-2 rounded" style="width: 50%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#calculus'">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">∫</div>
-                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Calculus</h3>
-                        <p class="text-gray-600 mb-4">Understand derivatives, integrals, and limits through dynamic visualizations and applications.</p>
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                            <span>32 lessons</span>
-                            <span>Advanced</span>
-                        </div>
-                        <div class="mt-4">
-                            <div class="bg-gray-200 h-2 rounded">
-                                <div class="bg-orange-500 h-2 rounded" style="width: 25%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#statistics'">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">📊</div>
-                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Statistics</h3>
-                        <p class="text-gray-600 mb-4">Analyze data, probability, and statistical inference with interactive charts and simulations.</p>
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                            <span>20 lessons</span>
-                            <span>Intermediate</span>
-                        </div>
-                        <div class="mt-4">
-                            <div class="bg-gray-200 h-2 rounded">
-                                <div class="bg-orange-500 h-2 rounded" style="width: 60%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#trigonometry'">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">⚡</div>
-                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Trigonometry</h3>
-                        <p class="text-gray-600 mb-4">Master trigonometric functions, identities, and applications in science and engineering.</p>
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                            <span>16 lessons</span>
-                            <span>Intermediate</span>
-                        </div>
-                        <div class="mt-4">
-                            <div class="bg-gray-200 h-2 rounded">
-                                <div class="bg-orange-500 h-2 rounded" style="width: 40%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="content-card rounded-xl p-6 group cursor-pointer" onclick="window.location.href='lessons.html#discrete'">
-                    <div class="text-center">
-                        <div class="text-5xl mb-4">🔢</div>
-                        <h3 class="font-display text-2xl font-semibold mb-3 text-gray-900">Discrete Math</h3>
-                        <p class="text-gray-600 mb-4">Explore logic, set theory, and combinatorics with practical computer science applications.</p>
-                        <div class="flex justify-between items-center text-sm text-gray-500">
-                            <span>28 lessons</span>
-                            <span>Advanced</span>
-                        </div>
-                        <div class="mt-4">
-                            <div class="bg-gray-200 h-2 rounded">
-                                <div class="bg-orange-500 h-2 rounded" style="width: 15%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center mt-12 reveal-up">
-                <a href="lessons.html" class="btn-primary">
-                    Explore All Topics
-                    <span class="ml-2">→</span>
+            <div class="slideshow-container">
+    <div class="slidewrapper" id="slidesWrapper">
+        <div class="bannerslide">
+            <img class="bannerimage" src="bigupdatebanner.jpg" alt="Slide 1">
+            <div class="slide-text">
+                <img style="height:50px;transform:translateX(-10px);" class="logothumb" src="nova-big.png">
+                <h1 style="transform:translateY(-10px);font-size:37px;">THE BIG UPDATE</h1>
+                <a href="https://discord.gg/5DqrXeydrz" target="_blank">
+                    <button class="banneraction">
+                        <i class="fa-brands fa-discord"></i> Join The Discord
+                    </button>
                 </a>
             </div>
         </div>
-    </section>
+        <div class="bannerslide">
+            <video class="slide-video" poster="images/slsfallback.png" autoplay muted loop playsinline>
+                <source src="https://cdn.jsdelivr.net/gh/Notrexed/assets@latest/gameofthemonth.mp4" type="video/mp4" />
+            </video>
+            <div class="bangradient">
+                <div class="slide-text">
+                    <img class="logothumb" src="gameofthemonth.jpg">
+                    <h1>Game of the Month</h1>
+                    <button class="banneraction" onclick="openGameById(542)">
+  <i class='bx bx-play icon'></i>Play Now
+</button>
 
-    <!-- Statistics Dashboard -->
-    <section class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 reveal-up">
-                <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
-                    Track Your Progress
-                </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Monitor your mathematical journey with detailed analytics and personalized learning recommendations.
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                <div class="stats-container rounded-xl p-6 reveal-up">
-                    <div class="stats-number">127</div>
-                    <div class="text-gray-600 font-medium">Problems Solved</div>
-                </div>
-                <div class="stats-container rounded-xl p-6 reveal-up">
-                    <div class="stats-number">89%</div>
-                    <div class="text-gray-600 font-medium">Accuracy Rate</div>
-                </div>
-                <div class="stats-container rounded-xl p-6 reveal-up">
-                    <div class="stats-number">42</div>
-                    <div class="text-gray-600 font-medium">Lessons Completed</div>
-                </div>
-                <div class="stats-container rounded-xl p-6 reveal-up">
-                    <div class="stats-number">15</div>
-                    <div class="text-gray-600 font-medium">Achievements</div>
-                </div>
-            </div>
-            
-            <div class="grid lg:grid-cols-2 gap-8">
-                <div class="content-card rounded-xl p-6 reveal-up">
-                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Learning Progress</h3>
-                    <div id="progressChart" class="h-64"></div>
-                </div>
-                <div class="content-card rounded-xl p-6 reveal-up">
-                    <h3 class="font-display text-2xl font-semibold mb-4 text-gray-900">Topic Mastery</h3>
-                    <div id="masteryChart" class="h-64"></div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Call to Action -->
-    <section class="py-20 bg-white">
-        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 reveal-up">
-            <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">
-                Ready to Start Your Mathematical Journey?
-            </h2>
-            <p class="text-xl text-gray-600 mb-8">
-                Join thousands of students who have discovered the joy of mathematics through our interactive platform.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="practice.html" class="btn-primary">Start Practicing</a>
-                <a href="lessons.html" class="btn-secondary">Browse Lessons</a>
-            </div>
+    <!-- Fixed navigation buttons -->
+    <a class="previous">&#10094;</a>
+    <a class="nextslide">&#10095;</a>
+
+    <!-- Dots -->
+    <div class="dots" id="dotsContainer">
+        <span class="dot" onclick="goToSlide(0)"></span>
+        <span class="dot" onclick="goToSlide(1)"></span>
+    </div>
+</div>
+
+
+<!-- SEARCH RESULTS -->
+<div id="searchWrapper" style="display:none; flex-direction: column; align-items: center; width: 100%;">
+    <div class="hometext" id="searchTitle">
+        <h1 class="category"><i class='bx bx-search'></i> Search Results</h1>
+    </div>
+    <div class="slider-container" id="searchContainer">
+        <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+        <div class="slider" id="searchSlider"></div>
+        <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+    </div>
+</div>
+
+
+        <!-- Featured Games Grid -->
+<div id="featuredGames" class="game-grid">
+  <h1 class="category">Featured</h1>
+  <div class="grid-container"></div>
+</div>
+
+<!-- All Games Grid -->
+<div id="allGames" class="game-grid">
+  <h1 class="category">All Games</h1>
+  <div class="grid-container"></div>
+</div>
+
+
+        
+
+<!-- GAME OVERLAY (Old Site Style) -->
+<div id="zoneViewer" style="display:none;">
+    <div class="zone-header">
+        <div class="zone-title">
+            <h2 id="zoneName">Game Title</h2>
+            <span id="zoneId" style="display:none"></span>
+            <a id="zoneAuthor" href="#" target="_blank">by Author</a>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="font-display text-3xl font-bold mb-4">Nova Math</h3>
-            <p class="text-gray-300 mb-8 max-w-2xl mx-auto">
-                Empowering students to discover the beauty and power of mathematics through 
-                interactive learning, visual demonstrations, and step-by-step guidance.
-            </p>
-            <div class="border-t border-gray-700 pt-8">
-                <p class="text-gray-400 text-sm">
-                    © 2025 Nova Math. All rights reserved. Made with care for mathematics education.
-                </p>
-            </div>
+        <div class="zone-controls">
+            <button onclick="fullscreenZone()">Fullscreen</button>
+            <button onclick="closeZone()">Close</button>
         </div>
-    </footer>
+    </div>
+    <iframe id="zoneFrame"></iframe>
+</div>
 
-    <script src="main.js"></script>
+<!-- Scroll to top on reload -->
+<script>
+window.onbeforeunload = () => window.scrollTo(0,0);
+window.onload = () => setTimeout(()=>window.scrollTo(0,0),0);
+</script>
+
+<!-- Particles Configuration & Settings Logic -->
+<script>
+// Particle configurations (from math.html)
+const particleConfigs = {
+  default: {
+    particles: {
+      number: { value: 200, density: { enable: true, value_area: 600 } },
+      color: { value: localStorage.getItem("particleColor") || "#0e00ff" },
+      shape: { type: "circle" },
+      opacity: { value: 0.5 },
+      size: { value: 3, random: true },
+      line_linked: {
+        enable: true,
+        distance: 150,
+        color: localStorage.getItem("particleColor") || "#0e00ff",
+        opacity: 0.4,
+        width: 1.5
+      },
+      move: { enable: true, speed: 6, direction: "none", out_mode: "out" }
+    },
+    interactivity: {
+      detect_on: "window",
+      events: {
+        onhover: { enable: true, mode: "grab" },
+        onclick: { enable: true, mode: "repulse" },
+        resize: true
+      },
+      modes: {
+        grab: { distance: 180, line_linked: { opacity: 1 } },
+        repulse: { distance: 200, duration: 0.4 }
+      }
+    },
+    retina_detect: true
+  },
+  alt: {
+    particles: {
+      number: { value: 400, density: { enable: true, value_area: 800 } },
+      color: { value: "#fff" },
+      shape: {
+        type: "circle",
+        stroke: { width: 0, color: "#000000" },
+        polygon: { nb_sides: 5 }
+      },
+      opacity: { value: 0.5, random: true },
+      size: { value: 10, random: true },
+      line_linked: { enable: false },
+      move: {
+        enable: true,
+        speed: 6,
+        direction: "bottom",
+        out_mode: "out"
+      }
+    },
+    interactivity: {
+      detect_on: "window",
+      events: {
+        onhover: { enable: true, mode: "bubble" },
+        onclick: { enable: true, mode: "repulse" },
+        resize: true
+      },
+      modes: {
+        bubble: { distance: 400, size: 4, duration: 0.3, opacity: 1, speed: 3 },
+        repulse: { distance: 200, duration: 0.4 }
+      }
+    },
+    retina_detect: true
+  }
+};
+
+// Particles management
+const _particlesDiv = document.getElementById("particles-js");
+
+function destroyParticles() {
+  if (window.pJSDom && window.pJSDom.length) {
+    try { window.pJSDom[0].pJS.fn.vendors.destroypJS(); } catch(e){}
+    window.pJSDom = [];
+  }
+  if (_particlesDiv) {
+    _particlesDiv.style.display = 'none';
+  }
+}
+
+function initParticles(mode = 'default') {
+  const cfg = particleConfigs[mode] || particleConfigs.default;
+  destroyParticles();
+
+  if (_particlesDiv) {
+    _particlesDiv.style.display = 'block';
+  }
+
+  let canvas = _particlesDiv.querySelector('canvas');
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+    canvas.className = 'particles-js-canvas-el';
+    canvas.style.background = 'transparent';
+    _particlesDiv.appendChild(canvas);
+  }
+
+  particlesJS('particles-js', cfg);
+}
+
+function applyParticlesState() {
+  const enabled = localStorage.getItem('particlesEnabled');
+  const mode = localStorage.getItem('particleMode') || 'default';
+
+  if (enabled === 'false') {
+    destroyParticles();
+    if (_particlesDiv) _particlesDiv.style.display = 'none';
+  } else {
+    if (_particlesDiv) _particlesDiv.style.display = '';
+    initParticles(mode);
+  }
+}
+
+// Initialize particles on load
+if (localStorage.getItem('particlesEnabled') === null) {
+  localStorage.setItem('particlesEnabled', 'true');
+}
+
+// Wait for particles.js to load
+function waitForParticlesLib() {
+  if (typeof particlesJS !== 'undefined') {
+    applyParticlesState();
+  } else {
+    setTimeout(waitForParticlesLib, 100);
+  }
+}
+waitForParticlesLib();
+
+// Settings overlay controls
+document.addEventListener('DOMContentLoaded', () => {
+  const settingsOverlay = document.getElementById('settingsOverlay');
+  const closeSettingsBtn = document.getElementById('closeSettings');
+  const settingsNavLink = document.getElementById('settingsNavLink');
+  const toggleParticlesBtn = document.getElementById('toggle-particles');
+  const switchBgBtn = document.getElementById('switch-background');
+  const tabCloakBtn = document.getElementById('tab-cloak');
+  const changeColorBtn = document.getElementById('change-particles-color');
+  const toggleThemeBtn = document.getElementById('toggle-theme');
+
+  function openOverlay() {
+    if (!settingsOverlay) return;
+    settingsOverlay.classList.add('active');
+    settingsOverlay.setAttribute('aria-hidden','false');
+  }
+
+  function closeOverlay() {
+    if (!settingsOverlay) return;
+    settingsOverlay.classList.remove('active');
+    settingsOverlay.setAttribute('aria-hidden','true');
+  }
+
+  // Open settings from sidebar
+  settingsNavLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openOverlay();
+  });
+
+  closeSettingsBtn?.addEventListener('click', closeOverlay);
+  settingsOverlay?.addEventListener('click', (e) => {
+    if (e.target === settingsOverlay) closeOverlay();
+  });
+
+  // Toggle particles
+  toggleParticlesBtn?.addEventListener('click', () => {
+    const nowOn = localStorage.getItem('particlesEnabled') !== 'false';
+    const next = !nowOn;
+    localStorage.setItem('particlesEnabled', next ? 'true' : 'false');
+
+    if (next) {
+      if (_particlesDiv) _particlesDiv.style.display = '';
+      initParticles(localStorage.getItem('particleMode') || 'default');
+    } else {
+      destroyParticles();
+      if (_particlesDiv) _particlesDiv.style.display = 'none';
+    }
+
+    closeOverlay();
+  });
+
+  // Switch background
+  switchBgBtn?.addEventListener('click', () => {
+    const current = localStorage.getItem('particleMode') || 'default';
+    const next = current === 'default' ? 'alt' : 'default';
+    localStorage.setItem('particleMode', next);
+
+    if (localStorage.getItem('particlesEnabled') !== 'false') {
+      initParticles(next);
+    }
+
+    closeOverlay();
+  });
+
+  // Tab cloak
+  function restoreTabCloak() {
+    const savedTitle = localStorage.getItem("tabCloakTitle");
+    const savedFavicon = localStorage.getItem("tabCloakFavicon");
+    if (savedTitle) document.title = savedTitle;
+    if (savedFavicon) {
+      let favicon = document.querySelector("link[rel~='icon']");
+      if (!favicon) {
+        favicon = document.createElement("link");
+        favicon.rel = "icon";
+        document.head.appendChild(favicon);
+      }
+      favicon.href = savedFavicon;
+    }
+  }
+  restoreTabCloak();
+
+  tabCloakBtn?.addEventListener("click", () => {
+    const newTitle = prompt("Enter new tab title:", document.title);
+    if (newTitle !== null) {
+      document.title = newTitle;
+      localStorage.setItem("tabCloakTitle", newTitle);
+    }
+
+    const newFavicon = prompt("Enter new tab image URL (leave empty to keep current):", "");
+    if (newFavicon !== null && newFavicon.trim() !== "") {
+      let favicon = document.querySelector("link[rel~='icon']");
+      if (!favicon) {
+        favicon = document.createElement("link");
+        favicon.rel = "icon";
+        document.head.appendChild(favicon);
+      }
+      favicon.href = newFavicon;
+      localStorage.setItem("tabCloakFavicon", newFavicon);
+    }
+  });
+
+  // Change particle color
+  function hexToRgb(hex) {
+    const h = hex.replace("#", "");
+    if (h.length === 3) {
+      return {
+        r: parseInt(h[0] + h[0], 16),
+        g: parseInt(h[1] + h[1], 16),
+        b: parseInt(h[2] + h[2], 16),
+      };
+    }
+    if (h.length === 6) {
+      return {
+        r: parseInt(h.slice(0, 2), 16),
+        g: parseInt(h.slice(2, 4), 16),
+        b: parseInt(h.slice(4, 6), 16),
+      };
+    }
+    return null;
+  }
+
+  function throttledLiveUpdate(newColor) {
+    if (!(window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS)) return;
+    const pJS = window.pJSDom[0].pJS;
+
+    pJS.particles.color.value = newColor;
+    if (pJS.particles.line_linked) pJS.particles.line_linked.color = newColor;
+
+    if (Array.isArray(pJS.particles.array)) {
+      const rgb = hexToRgb(newColor);
+      pJS.particles.array.forEach((p) => {
+        p.color.value = newColor;
+        if (rgb) p.color.rgb = rgb;
+      });
+    }
+
+    if (pJS.fn?.particlesDraw) pJS.fn.particlesDraw();
+  }
+
+  function finalizeParticleColor(newColor) {
+    try {
+      localStorage.setItem("particleColor", newColor);
+    } catch {}
+    if (!(window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS)) return;
+    const pJS = window.pJSDom[0].pJS;
+
+    throttledLiveUpdate(newColor);
+    if (pJS.fn?.particlesRefresh) pJS.fn.particlesRefresh();
+  }
+
+  changeColorBtn?.addEventListener("click", () => {
+    const input = document.createElement("input");
+    input.type = "color";
+    const saved = localStorage.getItem("particleColor") || "#0e00ff";
+    input.value = saved;
+    input.style.position = "fixed";
+    input.style.left = "-9999px";
+    document.body.appendChild(input);
+
+    let lastUpdate = 0;
+    input.addEventListener("input", (e) => {
+      const now = Date.now();
+      if (now - lastUpdate > 50) {
+        throttledLiveUpdate(e.target.value);
+        lastUpdate = now;
+      }
+    });
+
+    input.addEventListener("change", (e) => {
+      finalizeParticleColor(e.target.value);
+      cleanup();
+    });
+
+    input.addEventListener("blur", cleanup);
+
+    function cleanup() {
+      setTimeout(() => {
+        if (document.body.contains(input)) input.remove();
+      }, 50);
+    }
+
+    input.click();
+  });
+
+  // Toggle theme
+  toggleThemeBtn?.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    closeOverlay();
+  });
+
+  // Keyboard controls
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeOverlay();
+    }
+  });
+});
+</script>
+
+<!-- Load games dynamically -->
+<script>
+let allGames = [];
+const categories = ["trending","webports","shooter","strategy","survival","car","motox3m","other","sports","emulated","minecraft","bloons","run","ovo","vex","ducklife","fnaf","fnf","papalouie","twoplayer"];
+
+// CDN URLs (matching old site)
+const coverURL = "https://cdn.jsdelivr.net/gh/Notrexed/covers@main";
+const htmlURL = "https://cdn.jsdelivr.net/gh/Notrexed/html@latest";
+
+function createGameCard(game) {
+    const card = document.createElement("div");
+    card.className = "slide"; // keeps your existing styling
+    card.onclick = () => openZone(game);
+
+    let tagHTML = "";
+    if(game.tag === "hot") tagHTML = `<a class='hotrank'><i class='bx bxs-hot'></i>HOT</a>`;
+    if(game.tag === "new") tagHTML = `<a class='newrank'><i class='bx bxs-zap'></i>NEW</a>`;
+
+    card.innerHTML = `${tagHTML}<img src="${game.img}" alt="${game.title}">`;
+
+    return card;
+}
+
+async function loadGamesGrid() {
+    const res = await fetch("https://cdn.jsdelivr.net/gh/NotRexed/assets@main/allzone.json");
+    const rawGames = await res.json();
+
+    allGames = rawGames.map(g => ({
+        id: g.id,
+        title: g.name,
+        img: g.cover.replace("{COVER_URL}", coverURL),
+        url: g.url.replace("{HTML_URL}", htmlURL),
+        tag: g.tag || null,
+        author: g.author || "Unknown",
+        featured: g.featured || false
+    }));
+
+    // Sort alphabetically
+    allGames.sort((a,b) => a.title.localeCompare(b.title));
+
+    const featuredContainer = document.querySelector("#featuredGames .grid-container");
+    const allContainer = document.querySelector("#allGames .grid-container");
+
+    // Clear old content
+    featuredContainer.innerHTML = "";
+    allContainer.innerHTML = "";
+
+    allGames.forEach(game => {
+        // Create card for all games
+        const allCard = document.createElement("div");
+        allCard.className = "slide"; // keeps your styling
+        allCard.onclick = () => openZone(game);
+
+        let tagHTML = "";
+        if(game.tag === "hot") tagHTML = `<a class='hotrank'><i class='bx bxs-hot'></i>HOT</a>`;
+        if(game.tag === "new") tagHTML = `<a class='newrank'><i class='bx bxs-zap'></i>NEW</a>`;
+
+allCard.innerHTML = `
+  ${tagHTML}
+  <div class="game-card-inner">
+    <img src="${game.img}" alt="${game.title}">
+    <div class="game-title">${game.title}</div>
+  </div>
+`;
+
+
+        allContainer.appendChild(allCard);
+
+        // If featured, create a separate card for featured grid
+        if(game.featured) {
+            const featuredCard = document.createElement("div");
+            featuredCard.className = "slide"; // same styling
+            featuredCard.onclick = () => openZone(game);
+            featuredCard.innerHTML = `
+  ${tagHTML}
+  <div class="game-card-inner">
+    <img src="${game.img}" alt="${game.title}">
+    <div class="game-title">${game.title}</div>
+  </div>
+`;
+            featuredContainer.appendChild(featuredCard);
+        }
+    });
+}
+
+loadGamesGrid();
+
+</script>
+
+<!-- Zone Viewer Functions (From Old Site) -->
+<script>
+let zoneFrame = document.getElementById('zoneFrame');
+const zoneViewer = document.getElementById('zoneViewer');
+const zoneNameEl = document.getElementById('zoneName');
+const zoneIdEl = document.getElementById('zoneId');
+const zoneAuthorEl = document.getElementById('zoneAuthor');
+let currentZoneURL = '';
+
+async function openZone(game) {
+    if (!game) return;
+    
+    // Use the URL from the game object (already has placeholders replaced)
+    currentZoneURL = game.url;
+    
+    console.log("Opening game:", game.title);
+    console.log("Game URL:", currentZoneURL);
+    
+    try {
+        const res = await fetch(currentZoneURL + '?t=' + Date.now());
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const html = await res.text();
+
+        if (!zoneFrame || !document.getElementById('zoneFrame')) {
+            zoneFrame = document.createElement('iframe');
+            zoneFrame.id = 'zoneFrame';
+            zoneFrame.style.width = '100%';
+            zoneFrame.style.height = '100%';
+            zoneFrame.style.border = 'none';
+            if (zoneViewer) zoneViewer.appendChild(zoneFrame);
+        }
+
+        const doc = zoneFrame.contentWindow.document;
+        doc.open();
+        doc.write(html);
+        doc.close();
+
+        if (zoneNameEl) zoneNameEl.textContent = game.title || 'Untitled';
+        if (zoneIdEl) zoneIdEl.textContent = String(game.id || '');
+        if (zoneAuthorEl) {
+            zoneAuthorEl.textContent = game.author ? `by ${game.author}` : '';
+            zoneAuthorEl.style.display = game.author ? 'inline' : 'none';
+        }
+
+        if (zoneViewer) {
+            zoneViewer.style.display = 'flex';
+            zoneViewer.setAttribute('aria-hidden', 'false');
+        }
+        document.body.style.overflow = 'hidden';
+        
+        try { 
+            const u = new URL(window.location); 
+            u.searchParams.set('id', game.id); 
+            history.pushState(null, '', u.toString()); 
+        } catch(e) {}
+    } catch (err) {
+        console.error('openZone error:', err);
+        alert(`Failed to load game: ${game.title}\nURL: ${currentZoneURL}\nError: ${err.message}`);
+        
+        if (zoneViewer) { 
+            zoneViewer.style.display = 'flex'; 
+            zoneViewer.setAttribute('aria-hidden', 'false'); 
+        }
+        if (zoneFrame && zoneFrame.contentWindow && zoneFrame.contentWindow.document) {
+            zoneFrame.contentWindow.document.body.innerHTML = `
+                <div style="color:white;padding:2rem;text-align:center;font-family:sans-serif;">
+                    <h2>Failed to load game</h2>
+                    <p>${game.title}</p>
+                    <p style="font-size:0.9em;color:#aaa;">URL: ${currentZoneURL}</p>
+                    <p style="font-size:0.9em;color:#f88;">Error: ${err.message}</p>
+                </div>`;
+        }
+    }
+}
+
+function closeZone() {
+    if (zoneViewer) zoneViewer.style.display = 'none';
+    zoneViewer?.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (zoneFrame && zoneFrame.parentNode) { 
+        try { zoneFrame.parentNode.removeChild(zoneFrame); } catch(e) {} 
+    }
+    zoneFrame = null;
+    currentZoneURL = '';
+    try { 
+        const u = new URL(window.location); 
+        u.searchParams.delete('id'); 
+        history.pushState(null,'',u.toString()); 
+    } catch(e) {}
+}
+
+function fullscreenZone() {
+    if (!zoneFrame) return;
+    if (zoneFrame.requestFullscreen) {
+        zoneFrame.requestFullscreen();
+    } else if (zoneFrame.mozRequestFullScreen) {
+        zoneFrame.mozRequestFullScreen();
+    } else if (zoneFrame.webkitRequestFullscreen) {
+        zoneFrame.webkitRequestFullscreen();
+    } else if (zoneFrame.msRequestFullscreen) {
+        zoneFrame.msRequestFullscreen();
+    }
+}
+
+// Keyboard controls
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeZone();
+    }
+});
+</script>
+
+<!-- Search -->
+<script>
+const searchInput = document.getElementById("gameSearch");
+const searchWrapper = document.getElementById("searchWrapper");
+const searchSlider = document.getElementById("searchSlider");
+const searchTitle = document.getElementById("searchTitle");
+
+searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase().trim();
+
+    // Clear previous results
+    searchSlider.innerHTML = "";
+
+    if (!query) {
+        searchWrapper.style.display = "none";
+        return;
+    }
+
+    // Filter games
+    const startsWith = allGames.filter(g => g.title.toLowerCase().startsWith(query));
+    const contains = allGames.filter(
+        g => !g.title.toLowerCase().startsWith(query) && g.title.toLowerCase().includes(query)
+    );
+    const matches = [...startsWith, ...contains];
+
+    if (matches.length === 0) {
+        searchWrapper.style.display = "none";
+        return;
+    }
+
+    // Show search wrapper and title
+    searchWrapper.style.display = "flex";
+    searchTitle.style.display = "block";
+
+    // Append all matches instantly
+    matches.forEach(game => {
+        const card = document.createElement("div");
+        card.className = "slide"; // keep existing styling
+        card.onclick = () => openZone(game);
+
+        let tagHTML = "";
+        if (game.tag === "hot") tagHTML = `<a class="hotrank"><i class='bx bxs-hot'></i>HOT</a>`;
+        if (game.tag === "new") tagHTML = `<a class="newrank"><i class='bx bxs-zap'></i>NEW</a>`;
+
+        card.innerHTML = `${tagHTML}<img src="${game.img}" alt="${game.title}">`;
+
+        // Make card visible immediately
+        card.style.display = "inline-block"; // forces visible
+        card.style.opacity = "1"; // ignore any fade animation
+
+        searchSlider.appendChild(card);
+    });
+
+    // Ensure container shows all cards as a grid instead of slider
+    searchSlider.style.display = "flex";
+    searchSlider.style.flexWrap = "wrap";
+    searchSlider.style.justifyContent = "flex-start";
+    searchSlider.style.overflow = "visible"; // disables scroll/lazy hiding
+});
+
+searchInput.disabled=false;
+</script>
+
+<script>
+function openGameById(id) {
+  const game = allGames.find(g => String(g.id) === String(id));
+  if (!game) {
+    console.error("Game not found with id:", id);
+    return;
+  }
+  openZone(game);
+}
+</script>
+
+
 </body>
 </html>
