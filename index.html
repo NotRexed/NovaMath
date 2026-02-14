@@ -16,24 +16,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
 
-<script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
-<script type="text/javascript">
-    aclib.runAutoTag({
-        zoneId: 'zmbjtc89go',
-    });
-</script>
-
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9YWLQWZ5SD"></script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-95MX2CCB14"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-9YWLQWZ5SD');
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-95MX2CCB14');
 </script>
-    
+
 <!-- Google Ads / Funding Choices -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/f74a2.txt?client=ca-pub-7319072504670835" crossorigin="anonymous"></script>
 <script async src="https://fundingchoicesmessages.google.com/i/pub-7319072504670835?ers=1" nonce="cl51R4m9X9S0GL_CMBDHSQ"></script>
@@ -691,20 +682,146 @@ document.addEventListener('DOMContentLoaded', () => {
 let allGames = [];
 const categories = ["trending","webports","shooter","strategy","survival","car","motox3m","other","sports","emulated","minecraft","bloons","run","ovo","vex","ducklife","fnaf","fnf","papalouie","twoplayer"];
 
-// CDN URLs (matching old site)
 const coverURL = "https://cdn.jsdelivr.net/gh/Notrexed/covers@main";
 const htmlURL = "https://cdn.jsdelivr.net/gh/Notrexed/html@latest";
 
+// STATS SYSTEM
+const STATS_CONFIG = {
+    baseURL: 'https://data.jsdelivr.com/v1/stats/packages/gh/Notrexed/html@latest/files',
+    period: 'year'
+};
+
+let _allStatsCache = null;
+let _statsFetchPromise = null;
+
+function loadCachedStats() {
+    try {
+        const cached = localStorage.getItem('novaStatsCache_v1');
+        if (!cached) return null;
+        const data = JSON.parse(cached);
+        const now = Date.now();
+        const oneHour = 60 * 60 * 1000;
+        if (!data.timestamp || !data.stats || (now - data.timestamp) > oneHour) {
+            localStorage.removeItem('novaStatsCache_v1');
+            return null;
+        }
+        return data.stats;
+    } catch (e) {
+        return null;
+    }
+}
+
+function saveCachedStats(stats) {
+    try {
+        localStorage.setItem('novaStatsCache_v1', JSON.stringify({
+            timestamp: Date.now(),
+            stats: stats
+        }));
+    } catch (e) {}
+}
+
+async function getAllStats(forceRefresh = false) {
+    if (!forceRefresh && _allStatsCache) return _allStatsCache;
+    if (!forceRefresh) {
+        const cached = loadCachedStats();
+        if (cached) {
+            _allStatsCache = cached;
+            return cached;
+        }
+    }
+    if (_statsFetchPromise) return _statsFetchPromise;
+    
+    _statsFetchPromise = (async () => {
+        const PAGE_BATCH = 10;
+        const combinedMap = Object.create(null);
+        let page = 1;
+        let consecutiveEmpty = 0;
+        
+        while (consecutiveEmpty < 2) {
+            const pages = Array.from({ length: PAGE_BATCH }, (_, i) => page + i);
+            const responses = await Promise.all(
+                pages.map(p => 
+                    fetch(`${STATS_CONFIG.baseURL}?period=${STATS_CONFIG.period}&page=${p}&limit=100`)
+                        .then(r => r.ok ? r.json() : [])
+                        .catch(() => [])
+                )
+            );
+            
+            let foundData = false;
+            for (const data of responses) {
+                if (!Array.isArray(data) || data.length === 0) continue;
+                foundData = true;
+                
+                for (const item of data) {
+                    if (!item?.name) continue;
+                    const match = item.name.match(/\/(\d+)([.-])/);
+                    if (!match) continue;
+                    
+                    const id = match[1];
+                    if (!combinedMap[id]) combinedMap[id] = { hits: 0, bandwidth: 0 };
+                    combinedMap[id].hits += item.hits?.total ?? 0;
+                }
+            }
+            
+            if (!foundData) {
+                consecutiveEmpty++;
+            } else {
+                consecutiveEmpty = 0;
+            }
+            page += PAGE_BATCH;
+        }
+        
+        _allStatsCache = combinedMap;
+        saveCachedStats(combinedMap);
+        _statsFetchPromise = null;
+        updateAllPlayCounts();
+        return combinedMap;
+    })();
+    
+    return _statsFetchPromise;
+}
+
+async function getStats(id) {
+    id = String(id);
+    const allStats = await getAllStats();
+    return allStats[id]?.hits ?? 0;
+}
+
+function formatPlays(num) {
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+    return num > 0 ? num.toString() : '...';
+}
+
+function updateAllPlayCounts() {
+    document.querySelectorAll('.slide[data-game-id]').forEach(async card => {
+        const gameId = card.getAttribute('data-game-id');
+        const playsEl = card.querySelector('.game-plays span');
+        if (playsEl && gameId) {
+            const plays = await getStats(gameId);
+            playsEl.textContent = formatPlays(plays);
+        }
+    });
+}
+
 function createGameCard(game) {
     const card = document.createElement("div");
-    card.className = "slide"; // keeps your existing styling
+    card.className = "slide";
+    card.setAttribute('data-game-id', game.id);
     card.onclick = () => openZone(game);
 
     let tagHTML = "";
     if(game.tag === "hot") tagHTML = `<a class='hotrank'><i class='bx bxs-hot'></i>HOT</a>`;
     if(game.tag === "new") tagHTML = `<a class='newrank'><i class='bx bxs-zap'></i>NEW</a>`;
 
-    card.innerHTML = `${tagHTML}<img src="${game.img}" alt="${game.title}">`;
+    card.innerHTML = `
+    ${tagHTML}
+    <div class="game-plays">
+        <i class='bx bx-play-circle'></i>
+        <span>...</span>
+    </div>
+    <img src="${game.img}" alt="${game.title}">
+`;
 
     return card;
 }
@@ -723,56 +840,51 @@ async function loadGamesGrid() {
         featured: g.featured || false
     }));
 
-    // Sort alphabetically
     allGames.sort((a,b) => a.title.localeCompare(b.title));
 
     const featuredContainer = document.querySelector("#featuredGames .grid-container");
     const allContainer = document.querySelector("#allGames .grid-container");
 
-    // Clear old content
     featuredContainer.innerHTML = "";
     allContainer.innerHTML = "";
 
     allGames.forEach(game => {
-        // Create card for all games
         const allCard = document.createElement("div");
-        allCard.className = "slide"; // keeps your styling
+        allCard.className = "slide";
+        allCard.setAttribute('data-game-id', game.id);
         allCard.onclick = () => openZone(game);
 
         let tagHTML = "";
         if(game.tag === "hot") tagHTML = `<a class='hotrank'><i class='bx bxs-hot'></i>HOT</a>`;
         if(game.tag === "new") tagHTML = `<a class='newrank'><i class='bx bxs-zap'></i>NEW</a>`;
 
-allCard.innerHTML = `
-  ${tagHTML}
-  <div class="game-card-inner">
-    <img src="${game.img}" alt="${game.title}">
-    <div class="game-title">${game.title}</div>
-  </div>
+        allCard.innerHTML = `
+    ${tagHTML}
+    <div class="game-card-inner">
+        <img src="${game.img}" alt="${game.title}">
+        <div class="game-title">
+            <span class="game-name">${game.title}</span>
+            <div class="game-plays">
+                <i class='bx bx-play-circle'></i>
+                <span>...</span>
+            </div>
+        </div>
+    </div>
 `;
-
 
         allContainer.appendChild(allCard);
 
-        // If featured, create a separate card for featured grid
         if(game.featured) {
-            const featuredCard = document.createElement("div");
-            featuredCard.className = "slide"; // same styling
+            const featuredCard = allCard.cloneNode(true);
             featuredCard.onclick = () => openZone(game);
-            featuredCard.innerHTML = `
-  ${tagHTML}
-  <div class="game-card-inner">
-    <img src="${game.img}" alt="${game.title}">
-    <div class="game-title">${game.title}</div>
-  </div>
-`;
             featuredContainer.appendChild(featuredCard);
         }
     });
+
+    getAllStats();
 }
 
 loadGamesGrid();
-
 </script>
 
 <!-- Zone Viewer Functions (From Old Site) -->
