@@ -795,6 +795,8 @@ async function getAllStats(forceRefresh = false) {
     
     if (!forceRefresh && _allStatsCache) {
         console.log('Returning cached stats:', Object.keys(_allStatsCache).length, 'games');
+        // Update UI with cached stats
+        requestAnimationFrame(() => updateAllPlayCounts());
         return _allStatsCache;
     }
     if (!forceRefresh) {
@@ -802,6 +804,8 @@ async function getAllStats(forceRefresh = false) {
         if (cached) {
             console.log('Loaded from localStorage:', Object.keys(cached).length, 'games');
             _allStatsCache = cached;
+            // Update UI with cached stats
+            requestAnimationFrame(() => updateAllPlayCounts());
             return cached;
         }
     }
