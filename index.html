@@ -777,50 +777,77 @@ function saveCachedStats(stats) {
 }
 
 async function getAllStats(forceRefresh = false) {
-    if (!forceRefresh && _allStatsCache) return _allStatsCache;
+    console.log('getAllStats called, forceRefresh:', forceRefresh);
+    
+    if (!forceRefresh && _allStatsCache) {
+        console.log('Returning cached stats:', Object.keys(_allStatsCache).length, 'games');
+        return _allStatsCache;
+    }
     if (!forceRefresh) {
         const cached = loadCachedStats();
         if (cached) {
+            console.log('Loaded from localStorage:', Object.keys(cached).length, 'games');
             _allStatsCache = cached;
             return cached;
         }
     }
-    if (_statsFetchPromise) return _statsFetchPromise;
+    if (_statsFetchPromise) {
+        console.log('Already fetching stats, returning existing promise');
+        return _statsFetchPromise;
+    }
+    
+    console.log('Starting fresh stats fetch...');
     
     _statsFetchPromise = (async () => {
         const combinedMap = Object.create(null);
         
         try {
-            // Use the correct working endpoint
-            const response = await fetch('https://data.jsdelivr.com/v1/package/gh/NotRexed/html/stats');
+            // Use the correct working endpoint with type parameter
+            const url = 'https://data.jsdelivr.com/v1/package/gh/NotRexed/html/stats?type=year';
+            console.log('Fetching stats from:', url);
+            
+            const response = await fetch(url);
+            console.log('Response status:', response.status);
             
             if (!response.ok) {
-                console.warn('Stats fetch failed:', response.status);
+                console.error('Stats fetch failed with status:', response.status);
                 return combinedMap;
             }
             
             const data = await response.json();
+            console.log('Raw API response:', data);
+            console.log('Files in response:', data.files ? Object.keys(data.files).length : 0);
             
-            // Parse the files object to extract game IDs and hit counts
+            // The API returns { total: number, versions: {...}, files: {...} }
             if (data && data.files) {
-                for (const [filename, fileData] of Object.entries(data.files)) {
+                let matchedCount = 0;
+                for (const [filename, fileStats] of Object.entries(data.files)) {
+                    console.log('Processing file:', filename, 'hits:', fileStats.total);
                     // Extract game ID from filename (e.g., "542.html" or "542-baldis-basics.html")
                     const match = filename.match(/^(\d+)[-.]?/);
                     if (match) {
                         const id = match[1];
-                        const hits = fileData.total || 0;
+                        const hits = fileStats.total || 0;
+                        matchedCount++;
                         
                         if (!combinedMap[id]) {
                             combinedMap[id] = { hits: 0 };
                         }
                         combinedMap[id].hits += hits;
+                        console.log('Matched game ID:', id, 'with', hits, 'hits');
+                    } else {
+                        console.log('No match for filename:', filename);
                     }
                 }
+                console.log('Successfully matched', matchedCount, 'files');
+            } else {
+                console.error('No files object in response!');
             }
             
             console.log('Stats loaded:', Object.keys(combinedMap).length, 'games');
+            console.log('Sample stats:', Object.entries(combinedMap).slice(0, 5));
         } catch (err) {
-            console.warn('Stats fetch failed:', err);
+            console.error('Stats fetch error:', err);
         }
         
         _allStatsCache = combinedMap;
