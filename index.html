@@ -748,22 +748,29 @@ const htmlURL = "https://cdn.jsdelivr.net/gh/Notrexed/html@latest";
 let _allStatsCache = null;
 let _statsFetchPromise = null;
 
+// Clear old caches on load
+if (typeof localStorage !== 'undefined') {
+    localStorage.removeItem('novaStatsCache_v2');
+    localStorage.removeItem('novaStatsCache_v3');
+    console.log('Cleared old cache versions');
+}
+
 function loadCachedStats() {
     try {
-        const cached = localStorage.getItem('novaStatsCache_v3');
+        const cached = localStorage.getItem('novaStatsCache_v4');
         if (!cached) return null;
         const data = JSON.parse(cached);
         const now = Date.now();
         const oneHour = 1 * 60 * 60 * 1000;
         if (!data.timestamp || !data.stats || (now - data.timestamp) > oneHour) {
-            localStorage.removeItem('novaStatsCache_v3');
+            localStorage.removeItem('novaStatsCache_v4');
             return null;
         }
         // Don't use cache if it has 0 games (indicates bad data)
         const gameCount = Object.keys(data.stats).length;
         if (gameCount === 0) {
             console.log('Cache has 0 games, clearing and forcing fresh fetch');
-            localStorage.removeItem('novaStatsCache_v3');
+            localStorage.removeItem('novaStatsCache_v4');
             return null;
         }
         return data.stats;
@@ -774,7 +781,7 @@ function loadCachedStats() {
 
 function saveCachedStats(stats) {
     try {
-        localStorage.setItem('novaStatsCache_v3', JSON.stringify({
+        localStorage.setItem('novaStatsCache_v4', JSON.stringify({
             timestamp: Date.now(),
             stats: stats
         }));
@@ -809,8 +816,8 @@ async function getAllStats(forceRefresh = false) {
         const combinedMap = Object.create(null);
         
         try {
-            // Use the correct working endpoint with type parameter
-            const url = 'https://data.jsdelivr.com/v1/package/gh/NotRexed/html/stats?type=year';
+            // Use the package stats endpoint that has per-file breakdown
+            const url = 'https://data.jsdelivr.com/v1/stats/packages/gh/NotRexed/html';
             console.log('Fetching stats from:', url);
             
             const response = await fetch(url);
@@ -823,32 +830,40 @@ async function getAllStats(forceRefresh = false) {
             
             const data = await response.json();
             console.log('Raw API response:', data);
-            console.log('Files in response:', data.files ? Object.keys(data.files).length : 0);
             
-            // The API returns { total: number, versions: {...}, files: {...} }
-            if (data && data.files) {
-                let matchedCount = 0;
-                for (const [filename, fileStats] of Object.entries(data.files)) {
-                    console.log('Processing file:', filename, 'hits:', fileStats.total);
-                    // Extract game ID from filename (e.g., "542.html" or "542-baldis-basics.html")
-                    const match = filename.match(/^(\d+)[-.]?/);
-                    if (match) {
-                        const id = match[1];
-                        const hits = fileStats.total || 0;
-                        matchedCount++;
+            // This endpoint returns versions data with files breakdown
+            if (data && data.versions) {
+                console.log('Processing versions data...');
+                
+                // Look through all versions to find file stats
+                for (const [version, versionData] of Object.entries(data.versions)) {
+                    if (versionData.files) {
+                        console.log(`Found ${Object.keys(versionData.files).length} files in version ${version}`);
                         
-                        if (!combinedMap[id]) {
-                            combinedMap[id] = { hits: 0 };
+                        for (const [filepath, fileStats] of Object.entries(versionData.files)) {
+                            // Extract just the filename from path
+                            const filename = filepath.split('/').pop();
+                            console.log('Processing file:', filename, 'hits:', fileStats.total);
+                            
+                            // Extract game ID from filename (e.g., "542.html" or "542-baldis-basics.html")
+                            const match = filename.match(/^(\d+)[-.]?/);
+                            if (match) {
+                                const id = match[1];
+                                const hits = fileStats.total || 0;
+                                
+                                if (!combinedMap[id]) {
+                                    combinedMap[id] = { hits: 0 };
+                                }
+                                combinedMap[id].hits += hits;
+                                console.log('Matched game ID:', id, 'total hits so far:', combinedMap[id].hits);
+                            } else {
+                                console.log('No match for filename:', filename);
+                            }
                         }
-                        combinedMap[id].hits += hits;
-                        console.log('Matched game ID:', id, 'with', hits, 'hits');
-                    } else {
-                        console.log('No match for filename:', filename);
                     }
                 }
-                console.log('Successfully matched', matchedCount, 'files');
             } else {
-                console.error('No files object in response!');
+                console.error('No versions object in response!');
             }
             
             console.log('Stats loaded:', Object.keys(combinedMap).length, 'games');
