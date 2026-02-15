@@ -816,58 +816,75 @@ async function getAllStats(forceRefresh = false) {
         const combinedMap = Object.create(null);
         
         try {
-            // Use the package stats endpoint that has per-file breakdown
-            const url = 'https://data.jsdelivr.com/v1/stats/packages/gh/NotRexed/html';
-            console.log('Fetching stats from:', url);
+            // Try multiple endpoints to find file-level stats
+            const endpoints = [
+                'https://data.jsdelivr.com/v1/stats/packages/gh/NotRexed/html?period=year',
+                'https://data.jsdelivr.com/v1/stats/packages/gh/NotRexed/html?period=month',
+                'https://data.jsdelivr.com/v1/package/gh/NotRexed/html/stats/files'
+            ];
             
-            const response = await fetch(url);
-            console.log('Response status:', response.status);
-            
-            if (!response.ok) {
-                console.error('Stats fetch failed with status:', response.status);
-                return combinedMap;
-            }
-            
-            const data = await response.json();
-            console.log('Raw API response:', data);
-            
-            // This endpoint returns versions data with files breakdown
-            if (data && data.versions) {
-                console.log('Processing versions data...');
+            for (const url of endpoints) {
+                console.log('Trying endpoint:', url);
                 
-                // Look through all versions to find file stats
-                for (const [version, versionData] of Object.entries(data.versions)) {
-                    if (versionData.files) {
-                        console.log(`Found ${Object.keys(versionData.files).length} files in version ${version}`);
-                        
-                        for (const [filepath, fileStats] of Object.entries(versionData.files)) {
-                            // Extract just the filename from path
-                            const filename = filepath.split('/').pop();
-                            console.log('Processing file:', filename, 'hits:', fileStats.total);
-                            
-                            // Extract game ID from filename (e.g., "542.html" or "542-baldis-basics.html")
-                            const match = filename.match(/^(\d+)[-.]?/);
-                            if (match) {
-                                const id = match[1];
-                                const hits = fileStats.total || 0;
-                                
-                                if (!combinedMap[id]) {
-                                    combinedMap[id] = { hits: 0 };
-                                }
-                                combinedMap[id].hits += hits;
-                                console.log('Matched game ID:', id, 'total hits so far:', combinedMap[id].hits);
-                            } else {
-                                console.log('No match for filename:', filename);
-                            }
+                const response = await fetch(url);
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) continue;
+                
+                const data = await response.json();
+                console.log('Raw API response structure:', Object.keys(data));
+                console.log('Full response (first 1000 chars):', JSON.stringify(data).substring(0, 1000));
+                
+                // Try to find files data in various possible structures
+                let filesData = null;
+                
+                // Structure 1: data.files
+                if (data.files) {
+                    filesData = data.files;
+                    console.log('Found data.files');
+                }
+                // Structure 2: data.versions[version].files
+                else if (data.versions) {
+                    for (const [version, versionData] of Object.entries(data.versions)) {
+                        if (versionData.files) {
+                            filesData = versionData.files;
+                            console.log('Found files in version:', version);
+                            break;
                         }
                     }
                 }
-            } else {
-                console.error('No versions object in response!');
+                
+                if (filesData) {
+                    console.log('Processing', Object.keys(filesData).length, 'files');
+                    
+                    for (const [filepath, fileStats] of Object.entries(filesData)) {
+                        const filename = filepath.split('/').pop();
+                        console.log('File:', filename, 'Stats:', fileStats);
+                        
+                        // Extract game ID from filename
+                        const match = filename.match(/^(\d+)[-.]?/);
+                        if (match) {
+                            const id = match[1];
+                            const hits = fileStats.total || fileStats.hits || 0;
+                            
+                            if (!combinedMap[id]) {
+                                combinedMap[id] = { hits: 0 };
+                            }
+                            combinedMap[id].hits += hits;
+                            console.log('Game ID:', id, 'Hits:', hits, 'Total:', combinedMap[id].hits);
+                        }
+                    }
+                    
+                    // If we found data, stop trying other endpoints
+                    if (Object.keys(combinedMap).length > 0) {
+                        console.log('Successfully loaded stats from:', url);
+                        break;
+                    }
+                }
             }
             
-            console.log('Stats loaded:', Object.keys(combinedMap).length, 'games');
-            console.log('Sample stats:', Object.entries(combinedMap).slice(0, 5));
+            console.log('Final stats loaded:', Object.keys(combinedMap).length, 'games');
+            console.log('Sample stats:', Object.entries(combinedMap).slice(0, 10));
         } catch (err) {
             console.error('Stats fetch error:', err);
         }
