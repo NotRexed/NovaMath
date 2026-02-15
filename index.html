@@ -759,6 +759,13 @@ function loadCachedStats() {
             localStorage.removeItem('novaStatsCache_v3');
             return null;
         }
+        // Don't use cache if it has 0 games (indicates bad data)
+        const gameCount = Object.keys(data.stats).length;
+        if (gameCount === 0) {
+            console.log('Cache has 0 games, clearing and forcing fresh fetch');
+            localStorage.removeItem('novaStatsCache_v3');
+            return null;
+        }
         return data.stats;
     } catch (e) {
         return null;
