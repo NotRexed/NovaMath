@@ -624,3 +624,37 @@
     overflow: hidden;
     border-radius: 20px;
 }
+
+/* Translucent Sidebar */
+.sidebar {
+  background: rgba(20, 20, 20, 0.7) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Sidebar header translucent */
+.sidebar .sidebar-header {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+/* Nav items hover effect with translucency */
+.sidebar .nav-link:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Active nav item */
+.sidebar .nav-link.active {
+  background: rgba(77, 166, 255, 0.2) !important;
+}
+
+/* Logo area translucent */
+.sidebar .sidebar-header {
+  background: transparent !important;
+  backdrop-filter: none;
+}
+
+.sidebar .header-logo {
+  background: transparent !important;
+}

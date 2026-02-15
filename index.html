@@ -44,8 +44,8 @@ gtag('config', 'G-95MX2CCB14');
 })();
 </script>
 
-<!-- Particles.js -->
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
+<!-- GSAP Animation Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -57,28 +57,152 @@ gtag('config', 'G-95MX2CCB14');
 <script src="index.js"></script>
 
 <style>
-/* Particles background */
-#particles-js {
+/* Custom Fonts */
+@font-face {
+  font-family: 'Nunito';
+  src: url('assets/fonts/nunito-font/NunitoExtralight-YzEeq.ttf') format('truetype');
+  font-weight: 200;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fabrica';
+  src: url('assets/fonts/fabrica-font/Fabrica-ZOjx.otf') format('opentype');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gravity';
+  src: url('assets/fonts/gravity-font/GravityLight-66Ro.otf') format('opentype');
+  font-weight: 300;
+  font-display: swap;
+}
+
+/* Onboarding Animation Styles */
+.loading-overlay {
   position: fixed;
-  top: 0; 
+  top: 0;
   left: 0;
-  width: 100%; 
-  height: 100%;
-  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  background: #000000 url('assets/img/black.jpg') center center / cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+  opacity: 1;
+  transition: none;
+  backdrop-filter: blur(20px);
   overflow: hidden;
 }
-#particles-js::before {
-  content: "";
-  position: absolute;
-  top: 0; 
-  left: 0;
-  width: 100%; 
-  height: 100%;
-  background: #000;
-  z-index: -1;
+
+.welcome-message {
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  perspective: 1000px;
 }
-#particles-js canvas {
-  background: transparent !important;
+
+.welcome-message h1 {
+  display: inline-block;
+  font-family: 'Nunito', 'Arial', sans-serif;
+  font-size: clamp(50px, 8vw, 100px);
+  margin: 0;
+  padding: 0;
+  font-weight: 200;
+  transform-style: preserve-3d;
+}
+
+.nova-letter {
+  display: inline-block;
+  background: linear-gradient(40deg, #2e12cf, #8911da, #8b8d84);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 15px;
+  opacity: 0;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+.loading-progress {
+  margin-top: 30px;
+  font-family: 'Fabrica', 'Arial', sans-serif;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  letter-spacing: 1px;
+}
+
+.progress-bar-container {
+  width: 350px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  margin: 20px auto 0;
+  overflow: hidden;
+  opacity: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #2e12cf, #8911da, #a78bfa);
+  width: 0%;
+  transition: width 0.3s ease;
+  border-radius: 3px;
+  box-shadow: 0 0 20px rgba(137, 17, 218, 0.5);
+}
+
+
+/* Gradient background with customizable colors */
+body {
+  background: linear-gradient(135deg, 
+    var(--bg-color-1, #0a0a0a) 0%, 
+    var(--bg-color-2, #1a1a2e) 50%, 
+    var(--bg-color-3, #16213e) 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Hide gradient when loading overlay is active */
+body.loading-active {
+  background: #000000;
+}
+
+/* Custom Scrollbar - Uses same gradient as background */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 10, 10, 0.5);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, 
+    var(--bg-color-1, #0a0a0a) 0%, 
+    var(--bg-color-2, #1a1a2e) 50%, 
+    var(--bg-color-3, #16213e) 100%);
+  border-radius: 10px;
+  border: 2px solid rgba(10, 10, 10, 0.3);
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, 
+    var(--bg-color-1, #1a1a3e) 0%, 
+    var(--bg-color-2, #2a2a4e) 50%, 
+    var(--bg-color-3, #26315e) 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bg-color-2, #1a1a2e) rgba(10, 10, 10, 0.5);
 }
 
 /* Settings Overlay */
@@ -119,56 +243,147 @@ gtag('config', 'G-95MX2CCB14');
     from { transform: scale(0.9); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
+/* Settings Overlay Styles */
+    .settings-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10001;
+      padding: 20px;
+    }
 
-/* Header with close button */
-.settings-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-    font-weight: bold;
+    .settings-overlay[aria-hidden="false"] {
+      display: flex;
+    }
+
+    .settings-popup {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      animation: slideInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .settings-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .settings-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      margin: 0;
+    }
+
+    #closeSettings {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    #closeSettings:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .settings-body {
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .settings-item {
+      background: rgba(48, 48, 48, 0.8);
+      border: 1px solid rgba(65, 65, 65, 1);
+      color: white;
+      padding: 1rem 1.25rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .settings-item:hover {
+      background: rgba(78, 78, 78, 1);
+      transform: translateY(-2px);
+      border-color: rgba(77, 166, 255, 0.5);
+    }
+
+    .settings-item i {
+      font-size: 1.2rem;
+    }
+
+/* Zone Viewer Fix */
+#zoneViewer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  background: #000;
+  display: flex;
+  flex-direction: column;
 }
 
-.settings-header button {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: white;
-    cursor: pointer;
+#zoneViewer .zone-header {
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Settings Buttons */
-.settings-body button {
-    display: block;
-    width: 100%;
-    margin: 0.5rem 0;
-    padding: 0.7rem;
-    border: none;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    text-align: left;
-}
-
-.settings-body button:hover {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-.settings-body button i {
-    margin-right: 0.5rem;
+#zoneViewer iframe {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 </style>
 
 </head>
 <body>
 
-<!-- Particles Background -->
-<div id="particles-js">
-  <canvas class="particles-js-canvas-el"></canvas>
+<!-- Loading Overlay with NOVA Animation -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="welcome-message">
+    <h1>
+      <span class="nova-letter letter-n">N</span>
+      <span class="nova-letter letter-o">O</span>
+      <span class="nova-letter letter-v">V</span>
+      <span class="nova-letter letter-a">A</span>
+    </h1>
+    <div class="loading-progress" id="loadingProgress">Loading...</div>
+    <div class="progress-bar-container" id="progressBarContainer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </div>
 </div>
 
 <!-- Sidebar -->
@@ -225,16 +440,12 @@ gtag('config', 'G-95MX2CCB14');
       <button id="closeSettings" aria-label="Close settings">×</button>
     </div>
     <div class="settings-body">
-      <button class="settings-item" id="toggle-particles">
-      <i class="fa-solid fa-toggle-on" style="color: #63E6BE;"></i> Toggle Particles</button>
-      <button class="settings-item" id="switch-background">
-      <i class="fa-solid fa-shuffle" style="color: #4FC3F7;"></i> Switch Background</button>
       <button class="settings-item" id="tab-cloak">
       <i class="fa-solid fa-copy"></i> Tab Cloak</button>
-      <button class="settings-item" id="change-particles-color">
-      <i class="fa-solid fa-eye-dropper" style="color: #74C0FC;"></i> Change Particle Color</button>
-      <button class="settings-item" id="toggle-theme">
-      <i class="fa-solid fa-lightbulb" style="color: #FFD43B;"></i> Toggle Color Mode</button>
+      <button class="settings-item" id="customize-background">
+      <i class="fa-solid fa-palette" style="color: #a78bfa;"></i> Customize Background</button>
+      <button class="settings-item" id="reset-background">
+      <i class="fa-solid fa-rotate-left" style="color: #fb923c;"></i> Reset Background</button>
     </div>
   </div>
 </div>
@@ -324,23 +535,20 @@ gtag('config', 'G-95MX2CCB14');
   <div class="grid-container"></div>
 </div>
 
-
-        
-
-<!-- GAME OVERLAY (Old Site Style) -->
-<div id="zoneViewer" style="display:none;">
-    <div class="zone-header">
+<!-- GAME OVERLAY -->
+<div id="zoneViewer" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; background: #000; flex-direction: column;">
+    <div class="zone-header" style="flex-shrink: 0; background: rgba(0, 0, 0, 0.9); padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
         <div class="zone-title">
-            <h2 id="zoneName">Game Title</h2>
+            <h2 id="zoneName" style="margin: 0; color: white;">Game Title</h2>
             <span id="zoneId" style="display:none"></span>
-            <a id="zoneAuthor" href="#" target="_blank">by Author</a>
+            <a id="zoneAuthor" href="#" target="_blank" style="color: #888; font-size: 0.9rem;">by Author</a>
         </div>
         <div class="zone-controls">
-            <button onclick="fullscreenZone()">Fullscreen</button>
-            <button onclick="closeZone()">Close</button>
+            <button onclick="fullscreenZone()" style="padding: 0.5rem 1rem; margin-left: 0.5rem; cursor: pointer;">Fullscreen</button>
+            <button onclick="closeZone()" style="padding: 0.5rem 1rem; margin-left: 0.5rem; cursor: pointer;">Close</button>
         </div>
     </div>
-    <iframe id="zoneFrame"></iframe>
+    <iframe id="zoneFrame" style="flex: 1; width: 100%; height: calc(100% - 70px); border: none;"></iframe>
 </div>
 
 <!-- Scroll to top on reload -->
@@ -349,145 +557,15 @@ window.onbeforeunload = () => window.scrollTo(0,0);
 window.onload = () => setTimeout(()=>window.scrollTo(0,0),0);
 </script>
 
-<!-- Particles Configuration & Settings Logic -->
+<!-- Settings Logic -->
 <script>
-// Particle configurations (from math.html)
-const particleConfigs = {
-  default: {
-    particles: {
-      number: { value: 200, density: { enable: true, value_area: 600 } },
-      color: { value: localStorage.getItem("particleColor") || "#0e00ff" },
-      shape: { type: "circle" },
-      opacity: { value: 0.5 },
-      size: { value: 3, random: true },
-      line_linked: {
-        enable: true,
-        distance: 150,
-        color: localStorage.getItem("particleColor") || "#0e00ff",
-        opacity: 0.4,
-        width: 1.5
-      },
-      move: { enable: true, speed: 6, direction: "none", out_mode: "out" }
-    },
-    interactivity: {
-      detect_on: "window",
-      events: {
-        onhover: { enable: true, mode: "grab" },
-        onclick: { enable: true, mode: "repulse" },
-        resize: true
-      },
-      modes: {
-        grab: { distance: 180, line_linked: { opacity: 1 } },
-        repulse: { distance: 200, duration: 0.4 }
-      }
-    },
-    retina_detect: true
-  },
-  alt: {
-    particles: {
-      number: { value: 400, density: { enable: true, value_area: 800 } },
-      color: { value: "#fff" },
-      shape: {
-        type: "circle",
-        stroke: { width: 0, color: "#000000" },
-        polygon: { nb_sides: 5 }
-      },
-      opacity: { value: 0.5, random: true },
-      size: { value: 10, random: true },
-      line_linked: { enable: false },
-      move: {
-        enable: true,
-        speed: 6,
-        direction: "bottom",
-        out_mode: "out"
-      }
-    },
-    interactivity: {
-      detect_on: "window",
-      events: {
-        onhover: { enable: true, mode: "bubble" },
-        onclick: { enable: true, mode: "repulse" },
-        resize: true
-      },
-      modes: {
-        bubble: { distance: 400, size: 4, duration: 0.3, opacity: 1, speed: 3 },
-        repulse: { distance: 200, duration: 0.4 }
-      }
-    },
-    retina_detect: true
-  }
-};
-
-// Particles management
-const _particlesDiv = document.getElementById("particles-js");
-
-function destroyParticles() {
-  if (window.pJSDom && window.pJSDom.length) {
-    try { window.pJSDom[0].pJS.fn.vendors.destroypJS(); } catch(e){}
-    window.pJSDom = [];
-  }
-  if (_particlesDiv) {
-    _particlesDiv.style.display = 'none';
-  }
-}
-
-function initParticles(mode = 'default') {
-  const cfg = particleConfigs[mode] || particleConfigs.default;
-  destroyParticles();
-
-  if (_particlesDiv) {
-    _particlesDiv.style.display = 'block';
-  }
-
-  let canvas = _particlesDiv.querySelector('canvas');
-  if (!canvas) {
-    canvas = document.createElement('canvas');
-    canvas.className = 'particles-js-canvas-el';
-    canvas.style.background = 'transparent';
-    _particlesDiv.appendChild(canvas);
-  }
-
-  particlesJS('particles-js', cfg);
-}
-
-function applyParticlesState() {
-  const enabled = localStorage.getItem('particlesEnabled');
-  const mode = localStorage.getItem('particleMode') || 'default';
-
-  if (enabled === 'false') {
-    destroyParticles();
-    if (_particlesDiv) _particlesDiv.style.display = 'none';
-  } else {
-    if (_particlesDiv) _particlesDiv.style.display = '';
-    initParticles(mode);
-  }
-}
-
-// Initialize particles on load
-if (localStorage.getItem('particlesEnabled') === null) {
-  localStorage.setItem('particlesEnabled', 'true');
-}
-
-// Wait for particles.js to load
-function waitForParticlesLib() {
-  if (typeof particlesJS !== 'undefined') {
-    applyParticlesState();
-  } else {
-    setTimeout(waitForParticlesLib, 100);
-  }
-}
-waitForParticlesLib();
-
-// Settings overlay controls
 document.addEventListener('DOMContentLoaded', () => {
   const settingsOverlay = document.getElementById('settingsOverlay');
   const closeSettingsBtn = document.getElementById('closeSettings');
   const settingsNavLink = document.getElementById('settingsNavLink');
-  const toggleParticlesBtn = document.getElementById('toggle-particles');
-  const switchBgBtn = document.getElementById('switch-background');
   const tabCloakBtn = document.getElementById('tab-cloak');
-  const changeColorBtn = document.getElementById('change-particles-color');
-  const toggleThemeBtn = document.getElementById('toggle-theme');
+  const customizeBackgroundBtn = document.getElementById('customize-background');
+  const resetBackgroundBtn = document.getElementById('reset-background');
 
   function openOverlay() {
     if (!settingsOverlay) return;
@@ -501,7 +579,6 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsOverlay.setAttribute('aria-hidden','true');
   }
 
-  // Open settings from sidebar
   settingsNavLink?.addEventListener('click', (e) => {
     e.preventDefault();
     openOverlay();
@@ -512,37 +589,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === settingsOverlay) closeOverlay();
   });
 
-  // Toggle particles
-  toggleParticlesBtn?.addEventListener('click', () => {
-    const nowOn = localStorage.getItem('particlesEnabled') !== 'false';
-    const next = !nowOn;
-    localStorage.setItem('particlesEnabled', next ? 'true' : 'false');
-
-    if (next) {
-      if (_particlesDiv) _particlesDiv.style.display = '';
-      initParticles(localStorage.getItem('particleMode') || 'default');
-    } else {
-      destroyParticles();
-      if (_particlesDiv) _particlesDiv.style.display = 'none';
-    }
-
-    closeOverlay();
-  });
-
-  // Switch background
-  switchBgBtn?.addEventListener('click', () => {
-    const current = localStorage.getItem('particleMode') || 'default';
-    const next = current === 'default' ? 'alt' : 'default';
-    localStorage.setItem('particleMode', next);
-
-    if (localStorage.getItem('particlesEnabled') !== 'false') {
-      initParticles(next);
-    }
-
-    closeOverlay();
-  });
-
-  // Tab cloak
   function restoreTabCloak() {
     const savedTitle = localStorage.getItem("tabCloakTitle");
     const savedFavicon = localStorage.getItem("tabCloakFavicon");
@@ -579,96 +625,112 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Change particle color
-  function hexToRgb(hex) {
-    const h = hex.replace("#", "");
-    if (h.length === 3) {
-      return {
-        r: parseInt(h[0] + h[0], 16),
-        g: parseInt(h[1] + h[1], 16),
-        b: parseInt(h[2] + h[2], 16),
-      };
-    }
-    if (h.length === 6) {
-      return {
-        r: parseInt(h.slice(0, 2), 16),
-        g: parseInt(h.slice(2, 4), 16),
-        b: parseInt(h.slice(4, 6), 16),
-      };
-    }
-    return null;
+  function applyBackgroundGradient(color1, color2, color3) {
+    document.documentElement.style.setProperty('--bg-color-1', color1);
+    document.documentElement.style.setProperty('--bg-color-2', color2);
+    document.documentElement.style.setProperty('--bg-color-3', color3);
+    localStorage.setItem('bgColor1', color1);
+    localStorage.setItem('bgColor2', color2);
+    localStorage.setItem('bgColor3', color3);
   }
 
-  function throttledLiveUpdate(newColor) {
-    if (!(window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS)) return;
-    const pJS = window.pJSDom[0].pJS;
-
-    pJS.particles.color.value = newColor;
-    if (pJS.particles.line_linked) pJS.particles.line_linked.color = newColor;
-
-    if (Array.isArray(pJS.particles.array)) {
-      const rgb = hexToRgb(newColor);
-      pJS.particles.array.forEach((p) => {
-        p.color.value = newColor;
-        if (rgb) p.color.rgb = rgb;
-      });
+  function restoreBackgroundGradient() {
+    const color1 = localStorage.getItem('bgColor1');
+    const color2 = localStorage.getItem('bgColor2');
+    const color3 = localStorage.getItem('bgColor3');
+    if (color1 && color2 && color3) {
+      document.documentElement.style.setProperty('--bg-color-1', color1);
+      document.documentElement.style.setProperty('--bg-color-2', color2);
+      document.documentElement.style.setProperty('--bg-color-3', color3);
     }
-
-    if (pJS.fn?.particlesDraw) pJS.fn.particlesDraw();
   }
+  restoreBackgroundGradient();
 
-  function finalizeParticleColor(newColor) {
-    try {
-      localStorage.setItem("particleColor", newColor);
-    } catch {}
-    if (!(window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS)) return;
-    const pJS = window.pJSDom[0].pJS;
+  customizeBackgroundBtn?.addEventListener('click', () => {
+    const pickerContainer = document.createElement('div');
+    pickerContainer.style.cssText = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(20, 20, 20, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 1rem;
+      z-index: 10000;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      color: white;
+      font-family: sans-serif;
+      max-width: 400px;
+      width: 90%;
+    `;
 
-    throttledLiveUpdate(newColor);
-    if (pJS.fn?.particlesRefresh) pJS.fn.particlesRefresh();
-  }
+    const savedColor1 = localStorage.getItem('bgColor1') || '#0a0a0a';
+    const savedColor2 = localStorage.getItem('bgColor2') || '#1a1a2e';
+    const savedColor3 = localStorage.getItem('bgColor3') || '#16213e';
 
-  changeColorBtn?.addEventListener("click", () => {
-    const input = document.createElement("input");
-    input.type = "color";
-    const saved = localStorage.getItem("particleColor") || "#0e00ff";
-    input.value = saved;
-    input.style.position = "fixed";
-    input.style.left = "-9999px";
-    document.body.appendChild(input);
+    pickerContainer.innerHTML = `
+      <h3 style="margin-top: 0;">Customize Background Gradient</h3>
+      <p style="font-size: 0.9rem; color: #aaa; margin-bottom: 1rem;">This gradient is also applied to the scrollbar</p>
+      <div style="margin: 1rem 0;">
+        <label style="display: block; margin-bottom: 0.5rem;">Color 1 (Top Left):</label>
+        <input type="color" id="bgColor1" value="${savedColor1}" style="width: 100%; height: 40px; cursor: pointer; border: none; border-radius: 5px;">
+      </div>
+      <div style="margin: 1rem 0;">
+        <label style="display: block; margin-bottom: 0.5rem;">Color 2 (Middle):</label>
+        <input type="color" id="bgColor2" value="${savedColor2}" style="width: 100%; height: 40px; cursor: pointer; border: none; border-radius: 5px;">
+      </div>
+      <div style="margin: 1rem 0;">
+        <label style="display: block; margin-bottom: 0.5rem;">Color 3 (Bottom Right):</label>
+        <input type="color" id="bgColor3" value="${savedColor3}" style="width: 100%; height: 40px; cursor: pointer; border: none; border-radius: 5px;">
+      </div>
+      <div style="display: flex; gap: 0.5rem; margin-top: 1.5rem;">
+        <button id="applyBgColors" style="flex: 1; padding: 0.7rem; background: #4CAF50; border: none; border-radius: 5px; color: white; cursor: pointer; font-weight: bold;">Apply</button>
+        <button id="cancelBgColors" style="flex: 1; padding: 0.7rem; background: #f44336; border: none; border-radius: 5px; color: white; cursor: pointer; font-weight: bold;">Cancel</button>
+      </div>
+    `;
 
-    let lastUpdate = 0;
-    input.addEventListener("input", (e) => {
-      const now = Date.now();
-      if (now - lastUpdate > 50) {
-        throttledLiveUpdate(e.target.value);
-        lastUpdate = now;
+    document.body.appendChild(pickerContainer);
+
+    const color1Input = pickerContainer.querySelector('#bgColor1');
+    const color2Input = pickerContainer.querySelector('#bgColor2');
+    const color3Input = pickerContainer.querySelector('#bgColor3');
+    
+    const updatePreview = () => {
+      document.documentElement.style.setProperty('--bg-color-1', color1Input.value);
+      document.documentElement.style.setProperty('--bg-color-2', color2Input.value);
+      document.documentElement.style.setProperty('--bg-color-3', color3Input.value);
+    };
+
+    color1Input.addEventListener('input', updatePreview);
+    color2Input.addEventListener('input', updatePreview);
+    color3Input.addEventListener('input', updatePreview);
+
+    pickerContainer.querySelector('#applyBgColors').addEventListener('click', () => {
+      applyBackgroundGradient(color1Input.value, color2Input.value, color3Input.value);
+      document.body.removeChild(pickerContainer);
+    });
+
+    pickerContainer.querySelector('#cancelBgColors').addEventListener('click', () => {
+      restoreBackgroundGradient();
+      document.body.removeChild(pickerContainer);
+    });
+
+    const escapeHandler = (e) => {
+      if (e.key === 'Escape' && document.body.contains(pickerContainer)) {
+        restoreBackgroundGradient();
+        document.body.removeChild(pickerContainer);
+        document.removeEventListener('keydown', escapeHandler);
       }
-    });
-
-    input.addEventListener("change", (e) => {
-      finalizeParticleColor(e.target.value);
-      cleanup();
-    });
-
-    input.addEventListener("blur", cleanup);
-
-    function cleanup() {
-      setTimeout(() => {
-        if (document.body.contains(input)) input.remove();
-      }, 50);
-    }
-
-    input.click();
+    };
+    document.addEventListener('keydown', escapeHandler);
   });
 
-  // Toggle theme
-  toggleThemeBtn?.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    closeOverlay();
+  resetBackgroundBtn?.addEventListener('click', () => {
+    applyBackgroundGradient('#0a0a0a', '#1a1a2e', '#16213e');
+    alert('Background gradient reset to default!');
   });
 
-  // Keyboard controls
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeOverlay();
@@ -677,32 +739,24 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-<!-- Load games dynamically -->
+<!-- Optimized Games System with jsDelivr Stats -->
 <script>
 let allGames = [];
-const categories = ["trending","webports","shooter","strategy","survival","car","motox3m","other","sports","emulated","minecraft","bloons","run","ovo","vex","ducklife","fnaf","fnf","papalouie","twoplayer"];
-
 const coverURL = "https://cdn.jsdelivr.net/gh/Notrexed/covers@main";
 const htmlURL = "https://cdn.jsdelivr.net/gh/Notrexed/html@latest";
-
-// STATS SYSTEM
-const STATS_CONFIG = {
-    baseURL: 'https://data.jsdelivr.com/v1/stats/packages/gh/Notrexed/html@latest/files',
-    period: 'year'
-};
 
 let _allStatsCache = null;
 let _statsFetchPromise = null;
 
 function loadCachedStats() {
     try {
-        const cached = localStorage.getItem('novaStatsCache_v1');
+        const cached = localStorage.getItem('novaStatsCache_v3');
         if (!cached) return null;
         const data = JSON.parse(cached);
         const now = Date.now();
-        const oneHour = 60 * 60 * 1000;
+        const oneHour = 1 * 60 * 60 * 1000;
         if (!data.timestamp || !data.stats || (now - data.timestamp) > oneHour) {
-            localStorage.removeItem('novaStatsCache_v1');
+            localStorage.removeItem('novaStatsCache_v3');
             return null;
         }
         return data.stats;
@@ -713,11 +767,13 @@ function loadCachedStats() {
 
 function saveCachedStats(stats) {
     try {
-        localStorage.setItem('novaStatsCache_v1', JSON.stringify({
+        localStorage.setItem('novaStatsCache_v3', JSON.stringify({
             timestamp: Date.now(),
             stats: stats
         }));
-    } catch (e) {}
+    } catch (e) {
+        console.warn('Failed to cache stats:', e);
+    }
 }
 
 async function getAllStats(forceRefresh = false) {
@@ -732,49 +788,47 @@ async function getAllStats(forceRefresh = false) {
     if (_statsFetchPromise) return _statsFetchPromise;
     
     _statsFetchPromise = (async () => {
-        const PAGE_BATCH = 10;
         const combinedMap = Object.create(null);
-        let page = 1;
-        let consecutiveEmpty = 0;
         
-        while (consecutiveEmpty < 2) {
-            const pages = Array.from({ length: PAGE_BATCH }, (_, i) => page + i);
-            const responses = await Promise.all(
-                pages.map(p => 
-                    fetch(`${STATS_CONFIG.baseURL}?period=${STATS_CONFIG.period}&page=${p}&limit=100`)
-                        .then(r => r.ok ? r.json() : [])
-                        .catch(() => [])
-                )
-            );
+        try {
+            // Use the correct working endpoint
+            const response = await fetch('https://data.jsdelivr.com/v1/package/gh/NotRexed/html/stats');
             
-            let foundData = false;
-            for (const data of responses) {
-                if (!Array.isArray(data) || data.length === 0) continue;
-                foundData = true;
-                
-                for (const item of data) {
-                    if (!item?.name) continue;
-                    const match = item.name.match(/\/(\d+)([.-])/);
-                    if (!match) continue;
-                    
-                    const id = match[1];
-                    if (!combinedMap[id]) combinedMap[id] = { hits: 0, bandwidth: 0 };
-                    combinedMap[id].hits += item.hits?.total ?? 0;
+            if (!response.ok) {
+                console.warn('Stats fetch failed:', response.status);
+                return combinedMap;
+            }
+            
+            const data = await response.json();
+            
+            // Parse the files object to extract game IDs and hit counts
+            if (data && data.files) {
+                for (const [filename, fileData] of Object.entries(data.files)) {
+                    // Extract game ID from filename (e.g., "542.html" or "542-baldis-basics.html")
+                    const match = filename.match(/^(\d+)[-.]?/);
+                    if (match) {
+                        const id = match[1];
+                        const hits = fileData.total || 0;
+                        
+                        if (!combinedMap[id]) {
+                            combinedMap[id] = { hits: 0 };
+                        }
+                        combinedMap[id].hits += hits;
+                    }
                 }
             }
             
-            if (!foundData) {
-                consecutiveEmpty++;
-            } else {
-                consecutiveEmpty = 0;
-            }
-            page += PAGE_BATCH;
+            console.log('Stats loaded:', Object.keys(combinedMap).length, 'games');
+        } catch (err) {
+            console.warn('Stats fetch failed:', err);
         }
         
         _allStatsCache = combinedMap;
         saveCachedStats(combinedMap);
         _statsFetchPromise = null;
-        updateAllPlayCounts();
+        
+        requestAnimationFrame(() => updateAllPlayCounts());
+        
         return combinedMap;
     })();
     
@@ -793,103 +847,116 @@ function formatPlays(num) {
     return num > 0 ? num.toString() : '...';
 }
 
+let updateTimeout = null;
 function updateAllPlayCounts() {
-    document.querySelectorAll('.slide[data-game-id]').forEach(async card => {
-        const gameId = card.getAttribute('data-game-id');
-        const playsEl = card.querySelector('.game-plays span');
-        if (playsEl && gameId) {
-            const plays = await getStats(gameId);
-            playsEl.textContent = formatPlays(plays);
+    if (updateTimeout) return;
+    
+    updateTimeout = setTimeout(async () => {
+        const cards = document.querySelectorAll('.slide[data-game-id]');
+        
+        const batchSize = 20;
+        for (let i = 0; i < cards.length; i += batchSize) {
+            const batch = Array.from(cards).slice(i, i + batchSize);
+            
+            await Promise.all(batch.map(async card => {
+                const gameId = card.getAttribute('data-game-id');
+                const playsEl = card.querySelector('.game-plays span');
+                if (playsEl && gameId) {
+                    const plays = await getStats(gameId);
+                    playsEl.textContent = formatPlays(plays);
+                }
+            }));
+            
+            await new Promise(resolve => setTimeout(resolve, 0));
         }
-    });
-}
-
-function createGameCard(game) {
-    const card = document.createElement("div");
-    card.className = "slide";
-    card.setAttribute('data-game-id', game.id);
-    card.onclick = () => openZone(game);
-
-    let tagHTML = "";
-    if(game.tag === "hot") tagHTML = `<a class='hotrank'><i class='bx bxs-hot'></i>HOT</a>`;
-    if(game.tag === "new") tagHTML = `<a class='newrank'><i class='bx bxs-zap'></i>NEW</a>`;
-
-    card.innerHTML = `
-    ${tagHTML}
-    <div class="game-plays">
-        <i class='bx bx-play-circle'></i>
-        <span>...</span>
-    </div>
-    <img src="${game.img}" alt="${game.title}">
-`;
-
-    return card;
+        
+        updateTimeout = null;
+    }, 100);
 }
 
 async function loadGamesGrid() {
-    const res = await fetch("https://cdn.jsdelivr.net/gh/NotRexed/assets@latest/allzone.json");
-    const rawGames = await res.json();
+    try {
+        const res = await fetch("https://cdn.jsdelivr.net/gh/NotRexed/assets@latest/allzone.json");
+        if (!res.ok) throw new Error('Failed to fetch games');
+        const rawGames = await res.json();
 
-    allGames = rawGames.map(g => ({
-        id: g.id,
-        title: g.name,
-        img: g.cover.replace("{COVER_URL}", coverURL),
-        url: g.url.replace("{HTML_URL}", htmlURL),
-        tag: g.tag || null,
-        author: g.author || "Unknown",
-        featured: g.featured || false
-    }));
+        allGames = rawGames.map(g => ({
+            id: g.id,
+            title: g.name,
+            img: g.cover.replace("{COVER_URL}", coverURL),
+            url: g.url.replace("{HTML_URL}", htmlURL),
+            tag: g.tag || null,
+            author: g.author || "Unknown",
+            featured: g.featured || false
+        }));
 
-    allGames.sort((a,b) => a.title.localeCompare(b.title));
+        allGames.sort((a,b) => a.title.localeCompare(b.title));
 
-    const featuredContainer = document.querySelector("#featuredGames .grid-container");
-    const allContainer = document.querySelector("#allGames .grid-container");
+        const featuredContainer = document.querySelector("#featuredGames .grid-container");
+        const allContainer = document.querySelector("#allGames .grid-container");
 
-    featuredContainer.innerHTML = "";
-    allContainer.innerHTML = "";
+        featuredContainer.innerHTML = "";
+        allContainer.innerHTML = "";
 
-    allGames.forEach(game => {
-        const allCard = document.createElement("div");
-        allCard.className = "slide";
-        allCard.setAttribute('data-game-id', game.id);
-        allCard.onclick = () => openZone(game);
+        const createOptimizedCard = (game) => {
+            const card = document.createElement("div");
+            card.className = "slide";
+            card.setAttribute('data-game-id', game.id);
 
-        let tagHTML = "";
-        if(game.tag === "hot") tagHTML = `<a class='hotrank'><i class='bx bxs-hot'></i>HOT</a>`;
-        if(game.tag === "new") tagHTML = `<a class='newrank'><i class='bx bxs-zap'></i>NEW</a>`;
+            let tagHTML = "";
+            if(game.tag === "hot") tagHTML = `<a class='hotrank'><i class='bx bxs-hot'></i>HOT</a>`;
+            if(game.tag === "new") tagHTML = `<a class='newrank'><i class='bx bxs-zap'></i>NEW</a>`;
 
-        allCard.innerHTML = `
-    ${tagHTML}
-    <div class="game-card-inner">
-        <img src="${game.img}" alt="${game.title}">
-        <div class="game-title">
-            <span class="game-name">${game.title}</span>
-            <div class="game-plays">
-                <i class='bx bx-play-circle'></i>
-                <span>...</span>
+            card.innerHTML = `
+        ${tagHTML}
+        <div class="game-card-inner">
+            <img src="${game.img}" alt="${game.title}">
+            <div class="game-title">
+                <span class="game-name">${game.title}</span>
+                <div class="game-plays">
+                    <i class='bx bx-play-circle'></i>
+                    <span>...</span>
+                </div>
             </div>
         </div>
-    </div>
-`;
+    `;
+            return card;
+        };
 
-        allContainer.appendChild(allCard);
+        allGames.forEach(game => {
+            const allCard = createOptimizedCard(game);
+            allContainer.appendChild(allCard);
 
-        if(game.featured) {
-            const featuredCard = allCard.cloneNode(true);
-            featuredCard.onclick = () => openZone(game);
-            featuredContainer.appendChild(featuredCard);
-        }
-    });
+            if(game.featured) {
+                const featuredCard = createOptimizedCard(game);
+                featuredContainer.appendChild(featuredCard);
+            }
+        });
 
-    getAllStats();
+        document.addEventListener('click', (e) => {
+            const card = e.target.closest('.slide[data-game-id]');
+            if (card) {
+                const gameId = card.getAttribute('data-game-id');
+                const game = allGames.find(g => String(g.id) === String(gameId));
+                if (game) {
+                    openZone(game);
+                }
+            }
+        });
+
+        // Fetch stats from jsDelivr API
+        getAllStats();
+    } catch (err) {
+        console.error('Failed to load games:', err);
+    }
 }
 
 loadGamesGrid();
 </script>
 
-<!-- Zone Viewer Functions (From Old Site) -->
+<!-- Optimized Zone Viewer -->
 <script>
-let zoneFrame = document.getElementById('zoneFrame');
+let zoneFrame = null;
 const zoneViewer = document.getElementById('zoneViewer');
 const zoneNameEl = document.getElementById('zoneName');
 const zoneIdEl = document.getElementById('zoneId');
@@ -899,28 +966,28 @@ let currentZoneURL = '';
 async function openZone(game) {
     if (!game) return;
     
-    // Use the URL from the game object (already has placeholders replaced)
     currentZoneURL = game.url;
     
     console.log("Opening game:", game.title);
     console.log("Game URL:", currentZoneURL);
     
     try {
+        // Get the existing iframe
+        zoneFrame = document.getElementById('zoneFrame');
+        
+        if (!zoneFrame) {
+            console.error('Zone frame not found!');
+            return;
+        }
+
+        // Fetch the HTML content
         const res = await fetch(currentZoneURL + '?t=' + Date.now());
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }
         const html = await res.text();
 
-        if (!zoneFrame || !document.getElementById('zoneFrame')) {
-            zoneFrame = document.createElement('iframe');
-            zoneFrame.id = 'zoneFrame';
-            zoneFrame.style.width = '100%';
-            zoneFrame.style.height = '100%';
-            zoneFrame.style.border = 'none';
-            if (zoneViewer) zoneViewer.appendChild(zoneFrame);
-        }
-
+        // Write HTML to iframe
         const doc = zoneFrame.contentWindow.document;
         doc.open();
         doc.write(html);
@@ -947,32 +1014,33 @@ async function openZone(game) {
     } catch (err) {
         console.error('openZone error:', err);
         alert(`Failed to load game: ${game.title}\nURL: ${currentZoneURL}\nError: ${err.message}`);
-        
-        if (zoneViewer) { 
-            zoneViewer.style.display = 'flex'; 
-            zoneViewer.setAttribute('aria-hidden', 'false'); 
-        }
-        if (zoneFrame && zoneFrame.contentWindow && zoneFrame.contentWindow.document) {
-            zoneFrame.contentWindow.document.body.innerHTML = `
-                <div style="color:white;padding:2rem;text-align:center;font-family:sans-serif;">
-                    <h2>Failed to load game</h2>
-                    <p>${game.title}</p>
-                    <p style="font-size:0.9em;color:#aaa;">URL: ${currentZoneURL}</p>
-                    <p style="font-size:0.9em;color:#f88;">Error: ${err.message}</p>
-                </div>`;
-        }
     }
 }
 
 function closeZone() {
-    if (zoneViewer) zoneViewer.style.display = 'none';
-    zoneViewer?.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    if (zoneFrame && zoneFrame.parentNode) { 
-        try { zoneFrame.parentNode.removeChild(zoneFrame); } catch(e) {} 
+    if (zoneViewer) {
+        zoneViewer.style.display = 'none';
+        zoneViewer.setAttribute('aria-hidden', 'true');
     }
-    zoneFrame = null;
+    
+    document.body.style.overflow = '';
+    
+    zoneFrame = document.getElementById('zoneFrame');
+    if (zoneFrame) {
+        try {
+            zoneFrame.src = 'about:blank';
+            if (zoneFrame.contentWindow) {
+                const doc = zoneFrame.contentWindow.document;
+                doc.open();
+                doc.close();
+            }
+        } catch(e) {
+            console.warn('Iframe cleanup error:', e);
+        }
+    }
+    
     currentZoneURL = '';
+    
     try { 
         const u = new URL(window.location); 
         u.searchParams.delete('id'); 
@@ -993,75 +1061,80 @@ function fullscreenZone() {
     }
 }
 
-// Keyboard controls
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeZone();
+        const settingsOverlay = document.getElementById('settingsOverlay');
+        if (settingsOverlay && settingsOverlay.classList.contains('active')) {
+            settingsOverlay.classList.remove('active');
+            settingsOverlay.setAttribute('aria-hidden','true');
+        }
     }
 });
 </script>
 
-<!-- Search -->
+<!-- Optimized Search -->
 <script>
 const searchInput = document.getElementById("gameSearch");
 const searchWrapper = document.getElementById("searchWrapper");
 const searchSlider = document.getElementById("searchSlider");
 const searchTitle = document.getElementById("searchTitle");
 
+let searchTimeout = null;
 searchInput.addEventListener("input", () => {
-    const query = searchInput.value.toLowerCase().trim();
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        const query = searchInput.value.toLowerCase().trim();
 
-    // Clear previous results
-    searchSlider.innerHTML = "";
+        searchSlider.innerHTML = "";
 
-    if (!query) {
-        searchWrapper.style.display = "none";
-        return;
-    }
+        if (!query) {
+            searchWrapper.style.display = "none";
+            return;
+        }
 
-    // Filter games
-    const startsWith = allGames.filter(g => g.title.toLowerCase().startsWith(query));
-    const contains = allGames.filter(
-        g => !g.title.toLowerCase().startsWith(query) && g.title.toLowerCase().includes(query)
-    );
-    const matches = [...startsWith, ...contains];
+        const startsWith = allGames.filter(g => g.title.toLowerCase().startsWith(query));
+        const contains = allGames.filter(
+            g => !g.title.toLowerCase().startsWith(query) && g.title.toLowerCase().includes(query)
+        );
+        const matches = [...startsWith, ...contains].slice(0, 50);
 
-    if (matches.length === 0) {
-        searchWrapper.style.display = "none";
-        return;
-    }
+        if (matches.length === 0) {
+            searchWrapper.style.display = "none";
+            return;
+        }
 
-    // Show search wrapper and title
-    searchWrapper.style.display = "flex";
-    searchTitle.style.display = "block";
+        searchWrapper.style.display = "flex";
+        searchTitle.style.display = "block";
 
-    // Append all matches instantly
-    matches.forEach(game => {
-        const card = document.createElement("div");
-        card.className = "slide"; // keep existing styling
-        card.onclick = () => openZone(game);
+        const fragment = document.createDocumentFragment();
+        
+        matches.forEach(game => {
+            const card = document.createElement("div");
+            card.className = "slide";
+            card.setAttribute('data-game-id', game.id);
 
-        let tagHTML = "";
-        if (game.tag === "hot") tagHTML = `<a class="hotrank"><i class='bx bxs-hot'></i>HOT</a>`;
-        if (game.tag === "new") tagHTML = `<a class="newrank"><i class='bx bxs-zap'></i>NEW</a>`;
+            let tagHTML = "";
+            if (game.tag === "hot") tagHTML = `<a class="hotrank"><i class='bx bxs-hot'></i>HOT</a>`;
+            if (game.tag === "new") tagHTML = `<a class="newrank"><i class='bx bxs-zap'></i>NEW</a>`;
 
-        card.innerHTML = `${tagHTML}<img src="${game.img}" alt="${game.title}">`;
+            card.innerHTML = `${tagHTML}<img src="${game.img}" alt="${game.title}">`;
+            card.style.display = "inline-block";
+            card.style.opacity = "1";
 
-        // Make card visible immediately
-        card.style.display = "inline-block"; // forces visible
-        card.style.opacity = "1"; // ignore any fade animation
+            fragment.appendChild(card);
+        });
+        
+        searchSlider.appendChild(fragment);
 
-        searchSlider.appendChild(card);
-    });
-
-    // Ensure container shows all cards as a grid instead of slider
-    searchSlider.style.display = "flex";
-    searchSlider.style.flexWrap = "wrap";
-    searchSlider.style.justifyContent = "flex-start";
-    searchSlider.style.overflow = "visible"; // disables scroll/lazy hiding
+        searchSlider.style.display = "flex";
+        searchSlider.style.flexWrap = "wrap";
+        searchSlider.style.justifyContent = "flex-start";
+        searchSlider.style.overflow = "visible";
+    }, 150);
 });
 
-searchInput.disabled=false;
+searchInput.disabled = false;
 </script>
 
 <script>
@@ -1075,6 +1148,262 @@ function openGameById(id) {
 }
 </script>
 
+<!-- Onboarding Animation Script -->
+<script>
+class ImageCacheManager {
+  constructor() {
+    this.cacheKey = 'novaImageCache_v1';
+    this.cacheTimestamp = 'novaCacheTimestamp_v1';
+    this.loadedKey = 'novaImagesLoaded_v1';
+  }
+
+  getCachedImages() {
+    try {
+      const cached = localStorage.getItem(this.cacheKey);
+      const timestamp = localStorage.getItem(this.cacheTimestamp);
+      const loaded = localStorage.getItem(this.loadedKey);
+      
+      if (!cached || !timestamp || !loaded) return null;
+      
+      return {
+        images: JSON.parse(cached),
+        timestamp: parseInt(timestamp),
+        loaded: loaded === 'true'
+      };
+    } catch (e) {
+      return null;
+    }
+  }
+
+  setCachedImages(images) {
+    try {
+      localStorage.setItem(this.cacheKey, JSON.stringify(images));
+      localStorage.setItem(this.cacheTimestamp, Date.now().toString());
+      localStorage.setItem(this.loadedKey, 'true');
+    } catch (e) {
+      console.warn('Failed to cache images:', e);
+    }
+  }
+
+  clearCache() {
+    localStorage.removeItem(this.cacheKey);
+    localStorage.removeItem(this.cacheTimestamp);
+    localStorage.removeItem(this.loadedKey);
+  }
+
+  needsReload() {
+    const cache = this.getCachedImages();
+    if (!cache) return true;
+    
+    if (cache.loaded) {
+      const twentyFourHours = 24 * 60 * 60 * 1000;
+      const now = Date.now();
+      
+      const isHardReload = performance && (
+        performance.navigation?.type === 1 || 
+        performance.getEntriesByType?.('navigation')?.[0]?.type === 'reload'
+      );
+      
+      const cacheExpired = (now - cache.timestamp) > twentyFourHours;
+      
+      return cacheExpired && isHardReload;
+    }
+    
+    return true;
+  }
+}
+
+class ImagePreloader {
+  constructor() {
+    this.totalImages = 0;
+    this.loadedImages = 0;
+    this.images = [];
+    this.cacheManager = new ImageCacheManager();
+  }
+
+  async preloadAllImages() {
+    await this.waitForGames();
+    
+    const gameImages = new Set();
+    
+    document.querySelectorAll('.slide img, .bannerimage, img[src]').forEach(img => {
+      if (img.src && !img.src.includes('data:') && !img.src.includes('blob:')) {
+        gameImages.add(img.src);
+      }
+    });
+
+    const imageArray = Array.from(gameImages);
+    this.totalImages = imageArray.length;
+    
+    if (this.totalImages === 0) {
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve) => {
+      let completed = 0;
+      
+      imageArray.forEach(src => {
+        const img = new Image();
+        
+        const handleComplete = () => {
+          completed++;
+          this.imageLoaded(resolve, completed, imageArray.length);
+        };
+        
+        img.onload = handleComplete;
+        img.onerror = handleComplete;
+        img.src = src;
+        this.images.push(img);
+      });
+      
+      this.cacheManager.setCachedImages(imageArray);
+    });
+  }
+
+  waitForGames() {
+    return new Promise((resolve) => {
+      const checkGames = () => {
+        if (typeof allGames !== 'undefined' && allGames && allGames.length > 0) {
+          resolve();
+        } else {
+          setTimeout(checkGames, 100);
+        }
+      };
+      checkGames();
+    });
+  }
+
+  imageLoaded(resolve, loaded, total) {
+    const progress = (loaded / total) * 100;
+    this.updateProgress(progress);
+    
+    if (loaded >= total) {
+      resolve();
+    }
+  }
+
+  updateProgress(percentage) {
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('loadingProgress');
+    
+    if (progressBar) {
+      progressBar.style.width = percentage + '%';
+    }
+    
+    if (progressText) {
+      progressText.textContent = `Loading... ${Math.round(percentage)}%`;
+    }
+  }
+}
+
+const cacheManager = new ImageCacheManager();
+const shouldShowAnimation = cacheManager.needsReload();
+
+if (shouldShowAnimation) {
+  console.log('Loading animation: Images need to be loaded');
+  
+  document.body.classList.add('loading-active');
+  document.body.style.overflow = 'hidden';
+  
+  function startNovaAnimation() {
+    const timeline = gsap.timeline({
+      onComplete: async function() {
+        const preloader = new ImagePreloader();
+        
+        gsap.to('#loadingProgress', { opacity: 1, duration: 0.5 });
+        gsap.to('#progressBarContainer', { opacity: 1, duration: 0.5 });
+        
+        await preloader.preloadAllImages();
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        performFadeToBlackEnding();
+      }
+    });
+
+    timeline
+      .fromTo('.letter-n', {
+        x: -150,
+        opacity: 0
+      }, {
+        x: 0,
+        opacity: 1,
+        duration: 1.5,
+        ease: 'expo.inOut'
+      })
+      .fromTo('.letter-o', {
+        y: -200,
+        opacity: 0
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'expo.inOut'
+      }, '-=1.0')
+      .fromTo('.letter-v', {
+        y: 200,
+        opacity: 0
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1.5,
+        ease: 'expo.inOut'
+      }, '-=1.0')
+      .fromTo('.letter-a', {
+        x: 140,
+        opacity: 0
+      }, {
+        x: 0,
+        opacity: 1,
+        duration: 1.5,
+        ease: 'expo.inOut'
+      }, '-=1.0');
+
+    return timeline;
+  }
+
+  function performFadeToBlackEnding() {
+    const overlay = document.getElementById('loadingOverlay');
+    
+    const endTimeline = gsap.timeline({
+      onComplete: function() {
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+        document.body.classList.remove('loading-active');
+      }
+    });
+
+    endTimeline
+      .to('.nova-letter, #loadingProgress, #progressBarContainer', {
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power2.inOut'
+      })
+      .to({}, { duration: 0.4 })
+      .to(overlay, {
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power2.inOut'
+      });
+  }
+
+  if (typeof gsap !== 'undefined') {
+    startNovaAnimation();
+  } else {
+    const checkGSAP = setInterval(() => {
+      if (typeof gsap !== 'undefined') {
+        clearInterval(checkGSAP);
+        startNovaAnimation();
+      }
+    }, 100);
+  }
+} else {
+  console.log('Loading animation: Skipped (images cached)');
+  const overlay = document.getElementById('loadingOverlay');
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
+}
+</script>
 
 </body>
 </html>
