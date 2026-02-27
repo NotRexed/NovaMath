@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Adcash aclib loader — deferred until user accepts the agreement popup -->
-<!-- Scripts are injected dynamically after consent -->
+<script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
+<script type="text/javascript">
+    aclib.runAutoTag({
+        zoneId: 'dnvfx5svkw',
+    });
+</script>
+
 
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,6 +30,7 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
+
   gtag('config', 'G-9YWLQWZ5SD');
 </script>
 
@@ -48,12 +54,14 @@
   font-weight: 200;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Fabrica';
   src: url('assets/fonts/fabrica-font/Fabrica-ZOjx.otf') format('opentype');
   font-weight: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Gravity';
   src: url('assets/fonts/gravity-font/GravityLight-66Ro.otf') format('opentype');
@@ -64,8 +72,10 @@
 /* Onboarding Animation Styles */
 .loading-overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background: #000000 url('assets/img/black.jpg') center center / cover no-repeat;
   display: flex;
   justify-content: center;
@@ -76,20 +86,24 @@
   backdrop-filter: blur(20px);
   overflow: hidden;
 }
+
 .welcome-message {
   text-align: center;
   user-select: none;
   -webkit-user-select: none;
   perspective: 1000px;
 }
+
 .welcome-message h1 {
   display: inline-block;
   font-family: 'Nunito', 'Arial', sans-serif;
   font-size: clamp(50px, 8vw, 100px);
-  margin: 0; padding: 0;
+  margin: 0;
+  padding: 0;
   font-weight: 200;
   transform-style: preserve-3d;
 }
+
 .nova-letter {
   display: inline-block;
   background: linear-gradient(40deg, #2e12cf, #8911da, #8b8d84);
@@ -101,246 +115,247 @@
   transform-origin: center center;
   will-change: transform, opacity;
 }
+
 .loading-progress {
   margin-top: 30px;
   font-family: 'Fabrica', 'Arial', sans-serif;
   font-size: 18px;
-  color: rgba(255,255,255,0.8);
+  color: rgba(255, 255, 255, 0.8);
   opacity: 0;
   letter-spacing: 1px;
 }
+
 .progress-bar-container {
-  width: 350px; height: 5px;
-  background: rgba(255,255,255,0.15);
+  width: 350px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 3px;
   margin: 20px auto 0;
   overflow: hidden;
   opacity: 0;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .progress-bar {
   height: 100%;
   background: linear-gradient(90deg, #2e12cf, #8911da, #a78bfa);
   width: 0%;
   transition: width 0.3s ease;
   border-radius: 3px;
-  box-shadow: 0 0 20px rgba(137,17,218,0.5);
+  box-shadow: 0 0 20px rgba(137, 17, 218, 0.5);
 }
 
-/* Gradient background */
+
+/* Gradient background with customizable colors */
 body {
-  background: linear-gradient(135deg,
-    var(--bg-color-1, #0a0a0a) 0%,
-    var(--bg-color-2, #1a1a2e) 50%,
+  background: linear-gradient(135deg, 
+    var(--bg-color-1, #0a0a0a) 0%, 
+    var(--bg-color-2, #1a1a2e) 50%, 
     var(--bg-color-3, #16213e) 100%);
   background-attachment: fixed;
   min-height: 100vh;
 }
-body.loading-active { background: #000000; }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 12px; }
-::-webkit-scrollbar-track { background: rgba(10,10,10,0.5); border-radius: 10px; }
+/* Hide gradient when loading overlay is active */
+body.loading-active {
+  background: #000000;
+}
+
+/* Custom Scrollbar - Uses same gradient as background */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 10, 10, 0.5);
+  border-radius: 10px;
+}
+
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg,
-    var(--bg-color-1, #0a0a0a) 0%,
-    var(--bg-color-2, #1a1a2e) 50%,
+  background: linear-gradient(135deg, 
+    var(--bg-color-1, #0a0a0a) 0%, 
+    var(--bg-color-2, #1a1a2e) 50%, 
     var(--bg-color-3, #16213e) 100%);
   border-radius: 10px;
-  border: 2px solid rgba(10,10,10,0.3);
+  border: 2px solid rgba(10, 10, 10, 0.3);
   transition: all 0.3s ease;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg,
-    var(--bg-color-1, #1a1a3e) 0%,
-    var(--bg-color-2, #2a2a4e) 50%,
+  background: linear-gradient(135deg, 
+    var(--bg-color-1, #1a1a3e) 0%, 
+    var(--bg-color-2, #2a2a4e) 50%, 
     var(--bg-color-3, #26315e) 100%);
-  border-color: rgba(255,255,255,0.1);
+  border-color: rgba(255, 255, 255, 0.1);
 }
-* { scrollbar-width: thin; scrollbar-color: var(--bg-color-2, #1a1a2e) rgba(10,10,10,0.5); }
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bg-color-2, #1a1a2e) rgba(10, 10, 10, 0.5);
+}
 
 /* Settings Overlay */
 .settings-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(8px);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 10001;
-  padding: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
-.settings-overlay[aria-hidden="false"] { display: flex; }
-.settings-popup {
-  background: rgba(15,23,42,0.95);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px;
-  max-width: 500px; width: 100%;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  animation: scaleIn 0.2s ease forwards;
-}
-@keyframes scaleIn {
-  from { transform: scale(0.9); opacity: 0; }
-  to   { transform: scale(1);   opacity: 1; }
-}
-.settings-header {
-  padding: 1.5rem 2rem;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  display: flex; align-items: center; justify-content: space-between;
-}
-.settings-header h3 { font-size: 1.5rem; font-weight: 700; color: white; margin: 0; }
-#closeSettings {
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: white; width: 40px; height: 40px;
-  border-radius: 10px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.5rem; transition: all 0.3s ease;
-}
-#closeSettings:hover { background: rgba(255,255,255,0.2); }
-.settings-body { padding: 1.5rem 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
-.settings-item {
-  background: rgba(48,48,48,0.8);
-  border: 1px solid rgba(65,65,65,1);
-  color: white; padding: 1rem 1.25rem;
-  border-radius: 12px; cursor: pointer;
-  font-size: 1rem; font-weight: 600;
-  transition: all 0.3s ease;
-  display: flex; align-items: center; gap: 12px; text-align: left;
-}
-.settings-item:hover {
-  background: rgba(78,78,78,1);
-  transform: translateY(-2px);
-  border-color: rgba(77,166,255,0.5);
-}
-.settings-item i { font-size: 1.2rem; }
 
-/* Zone Viewer */
+.settings-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* Popup Container */
+.settings-popup {
+    background: rgba(20, 20, 20, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    width: 320px;
+    color: white;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    animation: scaleIn 0.2s ease forwards;
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+/* Settings Overlay Styles */
+    .settings-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10001;
+      padding: 20px;
+    }
+
+    .settings-overlay[aria-hidden="false"] {
+      display: flex;
+    }
+
+    .settings-popup {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      animation: slideInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .settings-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .settings-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      margin: 0;
+    }
+
+    #closeSettings {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    #closeSettings:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .settings-body {
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .settings-item {
+      background: rgba(48, 48, 48, 0.8);
+      border: 1px solid rgba(65, 65, 65, 1);
+      color: white;
+      padding: 1rem 1.25rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .settings-item:hover {
+      background: rgba(78, 78, 78, 1);
+      transform: translateY(-2px);
+      border-color: rgba(77, 166, 255, 0.5);
+    }
+
+    .settings-item i {
+      font-size: 1.2rem;
+    }
+
+/* Zone Viewer Fix */
 #zoneViewer {
-  position: fixed; top: 0; left: 0;
-  width: 100%; height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 10000;
   background: #000;
-  display: flex; flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
+
 #zoneViewer .zone-header {
   flex-shrink: 0;
-  background: rgba(0,0,0,0.9);
+  background: rgba(0, 0, 0, 0.9);
   padding: 1rem;
-  display: flex; justify-content: space-between; align-items: center;
-}
-#zoneViewer iframe { flex: 1; width: 100%; height: 100%; border: none; }
-
-/* ===== AGREEMENT POPUP ===== */
-#agreementModal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  display: none;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  z-index: 999998;
-  padding: 20px;
 }
 
-@keyframes agreementShake {
-  0%,100% { transform: translateX(0); }
-  10%,30%,50%,70%,90% { transform: translateX(-8px); }
-  20%,40%,60%,80% { transform: translateX(8px); }
-}
-#agreementModal .ag-box.ag-shaking {
-  animation: agreementShake 0.45s ease;
-}
-
-#agreementModal .ag-box {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  backdrop-filter: blur(16px);
-  border-radius: 16px;
+#zoneViewer iframe {
+  flex: 1;
   width: 100%;
-  max-width: 560px;
-  max-height: 90vh;
-  overflow-y: auto;
-  padding: 1.75rem;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.6);
-}
-#agreementModal .ag-box::-webkit-scrollbar { width: 6px; }
-#agreementModal .ag-box::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 6px; }
-
-#agreementModal .ag-header {
-  display: flex; align-items: center; gap: 0.85rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  margin-bottom: 1.25rem;
-}
-#agreementModal .ag-icon {
-  width: 46px; height: 46px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(77,166,255,0.12);
-  border: 1px solid rgba(77,166,255,0.25);
-  border-radius: 12px;
-}
-#agreementModal .ag-title {
-  font-size: 1.35rem; font-weight: 700; color: white; margin: 0 0 2px;
-}
-#agreementModal .ag-subtitle { font-size: 0.82rem; color: rgba(255,255,255,0.55); margin: 0; }
-
-#agreementModal .ag-list { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1.5rem; }
-#agreementModal .ag-item {
-  display: flex; align-items: flex-start; gap: 0.75rem;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  padding: 0.9rem 1rem;
-}
-#agreementModal .ag-item-emoji { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
-#agreementModal .ag-item-title { font-weight: 600; color: white; font-size: 0.9rem; margin-bottom: 3px; }
-#agreementModal .ag-item-text { font-size: 0.8rem; color: rgba(255,255,255,0.7); line-height: 1.45; }
-
-#agreementModal .ag-footer {
-  border-top: 1px solid rgba(255,255,255,0.1);
-  padding-top: 1.25rem;
-  display: flex; flex-direction: column; gap: 0.9rem;
-}
-#agreementModal .ag-checkbox-label {
-  display: flex; align-items: flex-start; gap: 0.65rem; cursor: pointer;
-}
-#agreementModal .ag-checkbox-label input[type="checkbox"] {
-  margin-top: 2px; width: 17px; height: 17px;
-  cursor: pointer; flex-shrink: 0; accent-color: #4da6ff;
-}
-#agreementModal .ag-checkbox-text { font-size: 0.82rem; color: rgba(255,255,255,0.85); line-height: 1.4; }
-
-#agreementGotItBtn {
-  width: 100%;
-  padding: 0.85rem 1.5rem;
-  background: #4da6ff;
-  color: white;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 0.95rem;
+  height: 100%;
   border: none;
-  cursor: not-allowed;
-  opacity: 0.45;
-  transition: opacity 0.2s ease, background 0.2s ease, transform 0.15s ease;
 }
-#agreementGotItBtn:not(:disabled) { opacity: 1; cursor: pointer; }
-#agreementGotItBtn:not(:disabled):hover { background: #3d96ef; transform: translateY(-1px); }
 </style>
-
-<!--
-  CONSENT GATE — runs synchronously before anything renders.
-  If the user has NOT accepted yet, we show the modal immediately
-  and block scrolling. This fires on every page load including reloads,
-  so there is no way to bypass it by refreshing.
--->
-<script>
-  window._AGREEMENT_KEY = 'novaGamesAgreementAccepted_v1';
-  window._userHasAccepted = (localStorage.getItem(window._AGREEMENT_KEY) === 'true');
-</script>
 
 </head>
 <body>
@@ -416,75 +431,19 @@ body.loading-active { background: #000000; }
     </div>
     <div class="settings-body">
       <button class="settings-item" id="tab-cloak">
-        <i class="fa-solid fa-copy"></i> Tab Cloak
-      </button>
+      <i class="fa-solid fa-copy"></i> Tab Cloak</button>
       <button class="settings-item" id="customize-background">
-        <i class="fa-solid fa-palette" style="color:#a78bfa;"></i> Customize Background
-      </button>
+      <i class="fa-solid fa-palette" style="color: #a78bfa;"></i> Customize Background</button>
       <button class="settings-item" id="reset-background">
-        <i class="fa-solid fa-rotate-left" style="color:#fb923c;"></i> Reset Background
-      </button>
+      <i class="fa-solid fa-rotate-left" style="color: #fb923c;"></i> Reset Background</button>
     </div>
-  </div>
-</div>
-
-<!-- Agreement Popup -->
-<div id="agreementModal" style="display:none;">
-  <div class="ag-box" id="agreementBox">
-
-    <div class="ag-header">
-      <div class="ag-icon">
-        <svg width="22" height="22" fill="none" stroke="#4da6ff" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-      </div>
-      <div>
-        <p class="ag-title">Important Information</p>
-        <p class="ag-subtitle">Please read before continuing</p>
-      </div>
-    </div>
-
-    <div class="ag-list">
-      <div class="ag-item">
-        <span class="ag-item-emoji">📰</span>
-        <div>
-          <div class="ag-item-title">Ad Popup</div>
-          <div class="ag-item-text">This site contains ads that open a new browser window and may download an item. If this happens simply delete the downloaded item and close out of that tab.</div>
-        </div>
-      </div>
-      <div class="ag-item">
-        <span class="ag-item-emoji">🦠</span>
-        <div>
-          <div class="ag-item-title">This Site Is Not A Virus</div>
-          <div class="ag-item-text">Many people have said that because of the popup ads this site is a "Virus", I assure you its not as its just the ads.</div>
-        </div>
-      </div>
-      <div class="ag-item">
-        <span class="ag-item-emoji">🔞</span>
-        <div>
-          <div class="ag-item-title">NSFW Content & Ads</div>
-          <div class="ag-item-text">Third-party ads and content are not managed by the site owner. Please join the discord to report inappropriate ads.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="ag-footer">
-      <label class="ag-checkbox-label">
-        <input type="checkbox" id="agreementCheckbox">
-        <span class="ag-checkbox-text">
-          I understand and agree that third-party content and ads are not controlled by the site owner.
-        </span>
-      </label>
-      <button id="agreementGotItBtn" disabled>Got It — Let Me Play!</button>
-    </div>
-
   </div>
 </div>
 
 <!-- Main Content -->
 <div class="main-content">
     <div id="topbar"></div>
+    <!-- Featured Section -->
     <section class="homepage">
         <div class="carousels">
             <div class="featured-row">
@@ -492,7 +451,7 @@ body.loading-active { background: #000000; }
                     <h1 class="featuredtitle">Featured</h1>
                     <h2 class="featuredmonth"><b class="divider">|</b>February 2026</h2>
                 </div>
-                <select id="sortDropdown" style="position:absolute;top:0;left:62%;padding:0.5rem 1rem;background:#000000;border:1px solid rgba(255,255,255,0.3);border-radius:8px;color:white;cursor:pointer;font-size:0.95rem;z-index:10;">
+                <select id="sortDropdown" style="position: absolute; top: 0; left: 62%; padding: 0.5rem 1rem; background: #000000; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 8px; color: white; cursor: pointer; font-size: 0.95rem; z-index: 10;">
                     <option value="name">Sort by Name</option>
                     <option value="id">Sort by ID</option>
                     <option value="popularity">Sort by Popularity</option>
@@ -504,79 +463,91 @@ body.loading-active { background: #000000; }
             </div>
 
             <div class="slideshow-container">
-              <div class="slidewrapper" id="slidesWrapper">
-                <div class="bannerslide">
-                  <img class="bannerimage" src="bigupdatebanner.jpg" alt="Slide 1">
-                  <div class="slide-text">
-                    <img style="height:50px;transform:translateX(-10px);" class="logothumb" src="nova-big.png">
-                    <h1 style="transform:translateY(-10px);font-size:37px;">THE BIG UPDATE</h1>
-                    <a href="https://discord.gg/5DqrXeydrz" target="_blank">
-                      <button class="banneraction"><i class="fa-brands fa-discord"></i> Join The Discord</button>
-                    </a>
-                  </div>
+    <div class="slidewrapper" id="slidesWrapper">
+        <div class="bannerslide">
+            <img class="bannerimage" src="bigupdatebanner.jpg" alt="Slide 1">
+            <div class="slide-text">
+                <img style="height:50px;transform:translateX(-10px);" class="logothumb" src="nova-big.png">
+                <h1 style="transform:translateY(-10px);font-size:37px;">THE BIG UPDATE</h1>
+                <a href="https://discord.gg/5DqrXeydrz" target="_blank">
+                    <button class="banneraction">
+                        <i class="fa-brands fa-discord"></i> Join The Discord
+                    </button>
+                </a>
+            </div>
+        </div>
+        <div class="bannerslide">
+            <video class="slide-video" poster="images/slsfallback.png" autoplay muted loop playsinline>
+                <source src="https://cdn.jsdelivr.net/gh/Notrexed/assets@latest/gameofthemonth.mp4" type="video/mp4" />
+            </video>
+            <div class="bangradient">
+                <div class="slide-text">
+                    <img class="logothumb" src="gameofthemonth.jpg">
+                    <h1>Game of the Month</h1>
+                    <button class="banneraction" onclick="openGameById(542)">
+  <i class='bx bx-play icon'></i>Play Now
+</button>
+
                 </div>
-                <div class="bannerslide">
-                  <video class="slide-video" poster="images/slsfallback.png" autoplay muted loop playsinline>
-                    <source src="https://cdn.jsdelivr.net/gh/Notrexed/assets@latest/gameofthemonth.mp4" type="video/mp4"/>
-                  </video>
-                  <div class="bangradient">
-                    <div class="slide-text">
-                      <img class="logothumb" src="gameofthemonth.jpg">
-                      <h1>Game of the Month</h1>
-                      <button class="banneraction" onclick="openGameById(542)">
-                        <i class='bx bx-play icon'></i>Play Now
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <a class="previous">&#10094;</a>
-              <a class="nextslide">&#10095;</a>
-              <div class="dots" id="dotsContainer">
-                <span class="dot" onclick="goToSlide(0)"></span>
-                <span class="dot" onclick="goToSlide(1)"></span>
-              </div>
             </div>
+        </div>
+    </div>
 
-            <div id="searchWrapper" style="display:none;flex-direction:column;align-items:center;width:100%;">
-              <div class="hometext" id="searchTitle">
-                <h1 class="category"><i class='bx bx-search'></i> Search Results</h1>
-              </div>
-              <div class="slider-container" id="searchContainer">
-                <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
-                <div class="slider" id="searchSlider"></div>
-                <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
-              </div>
-            </div>
+    <!-- Fixed navigation buttons -->
+    <a class="previous">&#10094;</a>
+    <a class="nextslide">&#10095;</a>
 
-            <div id="featuredGames" class="game-grid">
-              <h1 class="category">Featured</h1>
-              <div class="grid-container"></div>
-            </div>
+    <!-- Dots -->
+    <div class="dots" id="dotsContainer">
+        <span class="dot" onclick="goToSlide(0)"></span>
+        <span class="dot" onclick="goToSlide(1)"></span>
+    </div>
+</div>
 
-            <div id="allGames" class="game-grid">
-              <h1 class="category">All Games</h1>
-              <div class="grid-container"></div>
-            </div>
 
-            <div id="zoneViewer" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;background:#000;flex-direction:column;">
-              <div class="zone-header" style="flex-shrink:0;background:rgba(0,0,0,0.9);padding:1rem;display:flex;justify-content:space-between;align-items:center;">
-                <div class="zone-title">
-                  <h2 id="zoneName" style="margin:0;color:white;">Game Title</h2>
-                  <span id="zoneId" style="display:none"></span>
-                  <a id="zoneAuthor" href="#" target="_blank" style="color:#888;font-size:0.9rem;">by Author</a>
-                </div>
-                <div class="zone-controls">
-                  <button onclick="openInAboutBlank()" style="padding:0.5rem 1rem;margin-left:0.5rem;cursor:pointer;">Open in about:blank</button>
-                  <button onclick="fullscreenZone()" style="padding:0.5rem 1rem;margin-left:0.5rem;cursor:pointer;">Fullscreen</button>
-                  <button onclick="closeZone()" style="padding:0.5rem 1rem;margin-left:0.5rem;cursor:pointer;">Close</button>
-                </div>
-              </div>
-              <iframe id="zoneFrame" style="flex:1;width:100%;height:calc(100% - 70px);border:none;"></iframe>
-            </div>
+<!-- SEARCH RESULTS -->
+<div id="searchWrapper" style="display:none; flex-direction: column; align-items: center; width: 100%;">
+    <div class="hometext" id="searchTitle">
+        <h1 class="category"><i class='bx bx-search'></i> Search Results</h1>
+    </div>
+    <div class="slider-container" id="searchContainer">
+        <button class="nav-btn prev hidden"><i class='bx bx-left-arrow-alt'></i></button>
+        <div class="slider" id="searchSlider"></div>
+        <button class="nav-btn next"><i class='bx bx-right-arrow-alt'></i></button>
+    </div>
+</div>
 
-</div></div></section></div>
 
+        <!-- Featured Games Grid -->
+<div id="featuredGames" class="game-grid">
+  <h1 class="category">Featured</h1>
+  <div class="grid-container"></div>
+</div>
+
+<!-- All Games Grid -->
+<div id="allGames" class="game-grid">
+  <h1 class="category">All Games</h1>
+  <div class="grid-container"></div>
+</div>
+
+<!-- GAME OVERLAY -->
+<div id="zoneViewer" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; background: #000; flex-direction: column;">
+    <div class="zone-header" style="flex-shrink: 0; background: rgba(0, 0, 0, 0.9); padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
+        <div class="zone-title">
+            <h2 id="zoneName" style="margin: 0; color: white;">Game Title</h2>
+            <span id="zoneId" style="display:none"></span>
+            <a id="zoneAuthor" href="#" target="_blank" style="color: #888; font-size: 0.9rem;">by Author</a>
+        </div>
+        <div class="zone-controls">
+            <button onclick="openInAboutBlank()" style="padding: 0.5rem 1rem; margin-left: 0.5rem; cursor: pointer;">Open in about:blank</button>
+            <button onclick="fullscreenZone()" style="padding: 0.5rem 1rem; margin-left: 0.5rem; cursor: pointer;">Fullscreen</button>
+            <button onclick="closeZone()" style="padding: 0.5rem 1rem; margin-left: 0.5rem; cursor: pointer;">Close</button>
+        </div>
+    </div>
+    <iframe id="zoneFrame" style="flex: 1; width: 100%; height: calc(100% - 70px); border: none;"></iframe>
+</div>
+
+<!-- Scroll to top on reload -->
 <script>
 window.onbeforeunload = () => window.scrollTo(0,0);
 window.onload = () => setTimeout(()=>window.scrollTo(0,0),0);
@@ -597,15 +568,22 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsOverlay.classList.add('active');
     settingsOverlay.setAttribute('aria-hidden','false');
   }
+
   function closeOverlay() {
     if (!settingsOverlay) return;
     settingsOverlay.classList.remove('active');
     settingsOverlay.setAttribute('aria-hidden','true');
   }
 
-  settingsNavLink?.addEventListener('click', e => { e.preventDefault(); openOverlay(); });
+  settingsNavLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openOverlay();
+  });
+
   closeSettingsBtn?.addEventListener('click', closeOverlay);
-  settingsOverlay?.addEventListener('click', e => { if (e.target === settingsOverlay) closeOverlay(); });
+  settingsOverlay?.addEventListener('click', (e) => {
+    if (e.target === settingsOverlay) closeOverlay();
+  });
 
   function restoreTabCloak() {
     const savedTitle = localStorage.getItem("tabCloakTitle");
@@ -613,7 +591,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedTitle) document.title = savedTitle;
     if (savedFavicon) {
       let favicon = document.querySelector("link[rel~='icon']");
-      if (!favicon) { favicon = document.createElement("link"); favicon.rel = "icon"; document.head.appendChild(favicon); }
+      if (!favicon) {
+        favicon = document.createElement("link");
+        favicon.rel = "icon";
+        document.head.appendChild(favicon);
+      }
       favicon.href = savedFavicon;
     }
   }
@@ -621,104 +603,155 @@ document.addEventListener('DOMContentLoaded', () => {
 
   tabCloakBtn?.addEventListener("click", () => {
     const newTitle = prompt("Enter new tab title:", document.title);
-    if (newTitle !== null) { document.title = newTitle; localStorage.setItem("tabCloakTitle", newTitle); }
+    if (newTitle !== null) {
+      document.title = newTitle;
+      localStorage.setItem("tabCloakTitle", newTitle);
+    }
+
     const newFavicon = prompt("Enter new tab image URL (leave empty to keep current):", "");
     if (newFavicon !== null && newFavicon.trim() !== "") {
       let favicon = document.querySelector("link[rel~='icon']");
-      if (!favicon) { favicon = document.createElement("link"); favicon.rel = "icon"; document.head.appendChild(favicon); }
+      if (!favicon) {
+        favicon = document.createElement("link");
+        favicon.rel = "icon";
+        document.head.appendChild(favicon);
+      }
       favicon.href = newFavicon;
       localStorage.setItem("tabCloakFavicon", newFavicon);
     }
   });
 
-  function applyBackgroundGradient(c1, c2, c3) {
-    document.documentElement.style.setProperty('--bg-color-1', c1);
-    document.documentElement.style.setProperty('--bg-color-2', c2);
-    document.documentElement.style.setProperty('--bg-color-3', c3);
-    localStorage.setItem('bgColor1', c1);
-    localStorage.setItem('bgColor2', c2);
-    localStorage.setItem('bgColor3', c3);
+  function applyBackgroundGradient(color1, color2, color3) {
+    document.documentElement.style.setProperty('--bg-color-1', color1);
+    document.documentElement.style.setProperty('--bg-color-2', color2);
+    document.documentElement.style.setProperty('--bg-color-3', color3);
+    localStorage.setItem('bgColor1', color1);
+    localStorage.setItem('bgColor2', color2);
+    localStorage.setItem('bgColor3', color3);
   }
+
   function restoreBackgroundGradient() {
-    const c1 = localStorage.getItem('bgColor1');
-    const c2 = localStorage.getItem('bgColor2');
-    const c3 = localStorage.getItem('bgColor3');
-    if (c1 && c2 && c3) {
-      document.documentElement.style.setProperty('--bg-color-1', c1);
-      document.documentElement.style.setProperty('--bg-color-2', c2);
-      document.documentElement.style.setProperty('--bg-color-3', c3);
+    const color1 = localStorage.getItem('bgColor1');
+    const color2 = localStorage.getItem('bgColor2');
+    const color3 = localStorage.getItem('bgColor3');
+    if (color1 && color2 && color3) {
+      document.documentElement.style.setProperty('--bg-color-1', color1);
+      document.documentElement.style.setProperty('--bg-color-2', color2);
+      document.documentElement.style.setProperty('--bg-color-3', color3);
     }
   }
   restoreBackgroundGradient();
 
   customizeBackgroundBtn?.addEventListener('click', () => {
+    // Close the settings overlay
     closeOverlay();
+    
     const pickerContainer = document.createElement('div');
-    pickerContainer.style.cssText = `position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(20,20,20,0.95);backdrop-filter:blur(10px);padding:2rem;border-radius:1rem;z-index:10002;box-shadow:0 8px 30px rgba(0,0,0,0.5);color:white;font-family:sans-serif;max-width:400px;width:90%;`;
-    const s1 = localStorage.getItem('bgColor1')||'#0a0a0a';
-    const s2 = localStorage.getItem('bgColor2')||'#1a1a2e';
-    const s3 = localStorage.getItem('bgColor3')||'#16213e';
+    pickerContainer.style.cssText = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(20, 20, 20, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 1rem;
+      z-index: 10002;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      color: white;
+      font-family: sans-serif;
+      max-width: 400px;
+      width: 90%;
+    `;
+
+    const savedColor1 = localStorage.getItem('bgColor1') || '#0a0a0a';
+    const savedColor2 = localStorage.getItem('bgColor2') || '#1a1a2e';
+    const savedColor3 = localStorage.getItem('bgColor3') || '#16213e';
+
     pickerContainer.innerHTML = `
-      <h3 style="margin-top:0;">Customize Background Gradient</h3>
-      <p style="font-size:0.9rem;color:#aaa;margin-bottom:1rem;">This gradient is also applied to the scrollbar</p>
-      <div style="margin:1rem 0;"><label style="display:block;margin-bottom:0.5rem;">Color 1 (Top Left):</label><input type="color" id="bgColor1" value="${s1}" style="width:100%;height:40px;cursor:pointer;border:none;border-radius:5px;"></div>
-      <div style="margin:1rem 0;"><label style="display:block;margin-bottom:0.5rem;">Color 2 (Middle):</label><input type="color" id="bgColor2" value="${s2}" style="width:100%;height:40px;cursor:pointer;border:none;border-radius:5px;"></div>
-      <div style="margin:1rem 0;"><label style="display:block;margin-bottom:0.5rem;">Color 3 (Bottom Right):</label><input type="color" id="bgColor3" value="${s3}" style="width:100%;height:40px;cursor:pointer;border:none;border-radius:5px;"></div>
-      <div style="display:flex;gap:0.5rem;margin-top:1.5rem;">
-        <button id="applyBgColors" style="flex:1;padding:0.7rem;background:#4CAF50;border:none;border-radius:5px;color:white;cursor:pointer;font-weight:bold;">Apply</button>
-        <button id="cancelBgColors" style="flex:1;padding:0.7rem;background:#f44336;border:none;border-radius:5px;color:white;cursor:pointer;font-weight:bold;">Cancel</button>
-      </div>`;
+      <h3 style="margin-top: 0;">Customize Background Gradient</h3>
+      <p style="font-size: 0.9rem; color: #aaa; margin-bottom: 1rem;">This gradient is also applied to the scrollbar</p>
+      <div style="margin: 1rem 0;">
+        <label style="display: block; margin-bottom: 0.5rem;">Color 1 (Top Left):</label>
+        <input type="color" id="bgColor1" value="${savedColor1}" style="width: 100%; height: 40px; cursor: pointer; border: none; border-radius: 5px;">
+      </div>
+      <div style="margin: 1rem 0;">
+        <label style="display: block; margin-bottom: 0.5rem;">Color 2 (Middle):</label>
+        <input type="color" id="bgColor2" value="${savedColor2}" style="width: 100%; height: 40px; cursor: pointer; border: none; border-radius: 5px;">
+      </div>
+      <div style="margin: 1rem 0;">
+        <label style="display: block; margin-bottom: 0.5rem;">Color 3 (Bottom Right):</label>
+        <input type="color" id="bgColor3" value="${savedColor3}" style="width: 100%; height: 40px; cursor: pointer; border: none; border-radius: 5px;">
+      </div>
+      <div style="display: flex; gap: 0.5rem; margin-top: 1.5rem;">
+        <button id="applyBgColors" style="flex: 1; padding: 0.7rem; background: #4CAF50; border: none; border-radius: 5px; color: white; cursor: pointer; font-weight: bold;">Apply</button>
+        <button id="cancelBgColors" style="flex: 1; padding: 0.7rem; background: #f44336; border: none; border-radius: 5px; color: white; cursor: pointer; font-weight: bold;">Cancel</button>
+      </div>
+    `;
+
     document.body.appendChild(pickerContainer);
-    const c1i = pickerContainer.querySelector('#bgColor1');
-    const c2i = pickerContainer.querySelector('#bgColor2');
-    const c3i = pickerContainer.querySelector('#bgColor3');
-    const preview = () => {
-      document.documentElement.style.setProperty('--bg-color-1', c1i.value);
-      document.documentElement.style.setProperty('--bg-color-2', c2i.value);
-      document.documentElement.style.setProperty('--bg-color-3', c3i.value);
+
+    const color1Input = pickerContainer.querySelector('#bgColor1');
+    const color2Input = pickerContainer.querySelector('#bgColor2');
+    const color3Input = pickerContainer.querySelector('#bgColor3');
+    
+    const updatePreview = () => {
+      document.documentElement.style.setProperty('--bg-color-1', color1Input.value);
+      document.documentElement.style.setProperty('--bg-color-2', color2Input.value);
+      document.documentElement.style.setProperty('--bg-color-3', color3Input.value);
     };
-    c1i.addEventListener('input', preview);
-    c2i.addEventListener('input', preview);
-    c3i.addEventListener('input', preview);
+
+    color1Input.addEventListener('input', updatePreview);
+    color2Input.addEventListener('input', updatePreview);
+    color3Input.addEventListener('input', updatePreview);
+
     pickerContainer.querySelector('#applyBgColors').addEventListener('click', () => {
-      applyBackgroundGradient(c1i.value, c2i.value, c3i.value);
+      applyBackgroundGradient(color1Input.value, color2Input.value, color3Input.value);
       document.body.removeChild(pickerContainer);
     });
+
     pickerContainer.querySelector('#cancelBgColors').addEventListener('click', () => {
       restoreBackgroundGradient();
       document.body.removeChild(pickerContainer);
     });
-    const escH = e => {
+
+    const escapeHandler = (e) => {
       if (e.key === 'Escape' && document.body.contains(pickerContainer)) {
         restoreBackgroundGradient();
         document.body.removeChild(pickerContainer);
-        document.removeEventListener('keydown', escH);
+        document.removeEventListener('keydown', escapeHandler);
       }
     };
-    document.addEventListener('keydown', escH);
+    document.addEventListener('keydown', escapeHandler);
   });
 
   resetBackgroundBtn?.addEventListener('click', () => {
-    applyBackgroundGradient('#0a0a0a','#1a1a2e','#16213e');
+    applyBackgroundGradient('#0a0a0a', '#1a1a2e', '#16213e');
     alert('Background gradient reset to default!');
   });
 
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOverlay(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeOverlay();
+    }
+  });
 });
 </script>
 
-<!-- Games System -->
+<!-- Optimized Games System with jsDelivr Stats -->
 <script>
 let allGames = [];
 const coverURL = "https://cdn.jsdelivr.net/gh/Notrexed/covers@main";
-const htmlURL  = "https://cdn.jsdelivr.net/gh/Notrexed/html@main";
+const htmlURL = "https://cdn.jsdelivr.net/gh/Notrexed/html@main";
 
 let _allStatsCache = null;
 let _statsFetchPromise = null;
 
+// Clear old caches on load
 if (typeof localStorage !== 'undefined') {
     localStorage.removeItem('novaStatsCache_v2');
     localStorage.removeItem('novaStatsCache_v3');
+    console.log('Cleared old cache versions');
 }
 
 function loadCachedStats() {
@@ -726,456 +759,810 @@ function loadCachedStats() {
         const cached = localStorage.getItem('novaStatsCache_v4');
         if (!cached) return null;
         const data = JSON.parse(cached);
-        if (!data.timestamp || !data.stats || (Date.now() - data.timestamp) > 3600000) {
-            localStorage.removeItem('novaStatsCache_v4'); return null;
+        const now = Date.now();
+        const oneHour = 1 * 60 * 60 * 1000;
+        if (!data.timestamp || !data.stats || (now - data.timestamp) > oneHour) {
+            localStorage.removeItem('novaStatsCache_v4');
+            return null;
         }
-        if (Object.keys(data.stats).length === 0) { localStorage.removeItem('novaStatsCache_v4'); return null; }
+        // Don't use cache if it has 0 games (indicates bad data)
+        const gameCount = Object.keys(data.stats).length;
+        if (gameCount === 0) {
+            console.log('Cache has 0 games, clearing and forcing fresh fetch');
+            localStorage.removeItem('novaStatsCache_v4');
+            return null;
+        }
         return data.stats;
-    } catch(e) { return null; }
+    } catch (e) {
+        return null;
+    }
 }
+
 function saveCachedStats(stats) {
-    try { localStorage.setItem('novaStatsCache_v4', JSON.stringify({ timestamp: Date.now(), stats })); } catch(e) {}
+    try {
+        localStorage.setItem('novaStatsCache_v4', JSON.stringify({
+            timestamp: Date.now(),
+            stats: stats
+        }));
+    } catch (e) {
+        console.warn('Failed to cache stats:', e);
+    }
 }
 
 async function getAllStats(forceRefresh = false) {
-    if (!forceRefresh && _allStatsCache) { requestAnimationFrame(updateAllPlayCounts); return _allStatsCache; }
+    console.log('getAllStats called, forceRefresh:', forceRefresh);
+    
+    if (!forceRefresh && _allStatsCache) {
+        console.log('Returning cached stats:', Object.keys(_allStatsCache).length, 'games');
+        // Update UI with cached stats
+        requestAnimationFrame(() => updateAllPlayCounts());
+        return _allStatsCache;
+    }
     if (!forceRefresh) {
         const cached = loadCachedStats();
-        if (cached) { _allStatsCache = cached; requestAnimationFrame(updateAllPlayCounts); return cached; }
+        if (cached) {
+            console.log('Loaded from localStorage:', Object.keys(cached).length, 'games');
+            _allStatsCache = cached;
+            // Update UI with cached stats
+            requestAnimationFrame(() => updateAllPlayCounts());
+            return cached;
+        }
     }
-    if (_statsFetchPromise) return _statsFetchPromise;
+    if (_statsFetchPromise) {
+        console.log('Already fetching stats, returning existing promise');
+        return _statsFetchPromise;
+    }
+    
+    console.log('Starting fresh stats fetch...');
+    
     _statsFetchPromise = (async () => {
-        const map = Object.create(null);
+        const combinedMap = Object.create(null);
+        
         try {
-            const base = 'https://data.jsdelivr.com/v1/stats/packages/gh/NotRexed/html@main/files';
+            const baseURL = 'https://data.jsdelivr.com/v1/stats/packages/gh/NotRexed/html@main/files';
             let page = 1;
-            while (page <= 10) {
-                const r = await fetch(`${base}?period=all&page=${page}`);
-                if (!r.ok) break;
-                const data = await r.json();
-                if (!Array.isArray(data) || data.length === 0) break;
+            let hasMorePages = true;
+            
+            while (hasMorePages && page <= 10) {
+                const url = `${baseURL}?period=all&page=${page}`;
+                console.log('Fetching page', page, ':', url);
+                
+                const response = await fetch(url);
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    console.log('Failed to fetch page', page);
+                    break;
+                }
+                
+                const data = await response.json();
+                
+                if (!Array.isArray(data) || data.length === 0) {
+                    console.log('No more data on page', page);
+                    hasMorePages = false;
+                    break;
+                }
+                
+                console.log('Processing', data.length, 'files from page', page);
+                
                 for (const item of data) {
                     if (!item.name) continue;
-                    const m = item.name.split('/').pop().match(/^(\d+)[-.]?/);
-                    if (m) {
-                        const id = m[1];
-                        if (!map[id]) map[id] = { hits: 0 };
-                        map[id].hits += item.hits?.total || 0;
+                    
+                    // Extract filename from path
+                    const filename = item.name.split('/').pop();
+                    
+                    // Extract game ID from filename (e.g., "542.html" or "542-baldis-basics.html")
+                    const match = filename.match(/^(\d+)[-.]?/);
+                    if (match) {
+                        const id = match[1];
+                        const hits = item.hits?.total || 0;
+                        
+                        if (!combinedMap[id]) {
+                            combinedMap[id] = { hits: 0 };
+                        }
+                        combinedMap[id].hits += hits;
                     }
                 }
+                
                 page++;
             }
-        } catch(err) { console.error('Stats fetch error:', err); }
-        _allStatsCache = map;
-        saveCachedStats(map);
+            
+            console.log('Final stats loaded:', Object.keys(combinedMap).length, 'games');
+            console.log('Sample stats:', Object.entries(combinedMap).slice(0, 10));
+        } catch (err) {
+            console.error('Stats fetch error:', err);
+        }
+        
+        _allStatsCache = combinedMap;
+        saveCachedStats(combinedMap);
         _statsFetchPromise = null;
-        requestAnimationFrame(updateAllPlayCounts);
-        return map;
+        
+        requestAnimationFrame(() => updateAllPlayCounts());
+        
+        return combinedMap;
     })();
+    
     return _statsFetchPromise;
 }
 
 async function getStats(id) {
-    const s = await getAllStats();
-    return s[String(id)]?.hits ?? 0;
+    id = String(id);
+    const allStats = await getAllStats();
+    return allStats[id]?.hits ?? 0;
 }
-function formatPlays(n) {
-    if (n >= 1e6) return (n/1e6).toFixed(1)+'M';
-    if (n >= 1000) return (n/1000).toFixed(1)+'K';
-    return n > 0 ? n.toString() : '...';
+
+function formatPlays(num) {
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+    return num > 0 ? num.toString() : '...';
 }
 
 let updateTimeout = null;
 function updateAllPlayCounts() {
     if (updateTimeout) return;
+    
     updateTimeout = setTimeout(async () => {
         const cards = document.querySelectorAll('.slide[data-game-id]');
-        const batch = 20;
-        for (let i = 0; i < cards.length; i += batch) {
-            await Promise.all(Array.from(cards).slice(i, i+batch).map(async card => {
-                const id = card.getAttribute('data-game-id');
-                const el = card.querySelector('.game-plays span');
-                if (el && id) el.textContent = formatPlays(await getStats(id));
+        
+        const batchSize = 20;
+        for (let i = 0; i < cards.length; i += batchSize) {
+            const batch = Array.from(cards).slice(i, i + batchSize);
+            
+            await Promise.all(batch.map(async card => {
+                const gameId = card.getAttribute('data-game-id');
+                const playsEl = card.querySelector('.game-plays span');
+                if (playsEl && gameId) {
+                    const plays = await getStats(gameId);
+                    playsEl.textContent = formatPlays(plays);
+                }
             }));
-            await new Promise(r => setTimeout(r, 0));
+            
+            await new Promise(resolve => setTimeout(resolve, 0));
         }
+        
         updateTimeout = null;
     }, 100);
-}
-
-function makeCard(game) {
-    const card = document.createElement("div");
-    card.className = "slide";
-    card.setAttribute('data-game-id', game.id);
-    let tag = "";
-    if (game.tag === "hot") tag = `<a class='hotrank'><i class='bx bxs-hot'></i>HOT</a>`;
-    if (game.tag === "new") tag = `<a class='newrank'><i class='bx bxs-zap'></i>NEW</a>`;
-    card.innerHTML = `${tag}<div class="game-card-inner"><img src="${game.img}" alt="${game.title}"><div class="game-title"><span class="game-name">${game.title}</span><div class="game-plays"><i class='bx bx-play-circle'></i><span>...</span></div></div></div>`;
-    return card;
 }
 
 async function loadGamesGrid() {
     try {
         const res = await fetch("https://cdn.jsdelivr.net/gh/NotRexed/assets@latest/allzone.json");
         if (!res.ok) throw new Error('Failed to fetch games');
-        const raw = await res.json();
-        allGames = raw.map(g => ({
-            id: g.id, title: g.name,
+        const rawGames = await res.json();
+
+        allGames = rawGames.map(g => ({
+            id: g.id,
+            title: g.name,
             img: g.cover.replace("{COVER_URL}", coverURL),
             url: g.url.replace("{HTML_URL}", htmlURL),
-            tag: g.tag||null, author: g.author||"Unknown", featured: g.featured||false
+            tag: g.tag || null,
+            author: g.author || "Unknown",
+            featured: g.featured || false
         }));
+
         allGames.sort((a,b) => a.title.localeCompare(b.title));
-        const fc = document.querySelector("#featuredGames .grid-container");
-        const ac = document.querySelector("#allGames .grid-container");
-        fc.innerHTML = ""; ac.innerHTML = "";
-        allGames.forEach(g => {
-            ac.appendChild(makeCard(g));
-            if (g.featured) fc.appendChild(makeCard(g));
-        });
-        document.addEventListener('click', e => {
-            const card = e.target.closest('.slide[data-game-id]');
-            if (card) {
-                const g = allGames.find(g => String(g.id) === card.getAttribute('data-game-id'));
-                if (g) openZone(g);
+
+        const featuredContainer = document.querySelector("#featuredGames .grid-container");
+        const allContainer = document.querySelector("#allGames .grid-container");
+
+        featuredContainer.innerHTML = "";
+        allContainer.innerHTML = "";
+
+        const createOptimizedCard = (game) => {
+            const card = document.createElement("div");
+            card.className = "slide";
+            card.setAttribute('data-game-id', game.id);
+
+            let tagHTML = "";
+            if(game.tag === "hot") tagHTML = `<a class='hotrank'><i class='bx bxs-hot'></i>HOT</a>`;
+            if(game.tag === "new") tagHTML = `<a class='newrank'><i class='bx bxs-zap'></i>NEW</a>`;
+
+            card.innerHTML = `
+        ${tagHTML}
+        <div class="game-card-inner">
+            <img src="${game.img}" alt="${game.title}">
+            <div class="game-title">
+                <span class="game-name">${game.title}</span>
+                <div class="game-plays">
+                    <i class='bx bx-play-circle'></i>
+                    <span>...</span>
+                </div>
+            </div>
+        </div>
+    `;
+            return card;
+        };
+
+        allGames.forEach(game => {
+            const allCard = createOptimizedCard(game);
+            allContainer.appendChild(allCard);
+
+            if(game.featured) {
+                const featuredCard = createOptimizedCard(game);
+                featuredContainer.appendChild(featuredCard);
             }
         });
+
+        document.addEventListener('click', (e) => {
+            const card = e.target.closest('.slide[data-game-id]');
+            if (card) {
+                const gameId = card.getAttribute('data-game-id');
+                const game = allGames.find(g => String(g.id) === String(gameId));
+                if (game) {
+                    openZone(game);
+                }
+            }
+        });
+
+        // Fetch stats from jsDelivr API
         getAllStats();
-    } catch(err) { console.error('Failed to load games:', err); }
+    } catch (err) {
+        console.error('Failed to load games:', err);
+    }
 }
+
 loadGamesGrid();
 
-async function sortGames(by) {
-    let sorted = [...allGames];
-    if (by === 'name') sorted.sort((a,b) => a.title.localeCompare(b.title));
-    else if (by === 'id') sorted.sort((a,b) => a.id - b.id);
-    else if (by === 'popularity') {
-        const stats = await getAllStats();
-        sorted.sort((a,b) => (stats[String(b.id)]?.hits||0) - (stats[String(a.id)]?.hits||0));
+// Sort functionality
+async function sortGames(sortBy) {
+    const featuredContainer = document.querySelector("#featuredGames .grid-container");
+    const allContainer = document.querySelector("#allGames .grid-container");
+    
+    // Create a copy to sort
+    let sortedGames = [...allGames];
+    
+    if (sortBy === 'name') {
+        sortedGames.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortBy === 'id') {
+        sortedGames.sort((a, b) => a.id - b.id);
+    } else if (sortBy === 'popularity') {
+        // Get all stats first
+        const allStats = await getAllStats();
+        
+        // Sort by play count (most popular first)
+        sortedGames.sort((a, b) => {
+            const playsA = allStats[String(a.id)]?.hits || 0;
+            const playsB = allStats[String(b.id)]?.hits || 0;
+            return playsB - playsA; // Descending order
+        });
     }
-    const fc = document.querySelector("#featuredGames .grid-container");
-    const ac = document.querySelector("#allGames .grid-container");
-    fc.innerHTML = ""; ac.innerHTML = "";
-    sorted.forEach(g => { ac.appendChild(makeCard(g)); if (g.featured) fc.appendChild(makeCard(g)); });
+    
+    // Clear containers
+    featuredContainer.innerHTML = "";
+    allContainer.innerHTML = "";
+    
+    // Helper function to create cards
+    const createOptimizedCard = (game) => {
+        const card = document.createElement("div");
+        card.className = "slide";
+        card.setAttribute('data-game-id', game.id);
+
+        let tagHTML = "";
+        if(game.tag === "hot") tagHTML = `<a class='hotrank'><i class='bx bxs-hot'></i>HOT</a>`;
+        if(game.tag === "new") tagHTML = `<a class='newrank'><i class='bx bxs-zap'></i>NEW</a>`;
+
+        card.innerHTML = `
+            ${tagHTML}
+            <div class="game-card-inner">
+                <img src="${game.img}" alt="${game.title}">
+                <div class="game-title">
+                    <span class="game-name">${game.title}</span>
+                    <div class="game-plays">
+                        <i class='bx bx-play-circle'></i>
+                        <span>...</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        return card;
+    };
+    
+    // Re-render sorted games
+    sortedGames.forEach(game => {
+        const allCard = createOptimizedCard(game);
+        allContainer.appendChild(allCard);
+
+        if(game.featured) {
+            const featuredCard = createOptimizedCard(game);
+            featuredContainer.appendChild(featuredCard);
+        }
+    });
+    
+    // Update play counts
     updateAllPlayCounts();
 }
 
+// Add event listener for sort dropdown
 document.addEventListener('DOMContentLoaded', () => {
-    const dd = document.getElementById('sortDropdown');
-    if (dd) dd.addEventListener('change', e => sortGames(e.target.value));
+    const sortDropdown = document.getElementById('sortDropdown');
+    if (sortDropdown) {
+        sortDropdown.addEventListener('change', (e) => {
+            sortGames(e.target.value);
+        });
+    }
 });
 </script>
 
-<!-- Zone Viewer -->
+<!-- Optimized Zone Viewer -->
 <script>
 let zoneFrame = null;
-const zoneViewer   = document.getElementById('zoneViewer');
-const zoneNameEl   = document.getElementById('zoneName');
-const zoneIdEl     = document.getElementById('zoneId');
+const zoneViewer = document.getElementById('zoneViewer');
+const zoneNameEl = document.getElementById('zoneName');
+const zoneIdEl = document.getElementById('zoneId');
 const zoneAuthorEl = document.getElementById('zoneAuthor');
 let currentZoneURL = '';
 
 async function openZone(game) {
     if (!game) return;
+    
     currentZoneURL = game.url;
+    
+    console.log("Opening game:", game.title);
+    console.log("Game URL:", currentZoneURL);
+    
     try {
+        // Get the existing iframe
         zoneFrame = document.getElementById('zoneFrame');
-        if (!zoneFrame) return;
+        
+        if (!zoneFrame) {
+            console.error('Zone frame not found!');
+            return;
+        }
+
+        // Fetch the HTML content
         const res = await fetch(currentZoneURL + '?t=' + Date.now());
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
         const html = await res.text();
+
+        // Write HTML to iframe
         const doc = zoneFrame.contentWindow.document;
-        doc.open(); doc.write(html); doc.close();
-        if (zoneNameEl) zoneNameEl.textContent = game.title||'Untitled';
-        if (zoneIdEl)   zoneIdEl.textContent   = String(game.id||'');
+        doc.open();
+        doc.write(html);
+        doc.close();
+
+        if (zoneNameEl) zoneNameEl.textContent = game.title || 'Untitled';
+        if (zoneIdEl) zoneIdEl.textContent = String(game.id || '');
         if (zoneAuthorEl) {
             zoneAuthorEl.textContent = game.author ? `by ${game.author}` : '';
             zoneAuthorEl.style.display = game.author ? 'inline' : 'none';
         }
-        if (zoneViewer) { zoneViewer.style.display = 'flex'; zoneViewer.setAttribute('aria-hidden','false'); }
+
+        if (zoneViewer) {
+            zoneViewer.style.display = 'flex';
+            zoneViewer.setAttribute('aria-hidden', 'false');
+        }
         document.body.style.overflow = 'hidden';
-        try { const u = new URL(window.location); u.searchParams.set('id', game.id); history.pushState(null,'',u); } catch(e){}
-    } catch(err) {
+        
+        try { 
+            const u = new URL(window.location); 
+            u.searchParams.set('id', game.id); 
+            history.pushState(null, '', u.toString()); 
+        } catch(e) {}
+    } catch (err) {
         console.error('openZone error:', err);
-        alert(`Failed to load game: ${game.title}\nError: ${err.message}`);
+        alert(`Failed to load game: ${game.title}\nURL: ${currentZoneURL}\nError: ${err.message}`);
     }
 }
 
 function closeZone() {
-    if (zoneViewer) { zoneViewer.style.display = 'none'; zoneViewer.setAttribute('aria-hidden','true'); }
+    if (zoneViewer) {
+        zoneViewer.style.display = 'none';
+        zoneViewer.setAttribute('aria-hidden', 'true');
+    }
+    
     document.body.style.overflow = '';
+    
     zoneFrame = document.getElementById('zoneFrame');
     if (zoneFrame) {
-        try { zoneFrame.src = 'about:blank'; if (zoneFrame.contentWindow) { const d = zoneFrame.contentWindow.document; d.open(); d.close(); } } catch(e){}
+        try {
+            zoneFrame.src = 'about:blank';
+            if (zoneFrame.contentWindow) {
+                const doc = zoneFrame.contentWindow.document;
+                doc.open();
+                doc.close();
+            }
+        } catch(e) {
+            console.warn('Iframe cleanup error:', e);
+        }
     }
+    
     currentZoneURL = '';
-    try { const u = new URL(window.location); u.searchParams.delete('id'); history.pushState(null,'',u); } catch(e){}
+    
+    try { 
+        const u = new URL(window.location); 
+        u.searchParams.delete('id'); 
+        history.pushState(null,'',u.toString()); 
+    } catch(e) {}
 }
 
 function fullscreenZone() {
     if (!zoneFrame) return;
-    (zoneFrame.requestFullscreen||zoneFrame.mozRequestFullScreen||zoneFrame.webkitRequestFullscreen||zoneFrame.msRequestFullscreen||function(){}).call(zoneFrame);
+    if (zoneFrame.requestFullscreen) {
+        zoneFrame.requestFullscreen();
+    } else if (zoneFrame.mozRequestFullScreen) {
+        zoneFrame.mozRequestFullScreen();
+    } else if (zoneFrame.webkitRequestFullscreen) {
+        zoneFrame.webkitRequestFullscreen();
+    } else if (zoneFrame.msRequestFullscreen) {
+        zoneFrame.msRequestFullscreen();
+    }
 }
 
 function openInAboutBlank() {
-    if (!currentZoneURL) return;
-    const win = window.open('about:blank','_blank');
-    if (!win) { alert('Please allow popups for this site'); return; }
-    fetch(currentZoneURL + '?t=' + Date.now()).then(r=>r.text()).then(html => {
-        win.document.open(); win.document.write(html); win.document.close();
-    }).catch(() => { win.close(); alert('Failed to open in about:blank'); });
+    if (!currentZoneURL) {
+        console.error('No game URL available');
+        return;
+    }
+    
+    // Open about:blank window
+    const win = window.open('about:blank', '_blank');
+    
+    if (!win) {
+        alert('Please allow popups for this site');
+        return;
+    }
+    
+    // Fetch the game HTML
+    fetch(currentZoneURL + '?t=' + Date.now())
+        .then(res => res.text())
+        .then(html => {
+            // Write the game HTML to the new window
+            win.document.open();
+            win.document.write(html);
+            win.document.close();
+        })
+        .catch(err => {
+            console.error('Failed to load game in about:blank:', err);
+            win.close();
+            alert('Failed to open game in about:blank');
+        });
 }
 
-document.addEventListener('keydown', e => {
+document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeZone();
-        const so = document.getElementById('settingsOverlay');
-        if (so?.classList.contains('active')) { so.classList.remove('active'); so.setAttribute('aria-hidden','true'); }
+        const settingsOverlay = document.getElementById('settingsOverlay');
+        if (settingsOverlay && settingsOverlay.classList.contains('active')) {
+            settingsOverlay.classList.remove('active');
+            settingsOverlay.setAttribute('aria-hidden','true');
+        }
     }
 });
 </script>
 
-<!-- Search -->
+<!-- Optimized Search -->
 <script>
-const searchInput   = document.getElementById("gameSearch");
+const searchInput = document.getElementById("gameSearch");
 const searchWrapper = document.getElementById("searchWrapper");
-const searchSlider  = document.getElementById("searchSlider");
-const searchTitle   = document.getElementById("searchTitle");
+const searchSlider = document.getElementById("searchSlider");
+const searchTitle = document.getElementById("searchTitle");
 
 let searchTimeout = null;
 searchInput.addEventListener("input", () => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
-        const q = searchInput.value.toLowerCase().trim();
+        const query = searchInput.value.toLowerCase().trim();
+
         searchSlider.innerHTML = "";
-        if (!q) { searchWrapper.style.display = "none"; return; }
-        const sw = allGames.filter(g => g.title.toLowerCase().startsWith(q));
-        const co = allGames.filter(g => !g.title.toLowerCase().startsWith(q) && g.title.toLowerCase().includes(q));
-        const matches = [...sw, ...co].slice(0, 50);
-        if (!matches.length) { searchWrapper.style.display = "none"; return; }
+
+        if (!query) {
+            searchWrapper.style.display = "none";
+            return;
+        }
+
+        const startsWith = allGames.filter(g => g.title.toLowerCase().startsWith(query));
+        const contains = allGames.filter(
+            g => !g.title.toLowerCase().startsWith(query) && g.title.toLowerCase().includes(query)
+        );
+        const matches = [...startsWith, ...contains].slice(0, 50);
+
+        if (matches.length === 0) {
+            searchWrapper.style.display = "none";
+            return;
+        }
+
         searchWrapper.style.display = "flex";
         searchTitle.style.display = "block";
-        const frag = document.createDocumentFragment();
+
+        const fragment = document.createDocumentFragment();
+        
         matches.forEach(game => {
-            const c = document.createElement("div");
-            c.className = "slide";
-            c.setAttribute('data-game-id', game.id);
-            let tag = "";
-            if (game.tag === "hot") tag = `<a class="hotrank"><i class='bx bxs-hot'></i>HOT</a>`;
-            if (game.tag === "new") tag = `<a class="newrank"><i class='bx bxs-zap'></i>NEW</a>`;
-            c.innerHTML = `${tag}<img src="${game.img}" alt="${game.title}">`;
-            c.style.display = "inline-block"; c.style.opacity = "1";
-            frag.appendChild(c);
+            const card = document.createElement("div");
+            card.className = "slide";
+            card.setAttribute('data-game-id', game.id);
+
+            let tagHTML = "";
+            if (game.tag === "hot") tagHTML = `<a class="hotrank"><i class='bx bxs-hot'></i>HOT</a>`;
+            if (game.tag === "new") tagHTML = `<a class="newrank"><i class='bx bxs-zap'></i>NEW</a>`;
+
+            card.innerHTML = `${tagHTML}<img src="${game.img}" alt="${game.title}">`;
+            card.style.display = "inline-block";
+            card.style.opacity = "1";
+
+            fragment.appendChild(card);
         });
-        searchSlider.appendChild(frag);
-        searchSlider.style.cssText = "display:flex;flex-wrap:wrap;justify-content:flex-start;overflow:visible;";
+        
+        searchSlider.appendChild(fragment);
+
+        searchSlider.style.display = "flex";
+        searchSlider.style.flexWrap = "wrap";
+        searchSlider.style.justifyContent = "flex-start";
+        searchSlider.style.overflow = "visible";
     }, 150);
 });
-searchInput.disabled = false;
 
+searchInput.disabled = false;
+</script>
+
+<script>
 function openGameById(id) {
-    const game = allGames.find(g => String(g.id) === String(id));
-    if (!game) { console.error("Game not found:", id); return; }
-    openZone(game);
+  const game = allGames.find(g => String(g.id) === String(id));
+  if (!game) {
+    console.error("Game not found with id:", id);
+    return;
+  }
+  openZone(game);
 }
 </script>
 
-<!-- Consent Gate functions — defined BEFORE the animation script so the
-     skip-path (cached reload) can call _novaLoadingComplete immediately -->
-<script>
-(function() {
-  const AGREEMENT_KEY = 'novaGamesAgreementAccepted_v1';
-
-  function loadAdcashAndRun() {
-    if (window.aclib) { runAutoTag(); return; }
-    const s = document.createElement('script');
-    s.id = 'aclib'; s.type = 'text/javascript';
-    s.src = '//acscdn.com/script/aclib.js';
-    s.onload = runAutoTag;
-    document.head.appendChild(s);
-  }
-
-  function runAutoTag() {
-    try { aclib.runAutoTag({ zoneId: 'dnvfx5svkw' }); }
-    catch(e) { console.warn('Adcash error:', e); }
-  }
-
-  const modal    = document.getElementById('agreementModal');
-  const box      = document.getElementById('agreementBox');
-  const checkbox = document.getElementById('agreementCheckbox');
-  const btn      = document.getElementById('agreementGotItBtn');
-
-  box.addEventListener('animationend', () => box.classList.remove('ag-shaking'));
-
-  function showModal() {
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-  }
-
-  function hideModal() {
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-  }
-
-  checkbox.addEventListener('change', function() { btn.disabled = !this.checked; });
-
-  btn.addEventListener('click', function() {
-    if (!checkbox.checked) return;
-    localStorage.setItem(AGREEMENT_KEY, 'true');
-    hideModal();
-    loadAdcashAndRun();
-  });
-
-  modal.addEventListener('click', function(e) {
-    if (e.target !== modal) return;
-    box.classList.remove('ag-shaking');
-    box.offsetHeight;
-    box.classList.add('ag-shaking');
-  });
-
-  // Called by both the animation path and the skip path on every page load
-  window._novaLoadingComplete = function() {
-    if (localStorage.getItem(AGREEMENT_KEY) === 'true') {
-      document.body.style.overflow = '';
-      loadAdcashAndRun(); // returning visitor — fire ads immediately
-    } else {
-      showModal(); // first visit — must accept first
-    }
-  };
-
-  // Failsafe in case animation script never calls _novaLoadingComplete
-  document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(function() {
-      if (modal.style.display !== 'flex' && localStorage.getItem(AGREEMENT_KEY) !== 'true') {
-        showModal();
-      }
-    }, 3000);
-  });
-})();
-</script>
-
-<!-- Onboarding Animation -->
+<!-- Onboarding Animation Script -->
 <script>
 class ImageCacheManager {
   constructor() {
-    this.cacheKey  = 'novaImageCache_v1';
-    this.tsKey     = 'novaCacheTimestamp_v1';
+    this.cacheKey = 'novaImageCache_v1';
+    this.cacheTimestamp = 'novaCacheTimestamp_v1';
     this.loadedKey = 'novaImagesLoaded_v1';
   }
+
   getCachedImages() {
     try {
-      const c = localStorage.getItem(this.cacheKey);
-      const t = localStorage.getItem(this.tsKey);
-      const l = localStorage.getItem(this.loadedKey);
-      if (!c||!t||!l) return null;
-      return { images: JSON.parse(c), timestamp: parseInt(t), loaded: l === 'true' };
-    } catch(e) { return null; }
-  }
-  setCachedImages(imgs) {
-    try {
-      localStorage.setItem(this.cacheKey, JSON.stringify(imgs));
-      localStorage.setItem(this.tsKey, Date.now().toString());
-      localStorage.setItem(this.loadedKey, 'true');
-    } catch(e) {}
-  }
-  needsReload() {
-    const c = this.getCachedImages();
-    if (!c) return true;
-    if (c.loaded) {
-      const isHard = performance && (performance.navigation?.type === 1 || performance.getEntriesByType?.('navigation')?.[0]?.type === 'reload');
-      return ((Date.now() - c.timestamp) > 86400000) && isHard;
+      const cached = localStorage.getItem(this.cacheKey);
+      const timestamp = localStorage.getItem(this.cacheTimestamp);
+      const loaded = localStorage.getItem(this.loadedKey);
+      
+      if (!cached || !timestamp || !loaded) return null;
+      
+      return {
+        images: JSON.parse(cached),
+        timestamp: parseInt(timestamp),
+        loaded: loaded === 'true'
+      };
+    } catch (e) {
+      return null;
     }
+  }
+
+  setCachedImages(images) {
+    try {
+      localStorage.setItem(this.cacheKey, JSON.stringify(images));
+      localStorage.setItem(this.cacheTimestamp, Date.now().toString());
+      localStorage.setItem(this.loadedKey, 'true');
+    } catch (e) {
+      console.warn('Failed to cache images:', e);
+    }
+  }
+
+  clearCache() {
+    localStorage.removeItem(this.cacheKey);
+    localStorage.removeItem(this.cacheTimestamp);
+    localStorage.removeItem(this.loadedKey);
+  }
+
+  needsReload() {
+    const cache = this.getCachedImages();
+    if (!cache) return true;
+    
+    if (cache.loaded) {
+      const twentyFourHours = 24 * 60 * 60 * 1000;
+      const now = Date.now();
+      
+      const isHardReload = performance && (
+        performance.navigation?.type === 1 || 
+        performance.getEntriesByType?.('navigation')?.[0]?.type === 'reload'
+      );
+      
+      const cacheExpired = (now - cache.timestamp) > twentyFourHours;
+      
+      return cacheExpired && isHardReload;
+    }
+    
     return true;
   }
 }
 
 class ImagePreloader {
-  constructor() { this.images = []; this.cacheManager = new ImageCacheManager(); }
+  constructor() {
+    this.totalImages = 0;
+    this.loadedImages = 0;
+    this.images = [];
+    this.cacheManager = new ImageCacheManager();
+  }
+
   async preloadAllImages() {
-    await new Promise(res => {
-      const check = () => (typeof allGames !== 'undefined' && allGames?.length > 0) ? res() : setTimeout(check, 100);
-      check();
-    });
-    const set = new Set();
+    await this.waitForGames();
+    
+    const gameImages = new Set();
+    
     document.querySelectorAll('.slide img, .bannerimage, img[src]').forEach(img => {
-      if (img.src && !img.src.includes('data:') && !img.src.includes('blob:')) set.add(img.src);
+      if (img.src && !img.src.includes('data:') && !img.src.includes('blob:')) {
+        gameImages.add(img.src);
+      }
     });
-    const arr = Array.from(set);
-    if (!arr.length) return;
-    await new Promise(res => {
-      let done = 0;
-      arr.forEach(src => {
+
+    const imageArray = Array.from(gameImages);
+    this.totalImages = imageArray.length;
+    
+    if (this.totalImages === 0) {
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve) => {
+      let completed = 0;
+      
+      imageArray.forEach(src => {
         const img = new Image();
-        img.onload = img.onerror = () => {
-          done++;
-          const pct = (done / arr.length) * 100;
-          const pb = document.getElementById('progressBar');
-          const pt = document.getElementById('loadingProgress');
-          if (pb) pb.style.width = pct + '%';
-          if (pt) pt.textContent = `Loading... ${Math.round(pct)}%`;
-          if (done >= arr.length) res();
+        
+        const handleComplete = () => {
+          completed++;
+          this.imageLoaded(resolve, completed, imageArray.length);
         };
+        
+        img.onload = handleComplete;
+        img.onerror = handleComplete;
         img.src = src;
         this.images.push(img);
       });
-      this.cacheManager.setCachedImages(arr);
+      
+      this.cacheManager.setCachedImages(imageArray);
     });
+  }
+
+  waitForGames() {
+    return new Promise((resolve) => {
+      const checkGames = () => {
+        if (typeof allGames !== 'undefined' && allGames && allGames.length > 0) {
+          resolve();
+        } else {
+          setTimeout(checkGames, 100);
+        }
+      };
+      checkGames();
+    });
+  }
+
+  imageLoaded(resolve, loaded, total) {
+    const progress = (loaded / total) * 100;
+    this.updateProgress(progress);
+    
+    if (loaded >= total) {
+      resolve();
+    }
+  }
+
+  updateProgress(percentage) {
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('loadingProgress');
+    
+    if (progressBar) {
+      progressBar.style.width = percentage + '%';
+    }
+    
+    if (progressText) {
+      progressText.textContent = `Loading... ${Math.round(percentage)}%`;
+    }
   }
 }
 
-const _cacheManager = new ImageCacheManager();
-const shouldShowAnimation = _cacheManager.needsReload();
+const cacheManager = new ImageCacheManager();
+const shouldShowAnimation = cacheManager.needsReload();
 
 if (shouldShowAnimation) {
+  console.log('Loading animation: Images need to be loaded');
+  
   document.body.classList.add('loading-active');
   document.body.style.overflow = 'hidden';
-
+  
   function startNovaAnimation() {
-    const tl = gsap.timeline({
+    const timeline = gsap.timeline({
       onComplete: async function() {
         const preloader = new ImagePreloader();
+        
         gsap.to('#loadingProgress', { opacity: 1, duration: 0.5 });
         gsap.to('#progressBarContainer', { opacity: 1, duration: 0.5 });
+        
         await preloader.preloadAllImages();
-        await new Promise(r => setTimeout(r, 500));
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
         performFadeToBlackEnding();
       }
     });
-    tl.fromTo('.letter-n', { x:-150, opacity:0 }, { x:0, opacity:1, duration:1.5, ease:'expo.inOut' })
-      .fromTo('.letter-o', { y:-200, opacity:0 }, { y:0, opacity:1, duration:1,   ease:'expo.inOut' }, '-=1.0')
-      .fromTo('.letter-v', { y:200,  opacity:0 }, { y:0, opacity:1, duration:1.5, ease:'expo.inOut' }, '-=1.0')
-      .fromTo('.letter-a', { x:140,  opacity:0 }, { x:0, opacity:1, duration:1.5, ease:'expo.inOut' }, '-=1.0');
+
+    timeline
+      .fromTo('.letter-n', {
+        x: -150,
+        opacity: 0
+      }, {
+        x: 0,
+        opacity: 1,
+        duration: 1.5,
+        ease: 'expo.inOut'
+      })
+      .fromTo('.letter-o', {
+        y: -200,
+        opacity: 0
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'expo.inOut'
+      }, '-=1.0')
+      .fromTo('.letter-v', {
+        y: 200,
+        opacity: 0
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 1.5,
+        ease: 'expo.inOut'
+      }, '-=1.0')
+      .fromTo('.letter-a', {
+        x: 140,
+        opacity: 0
+      }, {
+        x: 0,
+        opacity: 1,
+        duration: 1.5,
+        ease: 'expo.inOut'
+      }, '-=1.0');
+
+    return timeline;
   }
 
   function performFadeToBlackEnding() {
     const overlay = document.getElementById('loadingOverlay');
-    const endTL = gsap.timeline({
+    
+    const endTimeline = gsap.timeline({
       onComplete: function() {
         overlay.style.display = 'none';
+        document.body.style.overflow = '';
         document.body.classList.remove('loading-active');
-        // body overflow is controlled by consent gate below — don't restore it here
-        window._novaLoadingComplete();
       }
     });
-    endTL
-      .to('.nova-letter, #loadingProgress, #progressBarContainer', { opacity:0, duration:0.8, ease:'power2.inOut' })
-      .to({}, { duration:0.4 })
-      .to(overlay, { opacity:0, duration:1.2, ease:'power2.inOut' });
+
+    endTimeline
+      .to('.nova-letter, #loadingProgress, #progressBarContainer', {
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power2.inOut'
+      })
+      .to({}, { duration: 0.4 })
+      .to(overlay, {
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power2.inOut'
+      });
   }
 
-  if (typeof gsap !== 'undefined') startNovaAnimation();
-  else {
-    const t = setInterval(() => { if (typeof gsap !== 'undefined') { clearInterval(t); startNovaAnimation(); } }, 100);
+  if (typeof gsap !== 'undefined') {
+    startNovaAnimation();
+  } else {
+    const checkGSAP = setInterval(() => {
+      if (typeof gsap !== 'undefined') {
+        clearInterval(checkGSAP);
+        startNovaAnimation();
+      }
+    }, 100);
   }
 } else {
-  // Animation skipped (images cached) — hide overlay and hand off to consent gate
+  console.log('Loading animation: Skipped (images cached)');
   const overlay = document.getElementById('loadingOverlay');
-  if (overlay) overlay.style.display = 'none';
-  window._novaLoadingComplete();
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
 }
 </script>
-
-
 
 </body>
 </html>
