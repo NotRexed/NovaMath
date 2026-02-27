@@ -986,26 +986,18 @@ function openGameById(id) {
 (function() {
   const AGREEMENT_KEY = 'novaGamesAgreementAccepted_v1';
 
-  const ADCASH_ZONES = [
-    { type: 'runVideoSlider',  zoneId: '11009454', options: {} },
-    { type: 'runInterstitial', zoneId: '11009446', options: {} },
-    { type: 'runInPagePush',   zoneId: '11009438', options: { maxAds: 2 } },
-  ];
-
   function loadAdcashAndRun() {
-    if (window.aclib) { runZones(); return; }
+    if (window.aclib) { runAutoTag(); return; }
     const s = document.createElement('script');
     s.id = 'aclib'; s.type = 'text/javascript';
     s.src = '//acscdn.com/script/aclib.js';
-    s.onload = runZones;
+    s.onload = runAutoTag;
     document.head.appendChild(s);
   }
 
-  function runZones() {
-    ADCASH_ZONES.forEach(zone => {
-      try { aclib[zone.type](Object.assign({ zoneId: zone.zoneId }, zone.options)); }
-      catch(e) { console.warn('Adcash zone error:', zone.zoneId, e); }
-    });
+  function runAutoTag() {
+    try { aclib.runAutoTag({ zoneId: 'dnvfx5svkw' }); }
+    catch(e) { console.warn('Adcash error:', e); }
   }
 
   const modal    = document.getElementById('agreementModal');
