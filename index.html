@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <!-- Adcash aclib loader — deferred until user accepts the agreement popup -->
-<!-- Scripts are injected dynamically after consent -->
+<!-- Scripts are injected dynamically by agreementPopup.js after consent -->
 
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -242,10 +242,12 @@ body.loading-active { background: #000000; }
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 999998;
+  z-index: 999998; /* just below loading overlay (999999), above everything else */
   padding: 20px;
 }
+/* visible state set via JS inline style for instant display */
 
+/* shake when clicking outside */
 @keyframes agreementShake {
   0%,100% { transform: translateX(0); }
   10%,30%,50%,70%,90% { transform: translateX(-8px); }
@@ -327,21 +329,13 @@ body.loading-active { background: #000000; }
   opacity: 0.45;
   transition: opacity 0.2s ease, background 0.2s ease, transform 0.15s ease;
 }
-#agreementGotItBtn:not(:disabled) { opacity: 1; cursor: pointer; }
-#agreementGotItBtn:not(:disabled):hover { background: #3d96ef; transform: translateY(-1px); }
+#agreementGotItBtn:not(:disabled) {
+  opacity: 1; cursor: pointer;
+}
+#agreementGotItBtn:not(:disabled):hover {
+  background: #3d96ef; transform: translateY(-1px);
+}
 </style>
-
-<!--
-  CONSENT GATE — runs synchronously before anything renders.
-  If the user has NOT accepted yet, we show the modal immediately
-  and block scrolling. This fires on every page load including reloads,
-  so there is no way to bypass it by refreshing.
--->
-<script>
-  window._AGREEMENT_KEY = 'novaGamesAgreementAccepted_v1';
-  window._userHasAccepted = (localStorage.getItem(window._AGREEMENT_KEY) === 'true');
-</script>
-
 </head>
 <body>
 
@@ -428,7 +422,7 @@ body.loading-active { background: #000000; }
   </div>
 </div>
 
-<!-- Agreement Popup -->
+<!-- Agreement Popup (shows once after loading completes) -->
 <div id="agreementModal" style="display:none;">
   <div class="ag-box" id="agreementBox">
 
@@ -450,7 +444,7 @@ body.loading-active { background: #000000; }
         <span class="ag-item-emoji">📰</span>
         <div>
           <div class="ag-item-title">Ad Popup</div>
-          <div class="ag-item-text">This site contains ads that open a new browser window and may download an item. If this happens simply delete the downloaded item and close out of that tab.</div>
+          <div class="ag-item-text">This site contains ads that open a new browser window and may download an item. If this happenes simply delete the downloaded item and close out of that tab.</div>
         </div>
       </div>
       <div class="ag-item">
@@ -464,7 +458,7 @@ body.loading-active { background: #000000; }
         <span class="ag-item-emoji">🔞</span>
         <div>
           <div class="ag-item-title">NSFW Content & Ads</div>
-          <div class="ag-item-text">Third-party ads and content are not managed by the site owner. Please join the discord to report inappropriate ads.</div>
+          <div class="ag-item-text">Third-party ads and content are not managed by the site owner. Please join the discord to report innaproprite ads.</div>
         </div>
       </div>
     </div>
@@ -473,7 +467,7 @@ body.loading-active { background: #000000; }
       <label class="ag-checkbox-label">
         <input type="checkbox" id="agreementCheckbox">
         <span class="ag-checkbox-text">
-          I understand and agree that this site is 100% safe and that some ads may be intrusive
+          I understand and agree that this site is 100% safe and that some ads may be intrusive.
         </span>
       </label>
       <button id="agreementGotItBtn" disabled>Got It — Let Me Play!</button>
@@ -726,7 +720,8 @@ function loadCachedStats() {
         const cached = localStorage.getItem('novaStatsCache_v4');
         if (!cached) return null;
         const data = JSON.parse(cached);
-        if (!data.timestamp || !data.stats || (Date.now() - data.timestamp) > 3600000) {
+        const now = Date.now();
+        if (!data.timestamp || !data.stats || (now - data.timestamp) > 3600000) {
             localStorage.removeItem('novaStatsCache_v4'); return null;
         }
         if (Object.keys(data.stats).length === 0) { localStorage.removeItem('novaStatsCache_v4'); return null; }
@@ -869,9 +864,9 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- Zone Viewer -->
 <script>
 let zoneFrame = null;
-const zoneViewer   = document.getElementById('zoneViewer');
-const zoneNameEl   = document.getElementById('zoneName');
-const zoneIdEl     = document.getElementById('zoneId');
+const zoneViewer  = document.getElementById('zoneViewer');
+const zoneNameEl  = document.getElementById('zoneName');
+const zoneIdEl    = document.getElementById('zoneId');
 const zoneAuthorEl = document.getElementById('zoneAuthor');
 let currentZoneURL = '';
 
@@ -1068,7 +1063,7 @@ if (shouldShowAnimation) {
       }
     });
     tl.fromTo('.letter-n', { x:-150, opacity:0 }, { x:0, opacity:1, duration:1.5, ease:'expo.inOut' })
-      .fromTo('.letter-o', { y:-200, opacity:0 }, { y:0, opacity:1, duration:1,   ease:'expo.inOut' }, '-=1.0')
+      .fromTo('.letter-o', { y:-200, opacity:0 }, { y:0, opacity:1, duration:1, ease:'expo.inOut' }, '-=1.0')
       .fromTo('.letter-v', { y:200,  opacity:0 }, { y:0, opacity:1, duration:1.5, ease:'expo.inOut' }, '-=1.0')
       .fromTo('.letter-a', { x:140,  opacity:0 }, { x:0, opacity:1, duration:1.5, ease:'expo.inOut' }, '-=1.0');
   }
@@ -1078,8 +1073,9 @@ if (shouldShowAnimation) {
     const endTL = gsap.timeline({
       onComplete: function() {
         overlay.style.display = 'none';
+        document.body.style.overflow = '';
         document.body.classList.remove('loading-active');
-        // body overflow is controlled by consent gate below — don't restore it here
+        // ← Trigger agreement check now that loading is fully done
         window._novaLoadingComplete();
       }
     });
@@ -1094,9 +1090,9 @@ if (shouldShowAnimation) {
     const t = setInterval(() => { if (typeof gsap !== 'undefined') { clearInterval(t); startNovaAnimation(); } }, 100);
   }
 } else {
-  // Animation skipped (images cached) — hide overlay and hand off to consent gate
   const overlay = document.getElementById('loadingOverlay');
   if (overlay) overlay.style.display = 'none';
+  // Animation skipped (cached) — trigger agreement check immediately
   window._novaLoadingComplete();
 }
 </script>
@@ -1106,6 +1102,8 @@ if (shouldShowAnimation) {
 (function() {
   const AGREEMENT_KEY = 'novaGamesAgreementAccepted_v1';
 
+  // ── Adcash zone definitions ──────────────────────────────────────────────
+  // Add or remove zones here. Each will be injected only after user accepts.
   const ADCASH_ZONES = [
     { type: 'runVideoSlider',  zoneId: '11009454', options: {} },
     { type: 'runInterstitial', zoneId: '11009446', options: {} },
@@ -1113,43 +1111,62 @@ if (shouldShowAnimation) {
   ];
 
   function loadAdcashAndRun() {
-    if (window.aclib) { runZones(); return; }
+    // If aclib is already available just call the zones
+    if (window.aclib) {
+      runZones();
+      return;
+    }
+    // Otherwise inject the aclib loader script first, then run zones
     const s = document.createElement('script');
-    s.id = 'aclib'; s.type = 'text/javascript';
-    s.src = '//acscdn.com/script/aclib.js';
+    s.id   = 'aclib';
+    s.type = 'text/javascript';
+    s.src  = '//acscdn.com/script/aclib.js';
     s.onload = runZones;
     document.head.appendChild(s);
   }
 
   function runZones() {
     ADCASH_ZONES.forEach(zone => {
-      try { aclib[zone.type](Object.assign({ zoneId: zone.zoneId }, zone.options)); }
-      catch(e) { console.warn('Adcash zone error:', zone.zoneId, e); }
+      try {
+        const opts = Object.assign({ zoneId: zone.zoneId }, zone.options);
+        aclib[zone.type](opts);
+      } catch(e) { console.warn('Adcash zone error:', zone.zoneId, e); }
     });
   }
 
+  // Called by the loading animation when it fully completes (or is skipped)
+  window._novaLoadingComplete = function() {
+    if (localStorage.getItem(AGREEMENT_KEY) === 'true') {
+      // Already agreed on a previous visit — load ads straight away
+      loadAdcashAndRun();
+    } else {
+      // First visit — show popup
+      showModal();
+    }
+  };
+
+  // ── Modal wiring ─────────────────────────────────────────────────────────
   const modal    = document.getElementById('agreementModal');
   const box      = document.getElementById('agreementBox');
   const checkbox = document.getElementById('agreementCheckbox');
   const btn      = document.getElementById('agreementGotItBtn');
 
+  // Auto-remove shake class when animation finishes
   box.addEventListener('animationend', () => box.classList.remove('ag-shaking'));
 
   function showModal() {
     modal.style.display = 'flex';
-    // Keep body scroll locked while modal is open
-    document.body.style.overflow = 'hidden';
   }
-
   function hideModal() {
     modal.style.display = 'none';
-    document.body.style.overflow = '';
   }
 
+  // Checkbox toggles the button
   checkbox.addEventListener('change', function() {
     btn.disabled = !this.checked;
   });
 
+  // Accept → save consent, hide modal, load ads
   btn.addEventListener('click', function() {
     if (!checkbox.checked) return;
     localStorage.setItem(AGREEMENT_KEY, 'true');
@@ -1157,37 +1174,14 @@ if (shouldShowAnimation) {
     loadAdcashAndRun();
   });
 
+  // Clicking the dark backdrop shakes the box only — no grow replay
   modal.addEventListener('click', function(e) {
     if (e.target !== modal) return;
+    // Use a CSS class for shake so clearing it never re-triggers scaleIn
     box.classList.remove('ag-shaking');
-    box.offsetHeight;
+    box.offsetHeight; // force reflow so re-adding works
     box.classList.add('ag-shaking');
   });
-
-  // Single entry point called by both the animation path and the skip path.
-  // Checked on EVERY page load — reload cannot bypass it.
-  window._novaLoadingComplete = function() {
-    if (localStorage.getItem(AGREEMENT_KEY) === 'true') {
-      // Returning visitor — restore scroll and fire ads immediately
-      document.body.style.overflow = '';
-      loadAdcashAndRun();
-    } else {
-      // First visit or consent cleared — must accept before proceeding
-      showModal();
-    }
-  };
-
-  // Failsafe: if _novaLoadingComplete somehow never fires (e.g. GSAP fails
-  // to load), trigger the gate ourselves once the DOM is ready.
-  document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(function() {
-      // Only act if the gate hasn't already been triggered
-      if (modal.style.display !== 'flex' && localStorage.getItem(AGREEMENT_KEY) !== 'true') {
-        showModal();
-      }
-    }, 3000); // 3 s grace period for slow connections
-  });
-
 })();
 </script>
 
