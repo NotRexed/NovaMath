@@ -245,13 +245,16 @@ body.loading-active { background: #000000; }
   z-index: 999998; /* just below loading overlay (999999), above everything else */
   padding: 20px;
 }
-#agreementModal.visible { display: flex; }
+/* visible state set via JS inline style for instant display */
 
 /* shake when clicking outside */
 @keyframes agreementShake {
   0%,100% { transform: translateX(0); }
   10%,30%,50%,70%,90% { transform: translateX(-8px); }
   20%,40%,60%,80% { transform: translateX(8px); }
+}
+#agreementModal .ag-box.ag-shaking {
+  animation: agreementShake 0.45s ease;
 }
 
 #agreementModal .ag-box {
@@ -265,7 +268,6 @@ body.loading-active { background: #000000; }
   overflow-y: auto;
   padding: 1.75rem;
   box-shadow: 0 24px 60px rgba(0,0,0,0.6);
-  animation: scaleIn 0.25s cubic-bezier(0.4,0,0.2,1);
 }
 #agreementModal .ag-box::-webkit-scrollbar { width: 6px; }
 #agreementModal .ag-box::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 6px; }
@@ -421,7 +423,7 @@ body.loading-active { background: #000000; }
 </div>
 
 <!-- Agreement Popup (shows once after loading completes) -->
-<div id="agreementModal">
+<div id="agreementModal" style="display:none;">
   <div class="ag-box" id="agreementBox">
 
     <div class="ag-header">
@@ -1163,8 +1165,15 @@ if (shouldShowAnimation) {
   const checkbox = document.getElementById('agreementCheckbox');
   const btn      = document.getElementById('agreementGotItBtn');
 
-  function showModal() { modal.classList.add('visible'); }
-  function hideModal() { modal.classList.remove('visible'); }
+  // Auto-remove shake class when animation finishes
+  box.addEventListener('animationend', () => box.classList.remove('ag-shaking'));
+
+  function showModal() {
+    modal.style.display = 'flex';
+  }
+  function hideModal() {
+    modal.style.display = 'none';
+  }
 
   // Checkbox toggles the button
   checkbox.addEventListener('change', function() {
@@ -1179,13 +1188,13 @@ if (shouldShowAnimation) {
     loadAdcashAndRun();
   });
 
-  // Clicking the dark backdrop shakes the box (can't dismiss without agreeing)
+  // Clicking the dark backdrop shakes the box only — no grow replay
   modal.addEventListener('click', function(e) {
     if (e.target !== modal) return;
-    box.style.animation = 'none';
-    box.offsetHeight; // force reflow
-    box.style.animation = 'agreementShake 0.45s ease';
-    setTimeout(() => { box.style.animation = ''; }, 450);
+    // Use a CSS class for shake so clearing it never re-triggers scaleIn
+    box.classList.remove('ag-shaking');
+    box.offsetHeight; // force reflow so re-adding works
+    box.classList.add('ag-shaking');
   });
 })();
 </script>
