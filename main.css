@@ -473,37 +473,37 @@
 }
 
 .main-content {
-    padding: 0 2rem; /* horizontal padding */
+    padding: 0;
     box-sizing: border-box;
 }
 
 .game-grid {
     display: flex;
     flex-direction: column;
-    align-items: center; /* centers grid horizontally */
-    margin: 2rem 0;      /* spacing top & bottom */
+    align-items: flex-start;
+    margin: 2rem 0;
 }
 
 .grid-container {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    justify-content: center; /* center the cards */
+    justify-content: flex-start;
 }
 
 .game-grid .category {
-    color: white;            /* makes text white */
-    text-align: left;        /* aligns heading to left */
-    margin-left: 0;          /* remove any extra spacing */
-    margin-bottom: 1rem;     /* some spacing below heading */
-    font-size: 2rem;         /* optional: make it bigger if you want */
-    font-weight: 600;        /* optional: bold */
+    color: white;
+    text-align: left;
+    margin-left: 0;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: 600;
 }
 
 .game-grid {
     display: flex;
     flex-direction: column;
-    align-items: center; /* keep cards centered */
+    align-items: flex-start;
     margin: 2rem 0;
 }
 
@@ -526,7 +526,7 @@
 #searchWrapper {
     display: flex;
     flex-direction: column;
-    align-items: center; /* centers the cards */
+    align-items: flex-start;
     width: 100%;
     margin: 2rem 0;
 }
@@ -554,8 +554,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    justify-content: center; /* center cards horizontally */
-    max-width: 1200px;       /* optional, same as main grids */
+    justify-content: flex-start;
+    max-width: 100%;
 }
 
 .game-card-inner {

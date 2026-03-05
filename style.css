@@ -47,7 +47,7 @@ body{
 }
 .gameadbox{
     background-color: #ffffff1a;
-    width: 1080px;
+    width: min(1080px, calc(100% - 100px));
     margin-top: 30px;
     padding-top: 7px;
     text-align: center;
@@ -130,7 +130,7 @@ body{
       pointer-events: none;
     }
 .gameazbanner{
-    width: 1080px;
+    width: min(1080px, calc(100% - 100px));
     margin-left: 80px;
     border-radius: 20px;
     border: 1px solid #474747;
@@ -144,7 +144,7 @@ body{
     cursor: pointer;
 }
 .gameazbanner img{
-    width: 900px;
+    width: min(900px, 90%);
 }
 #searchError{
     margin-left: 90px;
@@ -2179,4 +2179,102 @@ hr.rounded {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+/* ================================================
+   FIXES & RESPONSIVE OVERRIDES
+   ================================================ */
+
+/* Fix sort dropdown - was position:absolute left:62% which breaks layout */
+#sortDropdown {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+}
+
+/* Fix search wrapper - was absolute positioned which overlaps content */
+.search-wrapper {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    margin-left: auto;
+}
+
+/* Fix featured-row to be a proper flex row */
+.featured-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* ── TV / 4K (≥ 1920px) ── */
+@media screen and (min-width: 1920px) {
+    .gameadbox {
+        width: min(1400px, calc(100% - 100px));
+        height: 200px;
+        margin-left: 80px;
+    }
+    .gameazbanner {
+        width: min(1400px, calc(100% - 100px));
+        margin-left: 80px;
+    }
+    .gameazbanner img { width: min(1200px, 90%); }
+
+    .slideshow-container {
+        height: 380px;
+    }
+
+    .slide {
+        min-width: 260px;
+        width: 260px;
+        height: 180px;
+    }
+
+    #longslide { width: 560px; }
+
+    .recentslide {
+        width: 210px;
+        height: 130px;
+    }
+
+    .game-controls .game-wrapper .game,
+    .game-wrapper .game {
+        height: 680px;
+        width: 1060px;
+    }
+
+    .featuredtitle,
+    .featuredmonth { font-size: 36px; }
+
+    .hometext .category { font-size: 32px; }
+    .game-grid .category { font-size: 34px; }
+    .category { font-size: 32px; }
+
+    #gameSearch {
+        width: 320px;
+        height: 46px;
+        font-size: 17px;
+    }
+
+    .topbar img { height: 50px; }
+
+    .topbar .form-search input {
+        width: 360px;
+        height: 44px;
+        font-size: 18px;
+    }
+
+    .gameslist .azgame {
+        height: 200px;
+    }
+    .gameslist .azgame .azgametitle { font-size: 34px; }
+    .gameslist .azgame .azgamedesc { font-size: 20px; }
+
+    .grid-container {
+        gap: 16px;
+    }
+
+    .footer { height: 140px; }
+    .footer h1 { font-size: 24px; }
 }
