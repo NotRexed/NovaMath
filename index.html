@@ -918,7 +918,7 @@ function updateAllPlayCounts() {
 
 async function loadGamesGrid() {
     try {
-        const res = await fetch("https://cdn.jsdelivr.net/gh/NotRexed/assets@main/allzone.json");
+        const res = await fetch("https://cdn.jsdelivr.net/gh/Notrexed/assets@main/allzone.json");
         if (!res.ok) throw new Error('Failed to fetch games');
         const rawGames = await res.json();
 
