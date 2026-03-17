@@ -16,6 +16,17 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
 
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (let registration of registrations) {
+            registration.unregister();
+            console.log('Service worker unregistered:', registration);
+        }
+    });
+}
+</script>
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YWLQWZ5SD"></script>
 <script>
@@ -641,15 +652,8 @@ function createAdRow() {
         label.className = "ad-label";
         label.textContent = "Advertisement";
 
-        // Adcash requires the script to run INSIDE the target element.
-        // We use innerHTML with a unique id so the parser sees a real <script> tag.
-        const adId = "ac-slot-" + Date.now() + "-" + i;
         const content = document.createElement("div");
         content.className = "ad-content";
-        content.id = adId;
-        // innerHTML assignment causes the browser to parse and execute the script
-        // inside this element, which is what aclib.runBanner expects.
-        content.innerHTML = '<script type="text/javascript">aclib.runBanner({ zoneId: \'11079090\' });<\/script>';
 
         unit.appendChild(label);
         unit.appendChild(content);
@@ -658,12 +662,38 @@ function createAdRow() {
     return row;
 }
 
+// Waits for aclib.runBanner to be available, then calls it inside each .ad-content div.
+function injectAdScripts(row) {
+    const slots = Array.from(row.querySelectorAll('.ad-content'));
+    
+    function tryRunAds(attempts) {
+        if (typeof aclib !== 'undefined' && typeof aclib.runBanner === 'function') {
+            slots.forEach(function(content) {
+                const s = document.createElement('script');
+                s.type = 'text/javascript';
+                s.text = "aclib.runBanner({ zoneId: '11079090' });";
+                content.appendChild(s);
+            });
+        } else if (attempts < 20) {
+            // aclib not ready yet, retry in 250ms (up to 5 seconds total)
+            setTimeout(function() { tryRunAds(attempts + 1); }, 250);
+        } else {
+            console.warn('Adcash aclib failed to load after 5 seconds.');
+        }
+    }
+    
+    tryRunAds(0);
+}
+
 function appendGamesWithAds(container, games, createCardFn) {
     container.innerHTML = "";
     games.forEach((game, index) => {
         container.appendChild(createCardFn(game));
         if ((index + 1) % AD_INTERVAL === 0) {
-            container.appendChild(createAdRow());
+            const adRow = createAdRow();
+            container.appendChild(adRow);
+            // Row is now live in the DOM — safe to inject and run ad scripts
+            injectAdScripts(adRow);
         }
     });
 }
