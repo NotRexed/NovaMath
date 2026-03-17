@@ -22,9 +22,11 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-9YWLQWZ5SD');
 </script>
+
+<!-- Adcash Library -->
+<script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
 
 <!-- GSAP Animation Library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -137,7 +139,6 @@
   box-shadow: 0 0 20px rgba(137, 17, 218, 0.5);
 }
 
-
 /* Gradient background with customizable colors */
 body {
   background: linear-gradient(135deg, 
@@ -148,204 +149,151 @@ body {
   min-height: 100vh;
 }
 
-/* Hide gradient when loading overlay is active */
 body.loading-active {
   background: #000000;
 }
 
-/* Custom Scrollbar - Uses same gradient as background */
-::-webkit-scrollbar {
-  width: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(10, 10, 10, 0.5);
-  border-radius: 10px;
-}
-
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: rgba(10, 10, 10, 0.5); border-radius: 10px; }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, 
-    var(--bg-color-1, #0a0a0a) 0%, 
-    var(--bg-color-2, #1a1a2e) 50%, 
-    var(--bg-color-3, #16213e) 100%);
+  background: linear-gradient(135deg, var(--bg-color-1, #0a0a0a) 0%, var(--bg-color-2, #1a1a2e) 50%, var(--bg-color-3, #16213e) 100%);
   border-radius: 10px;
   border: 2px solid rgba(10, 10, 10, 0.3);
   transition: all 0.3s ease;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, 
-    var(--bg-color-1, #1a1a3e) 0%, 
-    var(--bg-color-2, #2a2a4e) 50%, 
-    var(--bg-color-3, #26315e) 100%);
+  background: linear-gradient(135deg, var(--bg-color-1, #1a1a3e) 0%, var(--bg-color-2, #2a2a4e) 50%, var(--bg-color-3, #26315e) 100%);
   border-color: rgba(255, 255, 255, 0.1);
 }
-
-/* Firefox scrollbar */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--bg-color-2, #1a1a2e) rgba(10, 10, 10, 0.5);
-}
+* { scrollbar-width: thin; scrollbar-color: var(--bg-color-2, #1a1a2e) rgba(10, 10, 10, 0.5); }
 
 /* Settings Overlay */
 .settings-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(4px);
-    z-index: 9999;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    display: none; justify-content: center; align-items: center;
+    background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+    z-index: 9999; opacity: 0; transition: opacity 0.3s ease-in-out;
 }
-
-.settings-overlay.active {
-    display: flex;
-    opacity: 1;
-}
-
-/* Popup Container */
+.settings-overlay.active { display: flex; opacity: 1; }
 .settings-popup {
-    background: rgba(20, 20, 20, 0.7);
-    backdrop-filter: blur(10px);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    width: 320px;
-    color: white;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-    animation: scaleIn 0.2s ease forwards;
+    background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(10px);
+    border-radius: 1rem; padding: 1.5rem; width: 320px; color: white;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); animation: scaleIn 0.2s ease forwards;
 }
+@keyframes scaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-@keyframes scaleIn {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+.settings-overlay {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px); display: none; align-items: center;
+  justify-content: center; z-index: 10001; padding: 20px;
 }
-/* Settings Overlay Styles */
-    .settings-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 10001;
-      padding: 20px;
-    }
+.settings-overlay[aria-hidden="false"] { display: flex; }
+.settings-popup {
+  background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px; max-width: 500px; width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); animation: slideInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.settings-header {
+  padding: 1.5rem 2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.settings-header h3 { font-size: 1.5rem; font-weight: 700; color: white; margin: 0; }
+#closeSettings {
+  background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white; width: 40px; height: 40px; border-radius: 10px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: all 0.3s ease;
+}
+#closeSettings:hover { background: rgba(255, 255, 255, 0.2); }
+.settings-body { padding: 1.5rem 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.settings-item {
+  background: rgba(48, 48, 48, 0.8); border: 1px solid rgba(65, 65, 65, 1);
+  color: white; padding: 1rem 1.25rem; border-radius: 12px; cursor: pointer;
+  font-size: 1rem; font-weight: 600; transition: all 0.3s ease;
+  display: flex; align-items: center; gap: 12px; text-align: left;
+}
+.settings-item:hover { background: rgba(78, 78, 78, 1); transform: translateY(-2px); border-color: rgba(77, 166, 255, 0.5); }
+.settings-item i { font-size: 1.2rem; }
 
-    .settings-overlay[aria-hidden="false"] {
-      display: flex;
-    }
-
-    .settings-popup {
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      max-width: 500px;
-      width: 100%;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-      animation: slideInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .settings-header {
-      padding: 1.5rem 2rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .settings-header h3 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: white;
-      margin: 0;
-    }
-
-    #closeSettings {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: white;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      transition: all 0.3s ease;
-    }
-
-    #closeSettings:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .settings-body {
-      padding: 1.5rem 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .settings-item {
-      background: rgba(48, 48, 48, 0.8);
-      border: 1px solid rgba(65, 65, 65, 1);
-      color: white;
-      padding: 1rem 1.25rem;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-align: left;
-    }
-
-    .settings-item:hover {
-      background: rgba(78, 78, 78, 1);
-      transform: translateY(-2px);
-      border-color: rgba(77, 166, 255, 0.5);
-    }
-
-    .settings-item i {
-      font-size: 1.2rem;
-    }
-
-/* Zone Viewer Fix */
 #zoneViewer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10000;
-  background: #000;
-  display: flex;
-  flex-direction: column;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 10000; background: #000; display: flex; flex-direction: column;
 }
-
 #zoneViewer .zone-header {
-  flex-shrink: 0;
-  background: rgba(0, 0, 0, 0.9);
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-shrink: 0; background: rgba(0, 0, 0, 0.9); padding: 1rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+#zoneViewer iframe { flex: 1; width: 100%; height: 100%; border: none; }
+
+/* =============================================
+   AD ROW STYLES
+   ============================================= */
+.ad-row {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    margin: 0.5rem 0;
+    /* Span full width regardless of grid/flex context */
+    flex-basis: 100%;
+    flex-shrink: 0;
 }
 
-#zoneViewer iframe {
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  border: none;
+.ad-unit {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.ad-label {
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.25);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-family: sans-serif;
+    padding: 0 2px;
+}
+
+.ad-content {
+    width: 100%;
+    height: 90px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: border-color 0.25s ease, background 0.25s ease;
+    cursor: pointer;
+}
+
+.ad-content:hover {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.ad-placeholder-text {
+    color: rgba(255, 255, 255, 0.12);
+    font-size: 0.7rem;
+    font-family: sans-serif;
+    letter-spacing: 1px;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Ensure game grid uses flex so .ad-row spans full width */
+.grid-container {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.75rem !important;
+}
+
+/* Individual game cards keep their original size */
+.grid-container > .slide {
+    flex: 0 0 auto;
 }
 </style>
 
@@ -435,7 +383,6 @@ body.loading-active {
 <!-- Main Content -->
 <div class="main-content">
     <div id="topbar"></div>
-    <!-- Featured Section -->
     <section class="homepage">
         <div class="carousels">
             <div class="featured-row">
@@ -477,25 +424,19 @@ body.loading-active {
                     <img class="logothumb" src="gameofthemonth.jpg">
                     <h1>Game of the Month</h1>
                     <button class="banneraction" onclick="openGameById(542)">
-  <i class='bx bx-play icon'></i>Play Now
-</button>
-
+                        <i class='bx bx-play icon'></i>Play Now
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Fixed navigation buttons -->
     <a class="previous">&#10094;</a>
     <a class="nextslide">&#10095;</a>
-
-    <!-- Dots -->
     <div class="dots" id="dotsContainer">
         <span class="dot" onclick="goToSlide(0)"></span>
         <span class="dot" onclick="goToSlide(1)"></span>
     </div>
 </div>
-
 
 <!-- SEARCH RESULTS -->
 <div id="searchWrapper" style="display:none; flex-direction: column; align-items: center; width: 100%;">
@@ -509,8 +450,7 @@ body.loading-active {
     </div>
 </div>
 
-
-        <!-- Featured Games Grid -->
+<!-- Featured Games Grid -->
 <div id="featuredGames" class="game-grid">
   <h1 class="category">Featured</h1>
   <div class="grid-container"></div>
@@ -539,7 +479,6 @@ body.loading-active {
     <iframe id="zoneFrame" style="flex: 1; width: 100%; height: calc(100% - 70px); border: none;"></iframe>
 </div>
 
-<!-- Scroll to top on reload -->
 <script>
 window.onbeforeunload = () => window.scrollTo(0,0);
 window.onload = () => setTimeout(()=>window.scrollTo(0,0),0);
@@ -567,15 +506,9 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsOverlay.setAttribute('aria-hidden','true');
   }
 
-  settingsNavLink?.addEventListener('click', (e) => {
-    e.preventDefault();
-    openOverlay();
-  });
-
+  settingsNavLink?.addEventListener('click', (e) => { e.preventDefault(); openOverlay(); });
   closeSettingsBtn?.addEventListener('click', closeOverlay);
-  settingsOverlay?.addEventListener('click', (e) => {
-    if (e.target === settingsOverlay) closeOverlay();
-  });
+  settingsOverlay?.addEventListener('click', (e) => { if (e.target === settingsOverlay) closeOverlay(); });
 
   function restoreTabCloak() {
     const savedTitle = localStorage.getItem("tabCloakTitle");
@@ -583,11 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedTitle) document.title = savedTitle;
     if (savedFavicon) {
       let favicon = document.querySelector("link[rel~='icon']");
-      if (!favicon) {
-        favicon = document.createElement("link");
-        favicon.rel = "icon";
-        document.head.appendChild(favicon);
-      }
+      if (!favicon) { favicon = document.createElement("link"); favicon.rel = "icon"; document.head.appendChild(favicon); }
       favicon.href = savedFavicon;
     }
   }
@@ -595,19 +524,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   tabCloakBtn?.addEventListener("click", () => {
     const newTitle = prompt("Enter new tab title:", document.title);
-    if (newTitle !== null) {
-      document.title = newTitle;
-      localStorage.setItem("tabCloakTitle", newTitle);
-    }
-
+    if (newTitle !== null) { document.title = newTitle; localStorage.setItem("tabCloakTitle", newTitle); }
     const newFavicon = prompt("Enter new tab image URL (leave empty to keep current):", "");
     if (newFavicon !== null && newFavicon.trim() !== "") {
       let favicon = document.querySelector("link[rel~='icon']");
-      if (!favicon) {
-        favicon = document.createElement("link");
-        favicon.rel = "icon";
-        document.head.appendChild(favicon);
-      }
+      if (!favicon) { favicon = document.createElement("link"); favicon.rel = "icon"; document.head.appendChild(favicon); }
       favicon.href = newFavicon;
       localStorage.setItem("tabCloakFavicon", newFavicon);
     }
@@ -635,83 +556,45 @@ document.addEventListener('DOMContentLoaded', () => {
   restoreBackgroundGradient();
 
   customizeBackgroundBtn?.addEventListener('click', () => {
-    // Close the settings overlay
     closeOverlay();
-    
     const pickerContainer = document.createElement('div');
-    pickerContainer.style.cssText = `
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(20, 20, 20, 0.95);
-      backdrop-filter: blur(10px);
-      padding: 2rem;
-      border-radius: 1rem;
-      z-index: 10002;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-      color: white;
-      font-family: sans-serif;
-      max-width: 400px;
-      width: 90%;
-    `;
-
+    pickerContainer.style.cssText = `position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(20,20,20,0.95);backdrop-filter:blur(10px);padding:2rem;border-radius:1rem;z-index:10002;box-shadow:0 8px 30px rgba(0,0,0,0.5);color:white;font-family:sans-serif;max-width:400px;width:90%;`;
     const savedColor1 = localStorage.getItem('bgColor1') || '#0a0a0a';
     const savedColor2 = localStorage.getItem('bgColor2') || '#1a1a2e';
     const savedColor3 = localStorage.getItem('bgColor3') || '#16213e';
-
     pickerContainer.innerHTML = `
-      <h3 style="margin-top: 0;">Customize Background Gradient</h3>
-      <p style="font-size: 0.9rem; color: #aaa; margin-bottom: 1rem;">This gradient is also applied to the scrollbar</p>
-      <div style="margin: 1rem 0;">
-        <label style="display: block; margin-bottom: 0.5rem;">Color 1 (Top Left):</label>
-        <input type="color" id="bgColor1" value="${savedColor1}" style="width: 100%; height: 40px; cursor: pointer; border: none; border-radius: 5px;">
-      </div>
-      <div style="margin: 1rem 0;">
-        <label style="display: block; margin-bottom: 0.5rem;">Color 2 (Middle):</label>
-        <input type="color" id="bgColor2" value="${savedColor2}" style="width: 100%; height: 40px; cursor: pointer; border: none; border-radius: 5px;">
-      </div>
-      <div style="margin: 1rem 0;">
-        <label style="display: block; margin-bottom: 0.5rem;">Color 3 (Bottom Right):</label>
-        <input type="color" id="bgColor3" value="${savedColor3}" style="width: 100%; height: 40px; cursor: pointer; border: none; border-radius: 5px;">
-      </div>
-      <div style="display: flex; gap: 0.5rem; margin-top: 1.5rem;">
-        <button id="applyBgColors" style="flex: 1; padding: 0.7rem; background: #4CAF50; border: none; border-radius: 5px; color: white; cursor: pointer; font-weight: bold;">Apply</button>
-        <button id="cancelBgColors" style="flex: 1; padding: 0.7rem; background: #f44336; border: none; border-radius: 5px; color: white; cursor: pointer; font-weight: bold;">Cancel</button>
-      </div>
-    `;
-
+      <h3 style="margin-top:0;">Customize Background Gradient</h3>
+      <p style="font-size:0.9rem;color:#aaa;margin-bottom:1rem;">This gradient is also applied to the scrollbar</p>
+      <div style="margin:1rem 0;"><label style="display:block;margin-bottom:0.5rem;">Color 1 (Top Left):</label><input type="color" id="bgColor1" value="${savedColor1}" style="width:100%;height:40px;cursor:pointer;border:none;border-radius:5px;"></div>
+      <div style="margin:1rem 0;"><label style="display:block;margin-bottom:0.5rem;">Color 2 (Middle):</label><input type="color" id="bgColor2" value="${savedColor2}" style="width:100%;height:40px;cursor:pointer;border:none;border-radius:5px;"></div>
+      <div style="margin:1rem 0;"><label style="display:block;margin-bottom:0.5rem;">Color 3 (Bottom Right):</label><input type="color" id="bgColor3" value="${savedColor3}" style="width:100%;height:40px;cursor:pointer;border:none;border-radius:5px;"></div>
+      <div style="display:flex;gap:0.5rem;margin-top:1.5rem;">
+        <button id="applyBgColors" style="flex:1;padding:0.7rem;background:#4CAF50;border:none;border-radius:5px;color:white;cursor:pointer;font-weight:bold;">Apply</button>
+        <button id="cancelBgColors" style="flex:1;padding:0.7rem;background:#f44336;border:none;border-radius:5px;color:white;cursor:pointer;font-weight:bold;">Cancel</button>
+      </div>`;
     document.body.appendChild(pickerContainer);
-
     const color1Input = pickerContainer.querySelector('#bgColor1');
     const color2Input = pickerContainer.querySelector('#bgColor2');
     const color3Input = pickerContainer.querySelector('#bgColor3');
-    
     const updatePreview = () => {
       document.documentElement.style.setProperty('--bg-color-1', color1Input.value);
       document.documentElement.style.setProperty('--bg-color-2', color2Input.value);
       document.documentElement.style.setProperty('--bg-color-3', color3Input.value);
     };
-
     color1Input.addEventListener('input', updatePreview);
     color2Input.addEventListener('input', updatePreview);
     color3Input.addEventListener('input', updatePreview);
-
     pickerContainer.querySelector('#applyBgColors').addEventListener('click', () => {
       applyBackgroundGradient(color1Input.value, color2Input.value, color3Input.value);
       document.body.removeChild(pickerContainer);
     });
-
     pickerContainer.querySelector('#cancelBgColors').addEventListener('click', () => {
       restoreBackgroundGradient();
       document.body.removeChild(pickerContainer);
     });
-
     const escapeHandler = (e) => {
       if (e.key === 'Escape' && document.body.contains(pickerContainer)) {
-        restoreBackgroundGradient();
-        document.body.removeChild(pickerContainer);
-        document.removeEventListener('keydown', escapeHandler);
+        restoreBackgroundGradient(); document.body.removeChild(pickerContainer); document.removeEventListener('keydown', escapeHandler);
       }
     };
     document.addEventListener('keydown', escapeHandler);
@@ -722,12 +605,68 @@ document.addEventListener('DOMContentLoaded', () => {
     alert('Background gradient reset to default!');
   });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeOverlay();
-    }
-  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeOverlay(); });
 });
+</script>
+
+<!-- =============================================
+     AD ROW HELPER
+     Creates a row with 2 wide ad slots (728×90 each).
+     Replace the .ad-content innerHTML with your
+     actual ad network tags (e.g. Google AdSense).
+     AD_AFTER_ROWS controls how many game rows appear
+     before an ad row is inserted.
+     ============================================= -->
+<script>
+// Approximate number of game cards that fit in one visual row.
+// Tune this to match your CSS card width / grid columns.
+const CARDS_PER_ROW = 4;
+
+// Insert an ad row after this many game rows
+const AD_AFTER_ROWS = 10;
+
+// Total cards between each ad row
+const AD_INTERVAL = CARDS_PER_ROW * AD_AFTER_ROWS; // = 16
+
+function createAdRow() {
+    const row = document.createElement("div");
+    row.className = "ad-row";
+    row.setAttribute("aria-label", "Advertisement");
+
+    for (let i = 0; i < 2; i++) {
+        const unit = document.createElement("div");
+        unit.className = "ad-unit";
+
+        const label = document.createElement("div");
+        label.className = "ad-label";
+        label.textContent = "Advertisement";
+
+        // Adcash requires the script to run INSIDE the target element.
+        // We use innerHTML with a unique id so the parser sees a real <script> tag.
+        const adId = "ac-slot-" + Date.now() + "-" + i;
+        const content = document.createElement("div");
+        content.className = "ad-content";
+        content.id = adId;
+        // innerHTML assignment causes the browser to parse and execute the script
+        // inside this element, which is what aclib.runBanner expects.
+        content.innerHTML = '<script type="text/javascript">aclib.runBanner({ zoneId: \'11079090\' });<\/script>';
+
+        unit.appendChild(label);
+        unit.appendChild(content);
+        row.appendChild(unit);
+    }
+    return row;
+}
+
+function appendGamesWithAds(container, games, createCardFn) {
+    container.innerHTML = "";
+    games.forEach((game, index) => {
+        container.appendChild(createCardFn(game));
+        if ((index + 1) % AD_INTERVAL === 0) {
+            container.appendChild(createAdRow());
+        }
+    });
+}
 </script>
 
 <!-- Optimized Games System with jsDelivr Stats -->
@@ -739,11 +678,9 @@ const htmlURL = "https://cdn.jsdelivr.net/gh/Notrexed/html@main";
 let _allStatsCache = null;
 let _statsFetchPromise = null;
 
-// Clear old caches on load
 if (typeof localStorage !== 'undefined') {
     localStorage.removeItem('novaStatsCache_v2');
     localStorage.removeItem('novaStatsCache_v3');
-    console.log('Cleared old cache versions');
 }
 
 function loadCachedStats() {
@@ -753,127 +690,55 @@ function loadCachedStats() {
         const data = JSON.parse(cached);
         const now = Date.now();
         const oneHour = 1 * 60 * 60 * 1000;
-        if (!data.timestamp || !data.stats || (now - data.timestamp) > oneHour) {
-            localStorage.removeItem('novaStatsCache_v4');
-            return null;
-        }
-        // Don't use cache if it has 0 games (indicates bad data)
-        const gameCount = Object.keys(data.stats).length;
-        if (gameCount === 0) {
-            console.log('Cache has 0 games, clearing and forcing fresh fetch');
-            localStorage.removeItem('novaStatsCache_v4');
-            return null;
-        }
+        if (!data.timestamp || !data.stats || (now - data.timestamp) > oneHour) { localStorage.removeItem('novaStatsCache_v4'); return null; }
+        if (Object.keys(data.stats).length === 0) { localStorage.removeItem('novaStatsCache_v4'); return null; }
         return data.stats;
-    } catch (e) {
-        return null;
-    }
+    } catch (e) { return null; }
 }
 
 function saveCachedStats(stats) {
-    try {
-        localStorage.setItem('novaStatsCache_v4', JSON.stringify({
-            timestamp: Date.now(),
-            stats: stats
-        }));
-    } catch (e) {
-        console.warn('Failed to cache stats:', e);
-    }
+    try { localStorage.setItem('novaStatsCache_v4', JSON.stringify({ timestamp: Date.now(), stats })); } catch (e) {}
 }
 
 async function getAllStats(forceRefresh = false) {
-    console.log('getAllStats called, forceRefresh:', forceRefresh);
-    
-    if (!forceRefresh && _allStatsCache) {
-        console.log('Returning cached stats:', Object.keys(_allStatsCache).length, 'games');
-        // Update UI with cached stats
-        requestAnimationFrame(() => updateAllPlayCounts());
-        return _allStatsCache;
-    }
+    if (!forceRefresh && _allStatsCache) { requestAnimationFrame(() => updateAllPlayCounts()); return _allStatsCache; }
     if (!forceRefresh) {
         const cached = loadCachedStats();
-        if (cached) {
-            console.log('Loaded from localStorage:', Object.keys(cached).length, 'games');
-            _allStatsCache = cached;
-            // Update UI with cached stats
-            requestAnimationFrame(() => updateAllPlayCounts());
-            return cached;
-        }
+        if (cached) { _allStatsCache = cached; requestAnimationFrame(() => updateAllPlayCounts()); return cached; }
     }
-    if (_statsFetchPromise) {
-        console.log('Already fetching stats, returning existing promise');
-        return _statsFetchPromise;
-    }
-    
-    console.log('Starting fresh stats fetch...');
-    
+    if (_statsFetchPromise) return _statsFetchPromise;
+
     _statsFetchPromise = (async () => {
         const combinedMap = Object.create(null);
-        
         try {
             const baseURL = 'https://data.jsdelivr.com/v1/stats/packages/gh/NotRexed/html@main/files';
             let page = 1;
             let hasMorePages = true;
-            
             while (hasMorePages && page <= 10) {
-                const url = `${baseURL}?period=all&page=${page}`;
-                console.log('Fetching page', page, ':', url);
-                
-                const response = await fetch(url);
-                console.log('Response status:', response.status);
-                
-                if (!response.ok) {
-                    console.log('Failed to fetch page', page);
-                    break;
-                }
-                
+                const response = await fetch(`${baseURL}?period=all&page=${page}`);
+                if (!response.ok) break;
                 const data = await response.json();
-                
-                if (!Array.isArray(data) || data.length === 0) {
-                    console.log('No more data on page', page);
-                    hasMorePages = false;
-                    break;
-                }
-                
-                console.log('Processing', data.length, 'files from page', page);
-                
+                if (!Array.isArray(data) || data.length === 0) { hasMorePages = false; break; }
                 for (const item of data) {
                     if (!item.name) continue;
-                    
-                    // Extract filename from path
                     const filename = item.name.split('/').pop();
-                    
-                    // Extract game ID from filename (e.g., "542.html" or "542-baldis-basics.html")
                     const match = filename.match(/^(\d+)[-.]?/);
                     if (match) {
                         const id = match[1];
                         const hits = item.hits?.total || 0;
-                        
-                        if (!combinedMap[id]) {
-                            combinedMap[id] = { hits: 0 };
-                        }
+                        if (!combinedMap[id]) combinedMap[id] = { hits: 0 };
                         combinedMap[id].hits += hits;
                     }
                 }
-                
                 page++;
             }
-            
-            console.log('Final stats loaded:', Object.keys(combinedMap).length, 'games');
-            console.log('Sample stats:', Object.entries(combinedMap).slice(0, 10));
-        } catch (err) {
-            console.error('Stats fetch error:', err);
-        }
-        
+        } catch (err) { console.error('Stats fetch error:', err); }
         _allStatsCache = combinedMap;
         saveCachedStats(combinedMap);
         _statsFetchPromise = null;
-        
         requestAnimationFrame(() => updateAllPlayCounts());
-        
         return combinedMap;
     })();
-    
     return _statsFetchPromise;
 }
 
@@ -892,28 +757,43 @@ function formatPlays(num) {
 let updateTimeout = null;
 function updateAllPlayCounts() {
     if (updateTimeout) return;
-    
     updateTimeout = setTimeout(async () => {
         const cards = document.querySelectorAll('.slide[data-game-id]');
-        
         const batchSize = 20;
         for (let i = 0; i < cards.length; i += batchSize) {
             const batch = Array.from(cards).slice(i, i + batchSize);
-            
             await Promise.all(batch.map(async card => {
                 const gameId = card.getAttribute('data-game-id');
                 const playsEl = card.querySelector('.game-plays span');
-                if (playsEl && gameId) {
-                    const plays = await getStats(gameId);
-                    playsEl.textContent = formatPlays(plays);
-                }
+                if (playsEl && gameId) { const plays = await getStats(gameId); playsEl.textContent = formatPlays(plays); }
             }));
-            
             await new Promise(resolve => setTimeout(resolve, 0));
         }
-        
         updateTimeout = null;
     }, 100);
+}
+
+// ----- Card factory (shared by loadGamesGrid and sortGames) -----
+function createOptimizedCard(game) {
+    const card = document.createElement("div");
+    card.className = "slide";
+    card.setAttribute('data-game-id', game.id);
+    let tagHTML = "";
+    if (game.tag === "hot") tagHTML = `<a class='hotrank'><i class='bx bxs-hot'></i>HOT</a>`;
+    if (game.tag === "new") tagHTML = `<a class='newrank'><i class='bx bxs-zap'></i>NEW</a>`;
+    card.innerHTML = `
+        ${tagHTML}
+        <div class="game-card-inner">
+            <img src="${game.img}" alt="${game.title}">
+            <div class="game-title">
+                <span class="game-name">${game.title}</span>
+                <div class="game-plays">
+                    <i class='bx bx-play-circle'></i>
+                    <span>...</span>
+                </div>
+            </div>
+        </div>`;
+    return card;
 }
 
 async function loadGamesGrid() {
@@ -932,61 +812,27 @@ async function loadGamesGrid() {
             featured: g.featured || false
         }));
 
-        allGames.sort((a,b) => a.title.localeCompare(b.title));
+        allGames.sort((a, b) => a.title.localeCompare(b.title));
 
         const featuredContainer = document.querySelector("#featuredGames .grid-container");
         const allContainer = document.querySelector("#allGames .grid-container");
 
-        featuredContainer.innerHTML = "";
-        allContainer.innerHTML = "";
+        // ---- Render with ad rows injected every 4 game rows ----
+        appendGamesWithAds(allContainer, allGames, createOptimizedCard);
 
-        const createOptimizedCard = (game) => {
-            const card = document.createElement("div");
-            card.className = "slide";
-            card.setAttribute('data-game-id', game.id);
-
-            let tagHTML = "";
-            if(game.tag === "hot") tagHTML = `<a class='hotrank'><i class='bx bxs-hot'></i>HOT</a>`;
-            if(game.tag === "new") tagHTML = `<a class='newrank'><i class='bx bxs-zap'></i>NEW</a>`;
-
-            card.innerHTML = `
-        ${tagHTML}
-        <div class="game-card-inner">
-            <img src="${game.img}" alt="${game.title}">
-            <div class="game-title">
-                <span class="game-name">${game.title}</span>
-                <div class="game-plays">
-                    <i class='bx bx-play-circle'></i>
-                    <span>...</span>
-                </div>
-            </div>
-        </div>
-    `;
-            return card;
-        };
-
-        allGames.forEach(game => {
-            const allCard = createOptimizedCard(game);
-            allContainer.appendChild(allCard);
-
-            if(game.featured) {
-                const featuredCard = createOptimizedCard(game);
-                featuredContainer.appendChild(featuredCard);
-            }
-        });
+        const featuredGames = allGames.filter(g => g.featured);
+        appendGamesWithAds(featuredContainer, featuredGames, createOptimizedCard);
+        // ---------------------------------------------------------
 
         document.addEventListener('click', (e) => {
             const card = e.target.closest('.slide[data-game-id]');
             if (card) {
                 const gameId = card.getAttribute('data-game-id');
                 const game = allGames.find(g => String(g.id) === String(gameId));
-                if (game) {
-                    openZone(game);
-                }
+                if (game) openZone(game);
             }
         });
 
-        // Fetch stats from jsDelivr API
         getAllStats();
     } catch (err) {
         console.error('Failed to load games:', err);
@@ -999,78 +845,36 @@ loadGamesGrid();
 async function sortGames(sortBy) {
     const featuredContainer = document.querySelector("#featuredGames .grid-container");
     const allContainer = document.querySelector("#allGames .grid-container");
-    
-    // Create a copy to sort
+
     let sortedGames = [...allGames];
-    
+
     if (sortBy === 'name') {
         sortedGames.sort((a, b) => a.title.localeCompare(b.title));
     } else if (sortBy === 'id') {
         sortedGames.sort((a, b) => a.id - b.id);
     } else if (sortBy === 'popularity') {
-        // Get all stats first
         const allStats = await getAllStats();
-        
-        // Sort by play count (most popular first)
         sortedGames.sort((a, b) => {
             const playsA = allStats[String(a.id)]?.hits || 0;
             const playsB = allStats[String(b.id)]?.hits || 0;
-            return playsB - playsA; // Descending order
+            return playsB - playsA;
         });
     }
-    
-    // Clear containers
-    featuredContainer.innerHTML = "";
-    allContainer.innerHTML = "";
-    
-    // Helper function to create cards
-    const createOptimizedCard = (game) => {
-        const card = document.createElement("div");
-        card.className = "slide";
-        card.setAttribute('data-game-id', game.id);
 
-        let tagHTML = "";
-        if(game.tag === "hot") tagHTML = `<a class='hotrank'><i class='bx bxs-hot'></i>HOT</a>`;
-        if(game.tag === "new") tagHTML = `<a class='newrank'><i class='bx bxs-zap'></i>NEW</a>`;
+    // ---- Re-render with ad rows ----
+    appendGamesWithAds(allContainer, sortedGames, createOptimizedCard);
 
-        card.innerHTML = `
-            ${tagHTML}
-            <div class="game-card-inner">
-                <img src="${game.img}" alt="${game.title}">
-                <div class="game-title">
-                    <span class="game-name">${game.title}</span>
-                    <div class="game-plays">
-                        <i class='bx bx-play-circle'></i>
-                        <span>...</span>
-                    </div>
-                </div>
-            </div>
-        `;
-        return card;
-    };
-    
-    // Re-render sorted games
-    sortedGames.forEach(game => {
-        const allCard = createOptimizedCard(game);
-        allContainer.appendChild(allCard);
+    const sortedFeatured = sortedGames.filter(g => g.featured);
+    appendGamesWithAds(featuredContainer, sortedFeatured, createOptimizedCard);
+    // --------------------------------
 
-        if(game.featured) {
-            const featuredCard = createOptimizedCard(game);
-            featuredContainer.appendChild(featuredCard);
-        }
-    });
-    
-    // Update play counts
     updateAllPlayCounts();
 }
 
-// Add event listener for sort dropdown
 document.addEventListener('DOMContentLoaded', () => {
     const sortDropdown = document.getElementById('sortDropdown');
     if (sortDropdown) {
-        sortDropdown.addEventListener('change', (e) => {
-            sortGames(e.target.value);
-        });
+        sortDropdown.addEventListener('change', (e) => sortGames(e.target.value));
     }
 });
 </script>
@@ -1086,52 +890,21 @@ let currentZoneURL = '';
 
 async function openZone(game) {
     if (!game) return;
-    
     currentZoneURL = game.url;
-    
-    console.log("Opening game:", game.title);
-    console.log("Game URL:", currentZoneURL);
-    
     try {
-        // Get the existing iframe
         zoneFrame = document.getElementById('zoneFrame');
-        
-        if (!zoneFrame) {
-            console.error('Zone frame not found!');
-            return;
-        }
-
-        // Fetch the HTML content
+        if (!zoneFrame) return;
         const res = await fetch(currentZoneURL + '?t=' + Date.now());
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const html = await res.text();
-
-        // Write HTML to iframe
         const doc = zoneFrame.contentWindow.document;
-        doc.open();
-        doc.write(html);
-        doc.close();
-
+        doc.open(); doc.write(html); doc.close();
         if (zoneNameEl) zoneNameEl.textContent = game.title || 'Untitled';
         if (zoneIdEl) zoneIdEl.textContent = String(game.id || '');
-        if (zoneAuthorEl) {
-            zoneAuthorEl.textContent = game.author ? `by ${game.author}` : '';
-            zoneAuthorEl.style.display = game.author ? 'inline' : 'none';
-        }
-
-        if (zoneViewer) {
-            zoneViewer.style.display = 'flex';
-            zoneViewer.setAttribute('aria-hidden', 'false');
-        }
+        if (zoneAuthorEl) { zoneAuthorEl.textContent = game.author ? `by ${game.author}` : ''; zoneAuthorEl.style.display = game.author ? 'inline' : 'none'; }
+        if (zoneViewer) { zoneViewer.style.display = 'flex'; zoneViewer.setAttribute('aria-hidden', 'false'); }
         document.body.style.overflow = 'hidden';
-        
-        try { 
-            const u = new URL(window.location); 
-            u.searchParams.set('id', game.id); 
-            history.pushState(null, '', u.toString()); 
-        } catch(e) {}
+        try { const u = new URL(window.location); u.searchParams.set('id', game.id); history.pushState(null, '', u.toString()); } catch(e) {}
     } catch (err) {
         console.error('openZone error:', err);
         alert(`Failed to load game: ${game.title}\nURL: ${currentZoneURL}\nError: ${err.message}`);
@@ -1139,87 +912,36 @@ async function openZone(game) {
 }
 
 function closeZone() {
-    if (zoneViewer) {
-        zoneViewer.style.display = 'none';
-        zoneViewer.setAttribute('aria-hidden', 'true');
-    }
-    
+    if (zoneViewer) { zoneViewer.style.display = 'none'; zoneViewer.setAttribute('aria-hidden', 'true'); }
     document.body.style.overflow = '';
-    
     zoneFrame = document.getElementById('zoneFrame');
     if (zoneFrame) {
-        try {
-            zoneFrame.src = 'about:blank';
-            if (zoneFrame.contentWindow) {
-                const doc = zoneFrame.contentWindow.document;
-                doc.open();
-                doc.close();
-            }
-        } catch(e) {
-            console.warn('Iframe cleanup error:', e);
-        }
+        try { zoneFrame.src = 'about:blank'; if (zoneFrame.contentWindow) { const doc = zoneFrame.contentWindow.document; doc.open(); doc.close(); } } catch(e) {}
     }
-    
     currentZoneURL = '';
-    
-    try { 
-        const u = new URL(window.location); 
-        u.searchParams.delete('id'); 
-        history.pushState(null,'',u.toString()); 
-    } catch(e) {}
+    try { const u = new URL(window.location); u.searchParams.delete('id'); history.pushState(null,'',u.toString()); } catch(e) {}
 }
 
 function fullscreenZone() {
     if (!zoneFrame) return;
-    if (zoneFrame.requestFullscreen) {
-        zoneFrame.requestFullscreen();
-    } else if (zoneFrame.mozRequestFullScreen) {
-        zoneFrame.mozRequestFullScreen();
-    } else if (zoneFrame.webkitRequestFullscreen) {
-        zoneFrame.webkitRequestFullscreen();
-    } else if (zoneFrame.msRequestFullscreen) {
-        zoneFrame.msRequestFullscreen();
-    }
+    (zoneFrame.requestFullscreen || zoneFrame.mozRequestFullScreen || zoneFrame.webkitRequestFullscreen || zoneFrame.msRequestFullscreen || function(){}).call(zoneFrame);
 }
 
 function openInAboutBlank() {
-    if (!currentZoneURL) {
-        console.error('No game URL available');
-        return;
-    }
-    
-    // Open about:blank window
+    if (!currentZoneURL) return;
     const win = window.open('about:blank', '_blank');
-    
-    if (!win) {
-        alert('Please allow popups for this site');
-        return;
-    }
-    
-    // Fetch the game HTML
+    if (!win) { alert('Please allow popups for this site'); return; }
     fetch(currentZoneURL + '?t=' + Date.now())
         .then(res => res.text())
-        .then(html => {
-            // Write the game HTML to the new window
-            win.document.open();
-            win.document.write(html);
-            win.document.close();
-        })
-        .catch(err => {
-            console.error('Failed to load game in about:blank:', err);
-            win.close();
-            alert('Failed to open game in about:blank');
-        });
+        .then(html => { win.document.open(); win.document.write(html); win.document.close(); })
+        .catch(err => { console.error(err); win.close(); alert('Failed to open game in about:blank'); });
 }
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeZone();
-        const settingsOverlay = document.getElementById('settingsOverlay');
-        if (settingsOverlay && settingsOverlay.classList.contains('active')) {
-            settingsOverlay.classList.remove('active');
-            settingsOverlay.setAttribute('aria-hidden','true');
-        }
+        const so = document.getElementById('settingsOverlay');
+        if (so && so.classList.contains('active')) { so.classList.remove('active'); so.setAttribute('aria-hidden','true'); }
     }
 });
 </script>
@@ -1236,65 +958,41 @@ searchInput.addEventListener("input", () => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
         const query = searchInput.value.toLowerCase().trim();
-
         searchSlider.innerHTML = "";
-
-        if (!query) {
-            searchWrapper.style.display = "none";
-            return;
-        }
-
+        if (!query) { searchWrapper.style.display = "none"; return; }
         const startsWith = allGames.filter(g => g.title.toLowerCase().startsWith(query));
-        const contains = allGames.filter(
-            g => !g.title.toLowerCase().startsWith(query) && g.title.toLowerCase().includes(query)
-        );
+        const contains = allGames.filter(g => !g.title.toLowerCase().startsWith(query) && g.title.toLowerCase().includes(query));
         const matches = [...startsWith, ...contains].slice(0, 50);
-
-        if (matches.length === 0) {
-            searchWrapper.style.display = "none";
-            return;
-        }
-
+        if (matches.length === 0) { searchWrapper.style.display = "none"; return; }
         searchWrapper.style.display = "flex";
         searchTitle.style.display = "block";
-
         const fragment = document.createDocumentFragment();
-        
         matches.forEach(game => {
             const card = document.createElement("div");
             card.className = "slide";
             card.setAttribute('data-game-id', game.id);
-
             let tagHTML = "";
             if (game.tag === "hot") tagHTML = `<a class="hotrank"><i class='bx bxs-hot'></i>HOT</a>`;
             if (game.tag === "new") tagHTML = `<a class="newrank"><i class='bx bxs-zap'></i>NEW</a>`;
-
             card.innerHTML = `${tagHTML}<img src="${game.img}" alt="${game.title}">`;
             card.style.display = "inline-block";
             card.style.opacity = "1";
-
             fragment.appendChild(card);
         });
-        
         searchSlider.appendChild(fragment);
-
         searchSlider.style.display = "flex";
         searchSlider.style.flexWrap = "wrap";
         searchSlider.style.justifyContent = "flex-start";
         searchSlider.style.overflow = "visible";
     }, 150);
 });
-
 searchInput.disabled = false;
 </script>
 
 <script>
 function openGameById(id) {
   const game = allGames.find(g => String(g.id) === String(id));
-  if (!game) {
-    console.error("Game not found with id:", id);
-    return;
-  }
+  if (!game) { console.error("Game not found with id:", id); return; }
   openZone(game);
 }
 </script>
@@ -1302,148 +1000,74 @@ function openGameById(id) {
 <!-- Onboarding Animation Script -->
 <script>
 class ImageCacheManager {
-  constructor() {
-    this.cacheKey = 'novaImageCache_v1';
-    this.cacheTimestamp = 'novaCacheTimestamp_v1';
-    this.loadedKey = 'novaImagesLoaded_v1';
-  }
-
+  constructor() { this.cacheKey = 'novaImageCache_v1'; this.cacheTimestamp = 'novaCacheTimestamp_v1'; this.loadedKey = 'novaImagesLoaded_v1'; }
   getCachedImages() {
     try {
       const cached = localStorage.getItem(this.cacheKey);
       const timestamp = localStorage.getItem(this.cacheTimestamp);
       const loaded = localStorage.getItem(this.loadedKey);
-      
       if (!cached || !timestamp || !loaded) return null;
-      
-      return {
-        images: JSON.parse(cached),
-        timestamp: parseInt(timestamp),
-        loaded: loaded === 'true'
-      };
-    } catch (e) {
-      return null;
-    }
+      return { images: JSON.parse(cached), timestamp: parseInt(timestamp), loaded: loaded === 'true' };
+    } catch (e) { return null; }
   }
-
   setCachedImages(images) {
     try {
       localStorage.setItem(this.cacheKey, JSON.stringify(images));
       localStorage.setItem(this.cacheTimestamp, Date.now().toString());
       localStorage.setItem(this.loadedKey, 'true');
-    } catch (e) {
-      console.warn('Failed to cache images:', e);
-    }
+    } catch (e) {}
   }
-
-  clearCache() {
-    localStorage.removeItem(this.cacheKey);
-    localStorage.removeItem(this.cacheTimestamp);
-    localStorage.removeItem(this.loadedKey);
-  }
-
+  clearCache() { localStorage.removeItem(this.cacheKey); localStorage.removeItem(this.cacheTimestamp); localStorage.removeItem(this.loadedKey); }
   needsReload() {
     const cache = this.getCachedImages();
     if (!cache) return true;
-    
     if (cache.loaded) {
       const twentyFourHours = 24 * 60 * 60 * 1000;
       const now = Date.now();
-      
-      const isHardReload = performance && (
-        performance.navigation?.type === 1 || 
-        performance.getEntriesByType?.('navigation')?.[0]?.type === 'reload'
-      );
-      
-      const cacheExpired = (now - cache.timestamp) > twentyFourHours;
-      
-      return cacheExpired && isHardReload;
+      const isHardReload = performance && (performance.navigation?.type === 1 || performance.getEntriesByType?.('navigation')?.[0]?.type === 'reload');
+      return (now - cache.timestamp) > twentyFourHours && isHardReload;
     }
-    
     return true;
   }
 }
 
 class ImagePreloader {
-  constructor() {
-    this.totalImages = 0;
-    this.loadedImages = 0;
-    this.images = [];
-    this.cacheManager = new ImageCacheManager();
-  }
-
+  constructor() { this.totalImages = 0; this.loadedImages = 0; this.images = []; this.cacheManager = new ImageCacheManager(); }
   async preloadAllImages() {
     await this.waitForGames();
-    
     const gameImages = new Set();
-    
     document.querySelectorAll('.slide img, .bannerimage, img[src]').forEach(img => {
-      if (img.src && !img.src.includes('data:') && !img.src.includes('blob:')) {
-        gameImages.add(img.src);
-      }
+      if (img.src && !img.src.includes('data:') && !img.src.includes('blob:')) gameImages.add(img.src);
     });
-
     const imageArray = Array.from(gameImages);
     this.totalImages = imageArray.length;
-    
-    if (this.totalImages === 0) {
-      return Promise.resolve();
-    }
-
+    if (this.totalImages === 0) return Promise.resolve();
     return new Promise((resolve) => {
       let completed = 0;
-      
       imageArray.forEach(src => {
         const img = new Image();
-        
-        const handleComplete = () => {
-          completed++;
-          this.imageLoaded(resolve, completed, imageArray.length);
-        };
-        
-        img.onload = handleComplete;
-        img.onerror = handleComplete;
-        img.src = src;
+        const handleComplete = () => { completed++; this.imageLoaded(resolve, completed, imageArray.length); };
+        img.onload = handleComplete; img.onerror = handleComplete; img.src = src;
         this.images.push(img);
       });
-      
       this.cacheManager.setCachedImages(imageArray);
     });
   }
-
   waitForGames() {
     return new Promise((resolve) => {
-      const checkGames = () => {
-        if (typeof allGames !== 'undefined' && allGames && allGames.length > 0) {
-          resolve();
-        } else {
-          setTimeout(checkGames, 100);
-        }
-      };
+      const checkGames = () => { if (typeof allGames !== 'undefined' && allGames && allGames.length > 0) resolve(); else setTimeout(checkGames, 100); };
       checkGames();
     });
   }
-
   imageLoaded(resolve, loaded, total) {
-    const progress = (loaded / total) * 100;
-    this.updateProgress(progress);
-    
-    if (loaded >= total) {
-      resolve();
-    }
+    this.updateProgress((loaded / total) * 100);
+    if (loaded >= total) resolve();
   }
-
   updateProgress(percentage) {
     const progressBar = document.getElementById('progressBar');
     const progressText = document.getElementById('loadingProgress');
-    
-    if (progressBar) {
-      progressBar.style.width = percentage + '%';
-    }
-    
-    if (progressText) {
-      progressText.textContent = `Loading... ${Math.round(percentage)}%`;
-    }
+    if (progressBar) progressBar.style.width = percentage + '%';
+    if (progressText) progressText.textContent = `Loading... ${Math.round(percentage)}%`;
   }
 }
 
@@ -1451,108 +1075,46 @@ const cacheManager = new ImageCacheManager();
 const shouldShowAnimation = cacheManager.needsReload();
 
 if (shouldShowAnimation) {
-  console.log('Loading animation: Images need to be loaded');
-  
   document.body.classList.add('loading-active');
   document.body.style.overflow = 'hidden';
-  
+
   function startNovaAnimation() {
     const timeline = gsap.timeline({
       onComplete: async function() {
         const preloader = new ImagePreloader();
-        
         gsap.to('#loadingProgress', { opacity: 1, duration: 0.5 });
         gsap.to('#progressBarContainer', { opacity: 1, duration: 0.5 });
-        
         await preloader.preloadAllImages();
         await new Promise(resolve => setTimeout(resolve, 500));
-        
         performFadeToBlackEnding();
       }
     });
-
     timeline
-      .fromTo('.letter-n', {
-        x: -150,
-        opacity: 0
-      }, {
-        x: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: 'expo.inOut'
-      })
-      .fromTo('.letter-o', {
-        y: -200,
-        opacity: 0
-      }, {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        ease: 'expo.inOut'
-      }, '-=1.0')
-      .fromTo('.letter-v', {
-        y: 200,
-        opacity: 0
-      }, {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: 'expo.inOut'
-      }, '-=1.0')
-      .fromTo('.letter-a', {
-        x: 140,
-        opacity: 0
-      }, {
-        x: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: 'expo.inOut'
-      }, '-=1.0');
-
+      .fromTo('.letter-n', { x: -150, opacity: 0 }, { x: 0, opacity: 1, duration: 1.5, ease: 'expo.inOut' })
+      .fromTo('.letter-o', { y: -200, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'expo.inOut' }, '-=1.0')
+      .fromTo('.letter-v', { y: 200, opacity: 0 }, { y: 0, opacity: 1, duration: 1.5, ease: 'expo.inOut' }, '-=1.0')
+      .fromTo('.letter-a', { x: 140, opacity: 0 }, { x: 0, opacity: 1, duration: 1.5, ease: 'expo.inOut' }, '-=1.0');
     return timeline;
   }
 
   function performFadeToBlackEnding() {
     const overlay = document.getElementById('loadingOverlay');
-    
     const endTimeline = gsap.timeline({
-      onComplete: function() {
-        overlay.style.display = 'none';
-        document.body.style.overflow = '';
-        document.body.classList.remove('loading-active');
-      }
+      onComplete: function() { overlay.style.display = 'none'; document.body.style.overflow = ''; document.body.classList.remove('loading-active'); }
     });
-
     endTimeline
-      .to('.nova-letter, #loadingProgress, #progressBarContainer', {
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power2.inOut'
-      })
+      .to('.nova-letter, #loadingProgress, #progressBarContainer', { opacity: 0, duration: 0.8, ease: 'power2.inOut' })
       .to({}, { duration: 0.4 })
-      .to(overlay, {
-        opacity: 0,
-        duration: 1.2,
-        ease: 'power2.inOut'
-      });
+      .to(overlay, { opacity: 0, duration: 1.2, ease: 'power2.inOut' });
   }
 
-  if (typeof gsap !== 'undefined') {
-    startNovaAnimation();
-  } else {
-    const checkGSAP = setInterval(() => {
-      if (typeof gsap !== 'undefined') {
-        clearInterval(checkGSAP);
-        startNovaAnimation();
-      }
-    }, 100);
+  if (typeof gsap !== 'undefined') { startNovaAnimation(); }
+  else {
+    const checkGSAP = setInterval(() => { if (typeof gsap !== 'undefined') { clearInterval(checkGSAP); startNovaAnimation(); } }, 100);
   }
 } else {
-  console.log('Loading animation: Skipped (images cached)');
   const overlay = document.getElementById('loadingOverlay');
-  if (overlay) {
-    overlay.style.display = 'none';
-  }
+  if (overlay) overlay.style.display = 'none';
 }
 </script>
 
