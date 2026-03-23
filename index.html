@@ -828,7 +828,7 @@ function createOptimizedCard(game) {
 
 async function loadGamesGrid() {
     try {
-        const res = await fetch("https://cdn.jsdelivr.net/gh/Notrexed/assets@main/mainzone.json");
+        const res = await fetch("https://cdn.jsdelivr.net/gh/Notrexed/assets@main/allgamezone.json");
         if (!res.ok) throw new Error('Failed to fetch games');
         const rawGames = await res.json();
 
